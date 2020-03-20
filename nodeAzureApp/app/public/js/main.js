@@ -32,10 +32,18 @@ function GetMap() {
     //Wait until the map resources are ready.
 
     map.events.add('ready', function () {
-        // mapControls()
-        // drawingTools();
-        // mapSearch();
-
-        addChoropleth();
+        mapControls()
+        drawingTools();
+        mapSearch();
+        $('#runChoropleth').click(function() {
+            $("#legend").toggle();
+            map.setCamera({
+                center: [-110, 50],
+                zoom: 3,
+                view: 'Auto' 
+            });
+            addChoropleth();
+        });
+        
     });
 }
