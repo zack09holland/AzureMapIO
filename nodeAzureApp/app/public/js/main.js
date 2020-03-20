@@ -1,5 +1,6 @@
 
-var map, drawingManager, controls = [];
+var map
+var MyLayers = {}; // Globally scoped object
 //Note that the typeahead parameter is set to true.
 var geocodeServiceUrlTemplate = 'https://atlas.microsoft.com/search/{searchType}/json?typeahead=true&subscription-key={subscription-key}&api-version=1&query={query}&language={language}&lon={lon}&lat={lat}&countrySet={countrySet}&view=Auto';
 // Use SubscriptionKeyCredential with a subscription key
@@ -28,6 +29,7 @@ function GetMap() {
             subscriptionKey: 'TfUWvWqVnTGKGMcIvxr5coNt7eiWrKxh6wJe0keVZSs'
         }
     });
+    
 
     //Wait until the map resources are ready.
 
@@ -35,15 +37,31 @@ function GetMap() {
         mapControls()
         drawingTools();
         mapSearch();
-        $('#runChoropleth').click(function() {
-            $("#legend").toggle();
-            map.setCamera({
-                center: [-110, 50],
-                zoom: 3,
-                view: 'Auto' 
-            });
-            addChoropleth();
+        // Run Choropleth
+        $('#runChoropleth').click(function() {  
+            var x = document.getElementById("legend");
+            if (x.style.display === "none") {
+              x.style.display = "block";
+              addChoropleth();
+            } else {
+              x.style.display = "none";
+              removeLayer()
+              console.log(MyLayers)
+            }
+        });
+
+        $('#runClusteredHM').click(function() {  
+            var x = document.getElementById("clusteredHM");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+                clusteredHeatMap();
+              } else {
+                x.style.display = "none";
+                removeLayer()
+              }
+            
         });
         
+
     });
 }
