@@ -1,20 +1,22 @@
-var polygonLayer;
-var defaultColor = '#FFEDA0';
-var colorScale = [
-    10, '#FED976',
-    20, '#FEB24C',
-    50, '#FD8D3C',
-    100, '#FC4E2A',
-    200, '#E31A1C',
-    500, '#BD0026',
-    1000, '#800026'
-];
+var polygonLayer,extrudedPolygonLayer;
+var defaultColor = '';
+var colorScale = [];
 
 
 function addChoropleth() {
 
     var popup, maxValue = 500;
-
+    polygonLayer;
+    defaultColor = '#FFEDA0';
+    colorScale = [
+        10, '#FED976',
+        20, '#FEB24C',
+        50, '#FD8D3C',
+        100, '#FC4E2A',
+        200, '#E31A1C',
+        500, '#BD0026',
+        1000, '#800026'
+    ];
     // Set camera to view map layer
     map.setCamera({
         center: [-110, 50],
@@ -45,7 +47,7 @@ function addChoropleth() {
         fillColor: steppedExp
     });
     map.layers.add(polygonLayer, 'labels');
-    MyLayers.remove = polygonLayer;
+    MyLayers.choroplethLayer = polygonLayer;
     
     //Add a mouse move event to the polygon layer to show a popup with information.
     map.events.add('mousemove', polygonLayer, function (e) {
@@ -73,10 +75,66 @@ function addChoropleth() {
     
 }
 
-//Create the Legend
-function createLegend() {
-    var html = [];
 
+
+function addExtrudedChoropleth(){
+    
+    defaultColor = '#00ff80';
+    colorScale = [
+        10, '#09e076',
+        20, '#0bbf67',
+        50, '#f7e305',
+        100, '#f7c707',
+        200, '#f78205',
+        500, '#f75e05',
+        1000, '#f72505'
+    ];
+    //Create a data source to add your data to.
+    var datasource = new atlas.source.DataSource();
+    map.sources.add(datasource);
+
+    //Load a dataset of polygons that have metadata we can style against.
+    datasource.importDataFromUrl('data/geojson/US_States_Population_Density.json');
+
+    //Create a stepped expression based on the color scale.
+    var steppedExp = [
+        'step',
+        ['get', 'density'],
+        defaultColor
+    ];
+    steppedExp = steppedExp.concat(colorScale);
+
+    //Create and add a polygon extrusion layer to the map below the labels so that they are still readable.
+    extrudedPolygonLayer = new atlas.layer.PolygonExtrusionLayer(datasource, null, {
+        base: 100,
+        fillColor: steppedExp,
+        fillOpacity: 0.7,
+        height: [
+            'interpolate',
+            ['linear'],
+            ['get', 'density'],
+            0, 100,
+            1200, 960000
+        ]
+    })
+    map.layers.add(extrudedPolygonLayer, 'labels');
+    MyLayers.extrudedPolygonLayer = extrudedPolygonLayer;
+
+    // Set camera to view map layer
+    map.setCamera({
+        center: [-94.6, 39.1],
+        zoom: 3,
+    
+        //Pitch the map so that the extrusion of the polygons is visible.
+        pitch: 45,
+        view: 'Auto'
+    });
+}
+
+//Create the Legend
+function createLegend(id) {
+    var html = ['<div id="legendItem">'];
+    
     html.push('<i style="background:', defaultColor, '"></i> 0-', colorScale[0], '<br/>');
     
     for (var i = 0; i < colorScale.length; i += 2) {
@@ -86,8 +144,6 @@ function createLegend() {
         );
     }
 
-    document.getElementById('legend').innerHTML += html.join('');
+    document.getElementById(id).innerHTML += html.join('');
 }
     //Create a legend(we run it here because we only want one)
-    createLegend();
-

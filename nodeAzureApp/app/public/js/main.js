@@ -37,19 +37,34 @@ function GetMap() {
         mapControls()
         drawingTools();
         mapSearch();
-        // Run Choropleth
+        // runClusteredHM
         $('#runChoropleth').click(function() {  
-            var x = document.getElementById("legend");
-            if (x.style.display === "none") {
-              x.style.display = "block";
+            var x = document.getElementsByClassName("choroplethInfo")[0].style.display;
+            if (x === "none") {
+              $('.choroplethInfo').css({ display: "block" });
               addChoropleth();
+              createLegend('legend');
             } else {
-              x.style.display = "none";
-              removeLayer()
-              console.log(MyLayers)
+              $('.choroplethInfo').css({ display: "none" });
+              $("#legendItem").remove();
+              removeLayer(MyLayers.choroplethLayer)
             }
         });
+        // addExtrudedChoropleth
+        $('#runExtrudedChoropleth').click(function() { 
+            var x = document.getElementsByClassName("extrudedChoroplethInfo")[0].style.display;
+            if (x === "none") {
+              $('.extrudedChoroplethInfo').css({ display: "block" });
+              addExtrudedChoropleth();
+              createLegend('extrudedLegend');
+            } else {
+              $('.extrudedChoroplethInfo').css({ display: "none" });
+              $("#legendItem").remove();
 
+              removeLayer(MyLayers.extrudedPolygonLayer)
+            }
+        });
+        // runClusteredHM
         $('#runClusteredHM').click(function() {  
             var x = document.getElementById("clusteredHM");
             if (x.style.display === "none") {
@@ -57,7 +72,42 @@ function GetMap() {
                 clusteredHeatMap();
               } else {
                 x.style.display = "none";
-                removeLayer()
+                removeLayer(MyLayers.clusteredHeatMapLayer)
+              }
+            
+        });
+        // runConsistentHM
+        $('#runConsistentHM').click(function() {  
+            var x = document.getElementById("consistentHM");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+                consistenntHeatMap();
+              } else {
+                x.style.display = "none";
+                removeLayer(MyLayers.consistentHeatMapLayer)
+              }
+            
+        });
+        // runWeightedHM 
+        $('#runWeightedHM').click(function() {  
+            var x = document.getElementById("weightedHM");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+                weightedHeatMap();
+              } else {
+                x.style.display = "none";
+                removeLayer(MyLayers.weightedHeatMapLayer)
+              }
+        });
+        // runWeather 
+        $('#runWeather').click(function() {  
+            var x = document.getElementById("weatherMap");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+                addWeather();
+              } else {
+                x.style.display = "none";
+                removeLayer(MyLayers.weatherLayer)
               }
             
         });
