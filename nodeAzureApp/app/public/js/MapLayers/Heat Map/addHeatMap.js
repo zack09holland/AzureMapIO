@@ -18,22 +18,22 @@ function clusteredHeatMap() {
         radius: 20
     });
     map.layers.add(clusteredHeatMapLayer, 'labels');
-    MyLayers.remove = clusteredHeatMapLayer;
+    MyLayers.clusteredHeatMapLayer = clusteredHeatMapLayer;
 
     // Change style and camera if need be
     // map.setStyle({
     //     style: 'grayscale_dark'
     // })
-    map.setCamera({
-        center: [-97, 39],
-        zoom: 3,
-    });
+    // map.setCamera({
+    //     center: [-97, 39],
+    //     zoom: 3,
+    // });
 
     //Load a data set of points, in this case earthquake data from the USGS.
     datasource.importDataFromUrl('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson');
 }
 
-function consistenntHeatMap() {
+function consistentHeatMap() {
     //Create a data source and add it to the map.
     datasource = new atlas.source.DataSource();
     map.sources.add(datasource);
@@ -56,10 +56,10 @@ function consistenntHeatMap() {
     });
     map.layers.add(consistentHeatMapLayer, 'labels');
     MyLayers.consistentHeatMapLayer = consistentHeatMapLayer;
-    map.setCamera({
-        center: [-97, 39],
-        zoom: 3,
-    });
+    // map.setCamera({
+    //     center: [-97, 39],
+    //     zoom: 3,
+    // });
 };
 
 function weightedHeatMap() {
@@ -69,7 +69,6 @@ function weightedHeatMap() {
 
     //Load a data set of points, in this case earthquake data from the USGS.
     datasource.importDataFromUrl('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson');
-
 
     //Create a heatmap and add it to the map.
     weightedHeatMapLayer = new atlas.layer.HeatMapLayer(datasource, null, {
@@ -101,8 +100,8 @@ function weightedHeatMap() {
     });
     map.layers.add(weightedHeatMapLayer, 'labels');
     MyLayers.weightedHeatMapLayer = weightedHeatMapLayer;
-    map.setCamera({
-        center: [-97, 39],
-        zoom: 3,
-    });
+    // map.setCamera({
+    //     center: [-97, 39],
+    //     zoom: 3,
+    // });
 };

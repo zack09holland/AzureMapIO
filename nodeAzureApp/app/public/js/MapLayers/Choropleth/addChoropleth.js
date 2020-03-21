@@ -1,4 +1,4 @@
-var polygonLayer,extrudedPolygonLayer;
+var choroplethLayer,extrudedPolygonLayer;
 var defaultColor = '';
 var colorScale = [];
 
@@ -6,7 +6,7 @@ var colorScale = [];
 function addChoropleth() {
 
     var popup, maxValue = 500;
-    polygonLayer;
+    choroplethLayer;
     defaultColor = '#FFEDA0';
     colorScale = [
         10, '#FED976',
@@ -19,8 +19,9 @@ function addChoropleth() {
     ];
     // Set camera to view map layer
     map.setCamera({
-        center: [-110, 50],
+        center: [-94.6, 39.1],
         zoom: 3,
+        pitch: 0,
         view: 'Auto' 
     });
 
@@ -43,14 +44,14 @@ function addChoropleth() {
     steppedExp = steppedExp.concat(colorScale);
 
     //Create a layer to render the polygon data.
-    polygonLayer = new atlas.layer.PolygonLayer(datasource, null, {
+    choroplethLayer = new atlas.layer.PolygonLayer(datasource, null, {
         fillColor: steppedExp
     });
-    map.layers.add(polygonLayer, 'labels');
-    MyLayers.choroplethLayer = polygonLayer;
+    map.layers.add(choroplethLayer, 'labels');
+    MyLayers.choroplethLayer = choroplethLayer;
     
     //Add a mouse move event to the polygon layer to show a popup with information.
-    map.events.add('mousemove', polygonLayer, function (e) {
+    map.events.add('mousemove', choroplethLayer, function (e) {
         if (e.shapes && e.shapes.length > 0) {
             var properties = e.shapes[0].getProperties();
 
@@ -66,7 +67,7 @@ function addChoropleth() {
     });
 
     //Add a mouse leave event to the polygon layer to hide the popup.
-    map.events.add('mouseleave', polygonLayer, function (e) {
+    map.events.add('mouseleave', choroplethLayer, function (e) {
         popup.close();
     });
 
@@ -74,8 +75,6 @@ function addChoropleth() {
     datasource.importDataFromUrl('data/geojson/US_States_Population_Density.json');
     
 }
-
-
 
 function addExtrudedChoropleth(){
     
@@ -105,7 +104,7 @@ function addExtrudedChoropleth(){
     steppedExp = steppedExp.concat(colorScale);
 
     //Create and add a polygon extrusion layer to the map below the labels so that they are still readable.
-    extrudedPolygonLayer = new atlas.layer.PolygonExtrusionLayer(datasource, null, {
+    extrudedChoroplethLayer = new atlas.layer.PolygonExtrusionLayer(datasource, null, {
         base: 100,
         fillColor: steppedExp,
         fillOpacity: 0.7,
@@ -117,8 +116,8 @@ function addExtrudedChoropleth(){
             1200, 960000
         ]
     })
-    map.layers.add(extrudedPolygonLayer, 'labels');
-    MyLayers.extrudedPolygonLayer = extrudedPolygonLayer;
+    map.layers.add(extrudedChoroplethLayer, 'labels');
+    MyLayers.extrudedChoroplethLayer = extrudedChoroplethLayer;
 
     // Set camera to view map layer
     map.setCamera({
@@ -133,7 +132,7 @@ function addExtrudedChoropleth(){
 
 //Create the Legend
 function createLegend(id) {
-    var html = ['<div id="legendItem">'];
+    var html = ['<div id="'+id+'Item">'];
     
     html.push('<i style="background:', defaultColor, '"></i> 0-', colorScale[0], '<br/>');
     

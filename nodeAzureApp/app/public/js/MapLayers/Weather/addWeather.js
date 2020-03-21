@@ -14,14 +14,14 @@ function addWeather() {
     //Initialize the weather tile layer.
     updateTileLayer();
     // Set camera to view map layer
-    map.setCamera({
-        center: [-99.47, 40.75],
-        zoom: 3,
-        view: 'Auto'
-    });
-    map.setStyle({
-        style: 'grayscale_dark'
-    })
+    // map.setCamera({
+    //     center: [-99.47, 40.75],
+    //     zoom: 3,
+    //     view: 'Auto'
+    // });
+    // map.setStyle({
+    //     style: 'grayscale_dark'
+    // })
 }
 
 function updateTileLayer() {
@@ -53,14 +53,14 @@ function updateTileLayer() {
 function animateWeather() {
     var tileLayers = [];
      // Set camera to view map layer
-     map.setCamera({
-        center: [-99.47, 40.75],
-        zoom: 3,
-        view: 'Auto'
-    });
-    map.setStyle({
-        style: 'grayscale_dark'
-    })
+    //  map.setCamera({
+    //     center: [-99.47, 40.75],
+    //     zoom: 3,
+    //     view: 'Auto'
+    // });
+    // map.setStyle({
+    //     style: 'grayscale_dark'
+    // })
     //Create a tile layer option for each time stamp.
     for (var i = 0; i < timestamps.length; i++) {
         var layerOptions = {

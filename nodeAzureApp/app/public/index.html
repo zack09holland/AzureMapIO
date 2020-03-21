@@ -7,276 +7,297 @@
 
   <!-- Load JQuery UI -->
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-  
+
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  
+
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  
-  
+
 
   <!-- Bootstrap -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+    integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous">
+  </script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  
 
-  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
   <!-- Add references to the Azure Maps Map control JavaScript and CSS files. -->
-  <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css"
-      type="text/css" />
+  <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" type="text/css" />
   <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
-  
+
   <!-- Add a reference to the Azure Maps Services Module JavaScript file. -->
   <script src="https://atlas.microsoft.com/sdk/javascript/service/2/atlas-service.min.js"></script>
 
   <!-- Add references to the Azure Maps Map Drawing Tools JavaScript and CSS files. -->
   <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/drawing/0/atlas-drawing.min.css"
-      type="text/css" />
+    type="text/css" />
   <script src="https://atlas.microsoft.com/sdk/javascript/drawing/0/atlas-drawing.min.js"></script>
-  
+
+  <!-- Local stylesheet -->
   <link rel="stylesheet" href="css/style.css" type="text/css" />
 
   <!-- Font Awesome Glyphicons -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
   <!-- Font Awesome -->
-  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' type='text/css' media='all' />
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
+    type='text/css' media='all' />
 </head>
 
 <body onload="GetMap()">
   <!-- Content Container -->
-  <h1 id="top-bar">Azure Map</h1>
-    <div class="container-fluid">
-      <!-- Top Container Row -->
-      <div class = "row searchRow">
-        <div class="col-8">
-          <div class="ui-widget">
-              <label for="queryTbx">Search: </label>
-              <input id="queryTbx">
+  <h3 id="top-bar">Azure Map Demo</h3>
+  <div class="container-fluid">
+    <!-- Top Container Row -->
+    <div class="row searchRow">
+      <div class="col-8">
+        <div class="ui-widget">
+          <label for="queryTbx">Search: </label>
+          <input id="queryTbx">
+        </div>
+      </div>
+      <!-- Dropdown for map options -->
+      <div class="col-4">
+        <div id="dropdownMenuButton" class="dropdown ">
+          <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenu2"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Map Data Options
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <button class="dropdown-item" type="button">Data view</button>
+            <button class="dropdown-item" type="button">Full screen</button>
           </div>
         </div>
-        <!-- Dropdown for map options -->
-        <div class="col-4">
-          <div id="dropdownMenuButton" class="dropdown ">
-            <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-              <button class="dropdown-item" type="button">Action</button>
-              <button class="dropdown-item" type="button">Another action</button>
-              <button class="dropdown-item" type="button">Something else here</button>
+      </div>
+    </div>
+
+    <!-- Map Container -->
+    <div class="row">
+      <div id="leftbox">
+        <div id="accordion">
+          <!-- LAYERS MAP STUFF -->
+          <div class="card">
+            <div class="card-header" id="headingOne">
+              <h5 class="m-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+                  aria-controls="collapseOne">
+                  Layers
+                </button>
+              </h5>
+            </div>
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+              <!-- Treeview Component -->
+              <div data-ui-css-component="treeview">
+                <ul>
+                  <!-- Choropleth Layer Selection -->
+                  <li>
+                    <input type="checkbox" id="item1" />
+                    <label for="item1">Choropleth</label>
+                    <ul>
+                      <li>
+                        <input type="checkbox" id="simpleChoropleth" />
+                        <label for="simpleChoropleth">Simple</label>
+                        <!-- Choropleth Info -->
+                        <div class="choroplethInfo" style="display: none;">
+                          <!-- Legend -->
+                          <div id="legend">
+                            <p>However over the states to get a popup with more information</p>
+                            <p>Population Density (people/mi<sup>2</sup>)</p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <input type="checkbox" id="extrudedChoropleth" />
+                        <label for="extrudedChoropleth">Extruded</label>
+                        <!-- Extruded Choropleth Info -->
+                        <div class="extrudedChoroplethInfo" style="display: none;">
+                          <!-- Legend -->
+                          <div id="extrudedLegend">
+                            <p>However over the states to get a popup with more information</p>
+                            <p>Population Density (people/mi<sup>2</sup>)</p>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- Heat Map Layer Selection -->
+                  <li>
+                    <input type="checkbox" id="item2" />
+                    <label for="item2">Heat Map</label>
+                    <ul>
+                      <li>
+                        <input type="checkbox" id="runClusteredHM" />
+                        <label for="runClusteredHM">Clustered</label>
+                        <!-- Clustered Heat Map Info -->
+                        <div class="clusteredHM" style="display: none;">
+                          <!-- <hr> -->
+                          <div id="layerInfo">
+                            <p>When the cluster radius is small, the heat map will look nearly identical
+                              to a heat map using the unclustered data points but will perform much better.
+                              However, the smaller the cluster radius, the more accurate the heat map will
+                              be but with less of a performance benefit.
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+
+                      <li>
+                        <input type="checkbox" id="runConsistentHM" />
+                        <label for="runConsistentHM">Consistent</label>
+                        <!-- Consistent Heat Map Info -->
+                        <div class="consistentHM" style="display: none;">
+                          <!-- <hr> -->
+                          <div id="layerInfo">
+                            <p> In this sample, the heat map will scale consistently between zoom levels 10 and 22.
+                              Each zoom level of the map has twice as many pixels vertically and horizontally as the
+                              previous zoom level,
+                              as such, scaling the radius such that it doubles with each zoom level will create a heat
+                              map that looks consistent on
+                              all zoom levels.
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+
+                      <li>
+                        <input type="checkbox" id="runWeightedHM" />
+                        <label for="runWeightedHM">Weighted</label>
+                        <!-- Weighted Heat Map Info -->
+                        <div class="weightedHM" style="display: none;">
+                          <!-- <hr> -->
+                          <div id="layerInfo">
+                            <p> This sample shows how to create a heat map which defines the intensity of each data
+                              point based on a property.
+                              In this case the "mag" property is used to specify the weight of each data point.
+                              Additionally ann expression has been added to the radius property so that it changes based
+                              on the zoom level of the map.
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- Weather Layer Selection -->
+                  <li>
+                    <input type="checkbox" id="item3" />
+                    <label for="item3">Weather Maps</label>
+                    <ul>
+                      <li>
+                        <input type="checkbox" id="runWeather" />
+                        <label for="runWeather">Static Weather</label>
+                        <!-- Weather Info -->
+                        <div class="weatherMap" style="display: none;">
+                          <!-- <hr> -->
+                          <div id="layerInfo">
+                            Select weather overlay:
+                            <select id="layerSelector" onchange="updateTileLayer()">
+                              <option value="microsoft.weather.radar.main" selected="selected">Radar</option>
+                              <option value="microsoft.weather.infrared.main">Infrared</option>
+                            </select>
+                            <p>
+                              This sample shows how to add weather radar and infrared overlays to the map as a tile
+                              layer.
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <input type="checkbox" id="animatedWeatherMap" />
+                        <label for="animatedWeatherMap">Animated Weather</label>
+                        <!-- Animated Weather Info -->
+                        <div class="animatedWeatherMapInfo" style="display: none;">
+                          <!-- <hr> -->
+                          <div id="layerInfo">
+                            <div id="messagePanel"></div>
+                            <input type="button" value="Pause" onclick="animationManager.pause();" />
+                            <input type="button" value="Play" onclick="animationManager.play();" />
+                            <input type="button" value="Stop" onclick="animationManager.stop();" />
+
+                            <p> This sample shows how to animate an sequence of tile layers smoothly.
+                              This example uses the AnimatedTileLayer to animate through an array of tile layers.
+                              For this sample weather radar tiles from the <a
+                                href="https://www.mesonet.agron.iastate.edu/ogc/">Iowa Environmental Mesonet of Iowa
+                                State University</a>
+                              over the USA are animated for the last 50 minutes in 5 minute increments.
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                </ul>
+                </li>
+                <!-- End Layer Selections -->
+                </ul>
+              </div>
+
+            </div>
+          </div>
+          <!-- SPATIAL IO MAP STUFF -->
+          <div class="card">
+            <div class="card-header" id="headingTwo">
+              <h5 class="m-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
+                  aria-expanded="false" aria-controls="collapseTwo">
+                  Spatial IO
+                </button>
+              </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+              <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
+                moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+                Brunch 3 wolf moon tempor, sunt aliqua put a bird
+              </div>
+            </div>
+          </div>
+          <!-- SPATIAL IO MAP STUFF -->
+          <div class="card">
+            <div class="card-header" id="headingThree">
+              <h5 class="m-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree"
+                  aria-expanded="false" aria-controls="collapseThree">
+                  Extras
+                </button>
+              </h5>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+              <div class="card-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
+                moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+                Brunch 3 wolf moon tempor, sunt aliqua put a bird on
+              </div>
             </div>
           </div>
         </div>
       </div>
-     
-      <!-- Map Container -->
-      <div class="row">
-        <div id="leftbox">
-          <h4>Options</h4>
-          <div id="accordion">
-            <div class="card">
-              <div class="card-header" id="headingOne">
-                <h5 class="m-0">
-                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    Layers
-                  </button>
-                </h5>
-              </div>
-          
-              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 
-                	<div class="">
-                    <!-- Choropleth Options -->
-                    <div id="btnDropDown" class="dropright">
-                	    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenu2 " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                	      Choropleth
-                	    </button>
-                	    <div class="dropdown-menu " aria-labelledby="dropdownMenu2">
-                	      <button class="dropdown-item " type="button" id="runChoropleth">Simple</button>
-                	      <button class="dropdown-item" type="button" id="runExtrudedChoropleth">Extruded</button>
-                	      <!-- <button class="dropdown-item" type="button" id="runWeightedHM">Weighted</button> -->
-                	    </div>
-                	  </div>
-                	  <!-- Heat Map Options -->
-                	  <div id="btnDropDown" class="dropright">
-                	    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenu2 " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                	      Heat Map
-                	    </button>
-                	    <div class="dropdown-menu " aria-labelledby="dropdownMenu2">
-                	      <button class="dropdown-item " type="button" id="runClusteredHM">Clustered</button>
-                	      <button class="dropdown-item" type="button" id="runConsistentHM">Consistent</button>
-                	      <button class="dropdown-item" type="button" id="runWeightedHM">Weighted</button>
-                	    </div>
-                    </div>
-                    <!-- Weather Tile -->
-                	  <div id="btnDropDown" class="dropright">
-                	    <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenu2 " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                	      Weather
-                	    </button>
-                	    <div class="dropdown-menu " aria-labelledby="dropdownMenu2">
-                	      <button class="dropdown-item " type="button" id="runWeather">Non-Animated</button>
-                	      <button class="dropdown-item" type="button" id="">Animated</button>
-                	      <!-- <button class="dropdown-item" type="button" id="">Weighted</button> -->
-                	    </div>
-                	  </div>
-                  </div>
-            
-                <div class="card-body">
-                  <div>
-                    <!-- Choropleth Info -->
-                    <div class="choroplethInfo" style="display: none;">
-                        <!-- <button id="faClose"><i class="fa fa-window-close" aria-hidden="true"></i></button> -->
-                        <!-- Legend -->
-                        <div id="legend" >
-                          <p id="panelBodyTitle">Choropleth</p>
-                          <p>However over the states to get a popup with more information</p>
-                          <p>Population Density (people/mi<sup>2</sup>)</p>
-                        </div>
-                    </div>
-                    <!-- Extruded Choropleth Info -->
-                    <div class="extrudedChoroplethInfo" style="display: none;">
-                        <!-- <button id="faClose"><i class="fa fa-window-close" aria-hidden="true"></i></button> -->
-                        <!-- Legend -->
-                        <div id="extrudedLegend" >
-                          <p id="panelBodyTitle">Extruded Choropleth</p>
-                          <p>However over the states to get a popup with more information</p>
-                          <p>Population Density (people/mi<sup>2</sup>)</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Clustered Heat Map Info -->
-                    <div id="clusteredHM" style="display: none;">
-                      <!-- <hr> -->
-                      <div id="layerInfo">
-                        <p id="panelBodyTitle">Clustered Heat Map</p>
-                        <p>When the cluster radius is small, the heat map will look nearly identical 
-                          to a heat map using the unclustered data points but will perform much better. 
-                          However, the smaller the cluster radius, the more accurate the heat map will 
-                          be but with less of a performance benefit.
-                        </p>
-                      </div>
-                    </div>
-                    <!-- Consistent Heat Map Info -->
-                    <div id="consistentHM" style="display: none;">
-                      <!-- <hr> -->
-                      <div id="layerInfo">
-                        <p id="panelBodyTitle">Consistent Heat Map</p>
-                        <p> In this sample, the heat map will scale consistently between zoom levels 10 and 22.
-                          Each zoom level of the map has twice as many pixels vertically and horizontally as the previous zoom level, 
-                          as such, scaling the radius such that it doubles with each zoom level will create a heat map that looks consistent on 
-                          all zoom levels.
-                        </p>
-                      </div>
-                    </div>
+      <div id="myMap"></div>
+    </div>
 
-                    <!-- Weighted Heat Map Info -->
-                    <div id="weightedHM" style="display: none;">
-                      <!-- <hr> -->
-                      <div id="layerInfo">
-                        <p id="panelBodyTitle">Weighted Heat Map</p>
-                        <p> This sample shows how to create a heat map which defines the intensity of each data point based on a property.
-                          In this case the "mag" property is used to specify the weight of each data point. 
-                          Additionally ann expression has been added to the radius property so that it changes based on the zoom level of the map.
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <!-- Weather Info -->
-                    <div id="weatherMap" style="display: none;">
-                      <!-- <hr> -->
-                      <div id="layerInfo">
-                        <p id="panelBodyTitle">Weather</p>
-                        Select weather overlay:
-                        <select id="layerSelector" onchange="updateTileLayer()">
-                            <option value="microsoft.weather.radar.main" selected="selected">Radar</option>
-                            <option value="microsoft.weather.infrared.main">Infrared</option>
-                        </select>
-                        
-                        <p>  This sample shows how to add weather radar and infrared overlays to the map as a tile layer.
-                        </p>
-                      </div>
-                    </div>
-                    <!-- Animated Weather Info -->
-                    <div id="animatedWeatherMap" style="display: none;">
-                      <!-- <hr> -->
-                      <div id="layerInfo">
-                        <p id="panelBodyTitle">Weather</p>
-                        <div id="messagePanel"></div>
-                        <input type="button" value="Pause" onclick="animationManager.pause();" />
-                        <input type="button" value="Play" onclick="animationManager.play();" />
-                        <input type="button" value="Stop" onclick="animationManager.stop();" />
-                        
-                        <p>  This sample shows how to animate an sequence of tile layers smoothly.
-                          This example uses the AnimatedTileLayer to animate through an array of tile layers. 
-                          For this sample weather radar tiles from the <a href="https://www.mesonet.agron.iastate.edu/ogc/">Iowa Environmental Mesonet of Iowa State University</a> 
-                          over the USA  are animated for the last 50 minutes in 5 minute increments.
-                        </p>
-                      </div>
-                    </div>
-                    
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-header" id="headingTwo">
-                <h5 class="m-0">
-                  <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Spatial IO
-                  </button>
-                </h5>
-              </div>
-              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                <button id="runDragDropSHP" type="button" class="btn btn-primary btn-sm">Drag&Drop SHP</button>
-                <div class="card-body">
-                  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-header" id="headingThree">
-                <h5 class="m-0">
-                  <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    Extras
-                  </button>
-                </h5>
-              </div>
-              <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                <div class="card-body">
-                  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-        <div id="myMap" ></div>
-      </div>
-  
-  
+
     <div id="myMap"></div>
-      <!-- Footer -->
-      <footer class="footer">
-        <div class="container">
-        </div>
-      </footer>
-    </div> 
-    
-  
-  </body>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+      </div>
+    </footer>
+  </div>
+
+
+</body>
 <!-- Map Layer JS -->
-  <script type="text/javascript" src="js/main.js"></script>
-  <script type="text/javascript" src="js/MapLayers/addChoropleth.js"></script>
-  <script type="text/javascript" src="js/MapLayers/removeLayer.js"></script>
-  <script type="text/javascript" src="js/MapLayers/addHeatMap.js"></script>
-  <script type="text/javascript" src="js/MapLayers/Weather/addWeather.js"></script>
-  <script type="text/javascript" src="js/MapLayers/Weather/AnimatedTileLayer.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/MapLayers/Choropleth/addChoropleth.js"></script>
+<script type="text/javascript" src="js/MapLayers/removeLayer.js"></script>
+<script type="text/javascript" src="js/MapLayers/Heat Map/addHeatMap.js"></script>
+<script type="text/javascript" src="js/MapLayers/Weather/addWeather.js"></script>
+<script type="text/javascript" src="js/MapLayers/Weather/AnimatedTileLayer.js"></script>
 <!-- Map Tools JS -->
-  <script type="text/javascript" src="js/MapTools/drawingTools.js"></script>
-  <script type="text/javascript" src="js/MapTools/mapControls.js"></script>
-  <script type="text/javascript" src="js/MapTools/mapSearch.js"></script>
-  <!-- Spatial Map JS -->
-  <script type="text/javascript" src="js/MapSpatial/dragDropSHP.js"></script>
+<script type="text/javascript" src="js/MapTools/drawingTools.js"></script>
+<script type="text/javascript" src="js/MapTools/mapControls.js"></script>
+<script type="text/javascript" src="js/MapTools/mapSearch.js"></script>
+<!-- Spatial Map JS -->
+<script type="text/javascript" src="js/MapSpatial/dragDropSHP.js"></script>
+
 </html>

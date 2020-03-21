@@ -19,10 +19,10 @@ function GetMap() {
         // center: [-98.493928, 38.096798],
         // zoom: 4,
         // view: "Auto",
-        center: [-122.33, 47.6],
-        zoom: 12,
+        center: [-94.6, 39.1],
+        zoom: 3,
         view: 'Auto',
-
+        style: 'grayscale_dark',
         //Add your Azure Maps subscription key to the map SDK. Get an Azure Maps key at https://azure.com/maps
         authOptions: {
             authType: 'subscriptionKey',
@@ -37,81 +37,78 @@ function GetMap() {
         mapControls()
         drawingTools();
         mapSearch();
-        // runClusteredHM
-        $('#runChoropleth').click(function() {  
-            var x = document.getElementsByClassName("choroplethInfo")[0].style.display;
-            if (x === "none") {
-              $('.choroplethInfo').css({ display: "block" });
-              addChoropleth();
-              createLegend('legend');
-            } else {
-              $('.choroplethInfo').css({ display: "none" });
-              $("#legendItem").remove();
-              removeLayer(MyLayers.choroplethLayer)
-            }
+        // simpleChoropleth
+        $("#simpleChoropleth").click(function () {
+          var x = document.getElementsByClassName("choroplethInfo")[0].style.display;
+          if ($(this).is(":checked")) {
+            $('.choroplethInfo').css({ display: "block" });
+            addChoropleth();
+            createLegend('legend');
+          } else {
+            $('.choroplethInfo').css({ display: "none" });
+            $("#legendItem").remove();
+            removeLayer(MyLayers.choroplethLayer)          }
         });
-        // addExtrudedChoropleth
-        $('#runExtrudedChoropleth').click(function() { 
-            var x = document.getElementsByClassName("extrudedChoroplethInfo")[0].style.display;
-            if (x === "none") {
-              $('.extrudedChoroplethInfo').css({ display: "block" });
-              addExtrudedChoropleth();
-              createLegend('extrudedLegend');
-            } else {
-              $('.extrudedChoroplethInfo').css({ display: "none" });
-              $("#legendItem").remove();
+        // extrudedChoropleth
+        $("#extrudedChoropleth").click(function () {
+          var x = document.getElementsByClassName("extrudedChoroplethInfo")[0].style.display;
+          if ($(this).is(":checked")) {
+            $('.extrudedChoroplethInfo').css({ display: "block" });
+            addExtrudedChoropleth();
+            createLegend('extrudedLegend');
+          } else {
+            $('.extrudedChoroplethInfo').css({ display: "none" });
+            $("#extrudedLegendItem").remove();
+            removeLayer(MyLayers.extrudedChoroplethLayer)
+          }
+        });
 
-              removeLayer(MyLayers.extrudedPolygonLayer)
-            }
-        });
         // runClusteredHM
         $('#runClusteredHM').click(function() {  
             var x = document.getElementById("clusteredHM");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-                clusteredHeatMap();
-              } else {
-                x.style.display = "none";
-                removeLayer(MyLayers.clusteredHeatMapLayer)
-              }
-            
+            if ($(this).is(":checked")) {
+              $('.clusteredHM').css({ display: "block" });
+              clusteredHeatMap();
+            } else {
+              $('.clusteredHM').css({ display: "none" });
+              removeLayer(MyLayers.clusteredHeatMapLayer)
+            }
         });
+
         // runConsistentHM
         $('#runConsistentHM').click(function() {  
             var x = document.getElementById("consistentHM");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-                consistenntHeatMap();
-              } else {
-                x.style.display = "none";
-                removeLayer(MyLayers.consistentHeatMapLayer)
-              }
-            
+            if ($(this).is(":checked")) {
+              $('.consistentHM').css({ display: "block" });
+              consistentHeatMap();
+            } else {
+              $('.consistentHM').css({ display: "none" });
+              removeLayer(MyLayers.consistentHeatMapLayer)
+            }
         });
+
         // runWeightedHM 
         $('#runWeightedHM').click(function() {  
             var x = document.getElementById("weightedHM");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-                weightedHeatMap();
-              } else {
-                x.style.display = "none";
-                removeLayer(MyLayers.weightedHeatMapLayer)
-              }
+            if ($(this).is(":checked")) {
+              $('.weightedHM').css({ display: "block" });
+              weightedHeatMap();
+            } else {
+              $('.weightedHM').css({ display: "none" });
+              removeLayer(MyLayers.weightedHeatMapLayer)
+            }
         });
+
         // runWeather 
         $('#runWeather').click(function() {  
             var x = document.getElementById("weatherMap");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-                addWeather();
-              } else {
-                x.style.display = "none";
-                removeLayer(MyLayers.weatherLayer)
-              }
-            
+            if ($(this).is(":checked")) {
+              $('.weatherMap').css({ display: "block" });
+              addWeather();
+            } else {
+              $('.weatherMap').css({ display: "none" });
+              removeLayer(MyLayers.weatherLayer)
+            }
         });
-        
-
     });
 }
