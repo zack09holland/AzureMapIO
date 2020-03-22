@@ -38,5 +38,7 @@ function GetMap() {
         mapControls()
         drawingTools();
         mapSearch();
+        addSHPFiles();
+
     });
 }

@@ -26,9 +26,7 @@ function addWeather() {
 
 function updateTileLayer() {
     var layerName = document.getElementById("layerSelector").value;
-
     var tileUrl = weatherTileUrl.replace('{subscription-key}', atlas.getSubscriptionKey()).replace('{layerName}', layerName);
-    console.log(tileUrl)
     if (!tileLayer) {
         //Create a tile layer and add it to the map below the label layer.
         tileLayer = new atlas.layer.TileLayer({

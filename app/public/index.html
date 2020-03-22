@@ -78,7 +78,7 @@
     <div class="row">
       <div id="leftbox">
         <div id="accordion">
-          <!-- LAYERS MAP STUFF -->
+<!-- LAYERS MAP STUFF -->
           <div class="card">
             <div class="card-header" id="headingOne">
               <h5 class="m-0">
@@ -92,7 +92,7 @@
               <!-- Treeview Component -->
               <div data-ui-css-component="treeview">
                 <ul>
-                  <!-- Choropleth Layer Selection -->
+<!-- Choropleth Layer Selection -->
                   <li>
                     <input type="checkbox" id="choroplethItems" />
                     <label for="choroplethItems">Choropleth</label>
@@ -164,7 +164,7 @@
                       </li>
                     </ul>
                   </li>
-                  <!-- Heat Map Layer Selection -->
+<!-- Heat Map Layer Selection -->
                   <li>
                     <input type="checkbox" id="heatMapItems" />
                     <label for="heatMapItems">Heat Map</label>
@@ -221,7 +221,7 @@
                       </li>
                     </ul>
                   </li>
-                  <!-- Weather Layer Selection -->
+<!-- Weather Layer Selection -->
                   <li>
                     <input type="checkbox" id="weatherMapItems" />
                     <label for="weatherMapItems">Weather Maps</label>
@@ -269,7 +269,7 @@
                       </li>
                     </ul>
                   </li>
-                  <!-- Bubble Layer Selection -->
+<!-- Bubble Layer Selection -->
                   <li>
                     <input type="checkbox" id="bubbleItems" />
                     <label for="bubbleItems">Bubble</label>
@@ -454,7 +454,7 @@
               </div>
             </div>
           </div>
-          <!-- SPATIAL IO MAP STUFF -->
+<!-- SPATIAL IO MAP STUFF -->
           <div class="card">
             <div class="card-header" id="headingTwo">
               <h5 class="m-0">
@@ -468,30 +468,77 @@
               <!-- Treeview Component -->
               <div data-ui-css-component="treeview">
                 <ul>
-                  <!-- Choropleth Layer Selection -->
+                  <!-- Geospatial Layer Selection -->
                   <li>
-                    <input type="checkbox" id="item5" />
-                    <label for="item5">Geospatial Files</label>
+                    <input type="checkbox" id="geospatialItems" />
+                    <label for="geospatialItems">Geospatial Files</label>
                     <ul>
                       <li>
                         <input type="checkbox" id="shpFiles" />
                         <label for="shpFiles">SHP Files</label>
-                        <!-- Choropleth Info -->
-                        <div class="shpFileInfo" style="display: none;">
-                          <!-- Legend -->
-                          Load Shapefile:<br />
-                          <input type="button" onclick="loadShapeFile('data/shp/cities')" value="Cities" /><br />
-                          <input type="button" onclick="loadShapeFile('data/shp/BikeRacks.zip')"
-                            value="Chicago bike racks" /><br />
-                          <input type="button" onclick="loadShapeFile('data/shp/US_Interstates')"
-                            value="US Interstates" /><br />
-                          <input type="button" onclick="loadShapeFile('data/shp/greater_london_const_region')"
-                            value="Greater London UK Regions" /><br />
-                          <input type="button" onclick="loadShapeFile('data/shp/POL_adm.zip')"
-                            value="Polish Administrative Divisions" /><br />
-                          <input type="button" onclick="loadShapeFile('data/shp/plzzip5.zip')"
-                            value="German Postal Codes (17MB)" />
+                        <!-- SHP File Info -->
+                        <div class="shpFileInfo" style="display: none;">                          
+                          <!-- <div id="dropdownMenuButton" class="dropdown ">
+                            <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenu2"
+                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Add File
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                              <button class="dropdown-item" type="button">SHP</button>
+                              <button class="dropdown-item" type="button">Other</button>
+                            </div>
+                          </div> -->
                         </div>
+                        <ul>
+                          <!-- City SHP File  -->
+                          <li>
+                            <input type="checkbox" id="citiesSHP" />
+                            <label for="citiesSHP">Cities</label>
+                            <div class="citiesSHPInfo" style="display: none;">                          
+                            
+                            </div>
+                          </li>
+                          <!-- Bike Racks SHP File  -->
+                          <li>
+                            <input type="checkbox" id="chicagoBikeRacksSHP" />
+                            <label for="chicagoBikeRacksSHP">Chicago Bike Racks </label>
+                            <div class="chicagoBikeRacksSHPInfo" style="display: none;">                          
+                            
+                            </div>
+                          </li>
+                          <!-- US Interstates SHP File  -->
+                          <li>
+                            <input type="checkbox" id="usInterstatesSHP" />
+                            <label for="usInterstatesSHP">US Interstates</label>
+                            <div class="usInterstatesSHPInfo" style="display: none;">                          
+                            
+                            </div>
+                          </li>
+                          <!-- Greater London UK Regions SHP File  -->
+                          <li>
+                            <input type="checkbox" id="londonUKRegionsSHP" />
+                            <label for="londonUKRegionsSHP">Greater London UK Regions</label>
+                            <div class="londonUKRegionsSHPInfo" style="display: none;">                          
+                            
+                            </div>
+                          </li>
+                          <!-- Polish Administrative Divisions SHP File  -->
+                          <li>
+                            <input type="checkbox" id="polishAdminDivisionSHP" />
+                            <label for="polishAdminDivisionSHP">Polish Administrative Divisions</label>
+                            <div class="polishAdminDivisionSHPInfo" style="display: none;">                          
+                            
+                            </div>
+                          </li>
+                          <!-- German Postal Codes (17MB) SHP File  -->
+                          <li>
+                            <input type="checkbox" id="germanPostalCodesSHP" />
+                            <label for="germanPostalCodesSHP">German Postal Codes (17MB)</label>
+                            <div class="germanPostalCodesSHPInfo" style="display: none;">                          
+                            
+                            </div>
+                          </li>
+                        </ul>
                       </li>
                     </ul>
                   </li>
@@ -539,7 +586,6 @@
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/MapLayers/Choropleth/addChoropleths.js"></script>
 <script type="text/javascript" src="js/MapLayers/removeLayer.js"></script>
-<script type="text/javascript" src="js/MapLayers/addFileLayer.js"></script>
 <script type="text/javascript" src="js/MapLayers/Heat Map/addHeatMaps.js"></script>
 <script type="text/javascript" src="js/MapLayers/Bubble/addBubbleLayers.js"></script>
 
@@ -550,6 +596,7 @@
 <script type="text/javascript" src="js/MapTools/mapControls.js"></script>
 <script type="text/javascript" src="js/MapTools/mapSearch.js"></script>
 <!-- Spatial Map JS -->
-<script type="text/javascript" src="js/MapSpatial/dragDropSHP.js"></script>
+<script type="text/javascript" src="js/MapSpatial/addSHPFiles.js"></script>
+<script type="text/javascript" src="js/MapLayers/addFileLayer.js"></script>
 
 </html>

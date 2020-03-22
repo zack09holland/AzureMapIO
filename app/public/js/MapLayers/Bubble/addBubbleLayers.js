@@ -353,6 +353,8 @@ $("#clusterBubbles").click(function () {
             display: "none"
         });
         removeLayer(MyLayers.clusterBubbleLayer)
+        removeLayer(MyLayers.clusterLocationCountLayer)
+        removeLayer(MyLayers.clusterIndividualLocationLayer)
     }
 });
 // clusterBubbles
