@@ -34,7 +34,6 @@
   <!-- Add references to the Azure Maps Map Spatial IO module. -->
   <script src="https://atlas.microsoft.com/sdk/javascript/spatial/0/atlas-spatial.js"></script>
 
-
   <!-- Local stylesheet -->
   <link rel="stylesheet" href="css/style.css" type="text/css" />
 
@@ -43,6 +42,7 @@
   <!-- Font Awesome -->
   <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
     type='text/css' media='all' />
+
   <!-- Load in Shapefile-js library which converts Shapefiles into GeoJSON data. -->
   <script src="data/scripts/shp.min.js"></script>
 </head>
@@ -472,22 +472,17 @@
                   <li>
                     <input type="checkbox" id="geospatialItems" />
                     <label for="geospatialItems">Geospatial Files</label>
+                    <input class="btn btn-secondary btn-sm"type="button" id="addFileBtn" value="Select File">
+                    <input type="file" id="fileUpload" style="display: none" />
+
                     <ul>
                       <li>
+
                         <input type="checkbox" id="shpFiles" />
                         <label for="shpFiles">SHP Files</label>
-                        <!-- SHP File Info -->
-                        <div class="shpFileInfo" style="display: none;">                          
-                          <!-- <div id="dropdownMenuButton" class="dropdown ">
-                            <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenu2"
-                              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              Add File
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                              <button class="dropdown-item" type="button">SHP</button>
-                              <button class="dropdown-item" type="button">Other</button>
-                            </div>
-                          </div> -->
+                        
+                      <div class="shpFileInfo" style="display: none;">                          
+
                         </div>
                         <ul>
                           <!-- City SHP File  -->
@@ -546,7 +541,7 @@
               </div>
             </div>
           </div>
-          <!-- SPATIAL IO MAP STUFF -->
+          <!-- EXTRA MAP STUFF -->
           <div class="card">
             <div class="card-header" id="headingThree">
               <h5 class="m-0">
@@ -557,11 +552,54 @@
               </h5>
             </div>
             <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-              <div class="card-body">
+              <!-- <div class="card-body">
                 Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
                 moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
                 Brunch 3 wolf moon tempor, sunt aliqua put a bird on
-              </div>
+              </div> -->
+
+              <fieldset class="sidePanel">
+                <legend><h1 style="font-size:16px">Drag and drop spatial files onto map</h1></legend>
+        
+                <div class="tab">
+                    <button class="tablinks active" onclick="openTab(this, 'Instructions')">Instructions</button>
+                    <button id="StatusBtn" class="tablinks" onclick="openTab(this, 'Status')">Status</button>
+                    <button id="DataBtn" class="tablinks" onclick="openTab(this, 'Data')">Data</button>
+                </div>
+        
+                <div id="Instructions" class="tabcontent">
+                    Drag and drop one or more KML, KMZ, GeoRSS, GPX, GML, GeoJSON or CSV files onto the map.<br /><br />
+        
+                    <select id="fileType">
+                        <option>CSV</option>
+                        <option>GeoRSS</option>
+                        <option>GeoJSON</option>
+                        <option>GML</option>
+                        <option>GPX</option>
+                        <option selected="selected">KML</option>
+                    </select>
+        
+                    <input type="button" value="Write data" onclick="writeData()" />
+        
+                    <input type="button" value="Download Zip" onclick="downloadZip()" /><br /><br />
+        
+                    <input type="button" value="Clear Map" onclick="clearMap();" />
+                </div>
+        
+                <div id="Status" class="tabcontent">
+                    <textarea id="statusPanel"></textarea>
+                </div>
+        
+                <div id="Data" class="tabcontent">
+                    <textarea id="dataPanel"></textarea>
+                    <br /><br />
+                    Add XML, GeoJSON, CSV or an URL that points to a file of these types into the data panel and press the "Read data" button to render the data on the map.
+                    <br /><br />
+                    <input type="button" value="Read data" onclick="readDataPanel()" />
+                </div>
+                <img id="loadingIcon" src="../Common/images/loadingIcon.gif" style="position:absolute;top:270px;left:calc(50% - 30px);display:none;" />
+
+            </fieldset>
             </div>
           </div>
         </div>

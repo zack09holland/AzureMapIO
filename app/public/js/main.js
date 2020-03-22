@@ -39,6 +39,10 @@ function GetMap() {
         drawingTools();
         mapSearch();
         addSHPFiles();
-
+        addFileLayer();
+                //Setup the drag & drop listeners on the map.
+                var dropZone = document.getElementById('myMap');
+                dropZone.addEventListener('dragover', handleDragOver, false);
+                dropZone.addEventListener('drop', handleFileSelect, false);
     });
 }
