@@ -78,6 +78,48 @@ p{
     /* margin-right: 8px; */
     opacity: 0.7;
 }
+/* Animated Legend */
+.animatedLegend {
+    position: relative;
+    bottom: 5px;
+    left: 5px;
+    width: 256px;
+    /* height:; */
+    font-family: Arial;
+    font-size: 12px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#animatedLegendCanvas {
+    width: 256px;
+    height: 15px;
+    margin-top:5px;
+}
+
+.animatedlegend-min {
+    padding-left: 10px;
+}
+.animatedlegend-mid {
+    text-align: center;
+}
+
+.animatedlegend-max {
+    position: absolute;
+
+    /* float: right !important; */
+    right: 0;
+}
+
+.animatedlegend-label {
+    position: relative;
+}
+
+#playPauseBtn {
+    position: relative;
+    /* margin-top: 5px; */
+}
 
 /* Main Page Layout */
 #leftbox {
@@ -117,6 +159,7 @@ p{
 .btn.active span.glyphicon {				
 	opacity: 1;				
 }
+
 /* Layer Close */
 #faClose{
     width: 30px !important;

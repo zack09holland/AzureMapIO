@@ -123,7 +123,43 @@
                         <input type="checkbox" id="animatedChoropleth" />
                         <label for="animatedChoropleth">Animated</label>
                         <div class="animatedChoroplethInfo" style="display: none;">
-
+                          <div class="animatedLegend">
+                            <br>
+                            <p>
+                              This sample shows the estimated % population change between 2000 and 2010 of each US county relative
+                              to the 2000 census population data. This sample uses two data files; a GeoJSON file that contains the US county boundary data, and a CSV file that contains the population
+                              data. This sample cross references the population data and adds it as properties of the county boundary.
+                            </p>
+                            <hr>
+                            <p>
+                              Population Change Estimates 2000 - 2010
+                            </p>
+                            <canvas id="animatedLegendCanvas"></canvas>
+                            <!-- <span class="animatedlegend-min">-30%</span>
+                            <span class="animatedlegend-mid">0%</span>
+                            <span class="animatedlegend-max">30%</span> -->
+                            
+                            <div class="row">
+                              <div class="">
+                                <p>-30%</p>
+                              </div>
+                              <div class="col-10">
+                                <p class="animatedlegend-mid">0%</p>
+                              </div>
+                              <div class="animatedlegend-max">
+                                <p>30%</p>
+                              </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                              <div class="col-6">
+                                <input id="playPauseBtn" type="button" value="Play/Pause" disabled="disabled" onclick="togglePlayPause()" />
+                              </div>
+                              <div class="col-6">
+                                <p class="animatedlegend-label"><strong>2000</strong></p>
+                              </div>
+                            </div>
+                        </div>
                         </div>
                       </li>
                     </ul>
