@@ -183,7 +183,7 @@ function addAnimatedChoropleth() {
         fillColor: colorExpressions[0]
     });
     map.layers.add(animatedChoroplethLayer, 'labels');
-
+    MyLayers.animatedChoroplethLayer = animatedChoroplethLayer;
     //Add a mouse move event to the polygon layer to show a popup with information.
     map.events.add('mousemove', animatedChoroplethLayer, function (e) {
         if (e.shapes && e.shapes.length > 0) {
@@ -394,12 +394,19 @@ $("#choroplethItems").click(function () {
             });
             $("#legendItem").remove();
             removeLayer(MyLayers.choroplethLayer)
+
             $("#extrudedChoropleth").prop('checked', false);
             $('.extrudedChoroplethInfo').css({
                 display: "none"
             });
             $("#extrudedLegendItem").remove();
             removeLayer(MyLayers.extrudedChoroplethLayer)
+
+            $("#animatedChoropleth").prop('checked', false);
+            $('.animatedChoroplethInfo').css({
+                display: "none"
+            });
+            removeLayer(MyLayers.animatedChoroplethLayer)
         } catch (err) {
 
         }
@@ -452,8 +459,7 @@ $("#animatedChoropleth").click(function () {
         $('.animatedChoroplethInfo').css({
             display: "none"
         });
-        $(".animatedLegend").remove();
-        // removeLayer(MyLayers.choroplethLayer)
+        removeLayer(MyLayers.animatedChoroplethLayer)
     }
 });
 
