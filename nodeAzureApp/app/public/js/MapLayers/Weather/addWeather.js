@@ -49,10 +49,9 @@ function updateTileLayer() {
 }
 
 
-
 function animateWeather() {
     var tileLayers = [];
-     // Set camera to view map layer
+    // Set camera to view map layer
     //  map.setCamera({
     //     center: [-99.47, 40.75],
     //     zoom: 3,
@@ -76,7 +75,6 @@ function animateWeather() {
         if (timestamps[i] != '900913') {
             msg += ' -' + timestamps[i].replace('900913-m', '') + 'in';
         }
-
         displayMessages.push(msg);
     }
 
@@ -93,3 +91,37 @@ function animateWeather() {
         document.getElementById('messagePanel').innerText = msg;
     };
 }
+
+// JQUERY ONCLICK EVENTS
+
+// weatherMapItems
+// When the entire block is closed. Remove all of those layers and close the child tabs
+$("#weatherMapItems").click(function () {
+    if ($(this).is(":checked")) {
+    
+    } else {
+        try {
+            $("#runWeather").prop('checked', false);
+            $('.weatherMap').css({
+                display: "none"
+            });
+            removeLayer(MyLayers.weatherLayer)
+        } catch (err) {
+
+        }
+    }
+});
+// runWeather 
+$('#runWeather').click(function () {
+    if ($(this).is(":checked")) {
+        $('.weatherMap').css({
+            display: "block"
+        });
+        addWeather();
+    } else {
+        $('.weatherMap').css({
+            display: "none"
+        });
+        removeLayer(MyLayers.weatherLayer)
+    }
+});

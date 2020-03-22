@@ -1,4 +1,3 @@
-
 var map
 var MyLayers = {}; // Globally scoped object
 //Note that the typeahead parameter is set to true.
@@ -31,84 +30,13 @@ function GetMap() {
     });
     
 
-    //Wait until the map resources are ready.
-
+    // Wait until the map resources are ready.
+    // Other Map layer functions are controlled 
+    // by onclick events which are located in their
+    // corresponding js files
     map.events.add('ready', function () {
         mapControls()
         drawingTools();
         mapSearch();
-        // simpleChoropleth
-        $("#simpleChoropleth").click(function () {
-          var x = document.getElementsByClassName("choroplethInfo")[0].style.display;
-          if ($(this).is(":checked")) {
-            $('.choroplethInfo').css({ display: "block" });
-            addChoropleth();
-            createLegend('legend');
-          } else {
-            $('.choroplethInfo').css({ display: "none" });
-            $("#legendItem").remove();
-            removeLayer(MyLayers.choroplethLayer)          }
-        });
-        // extrudedChoropleth
-        $("#extrudedChoropleth").click(function () {
-          var x = document.getElementsByClassName("extrudedChoroplethInfo")[0].style.display;
-          if ($(this).is(":checked")) {
-            $('.extrudedChoroplethInfo').css({ display: "block" });
-            addExtrudedChoropleth();
-            createLegend('extrudedLegend');
-          } else {
-            $('.extrudedChoroplethInfo').css({ display: "none" });
-            $("#extrudedLegendItem").remove();
-            removeLayer(MyLayers.extrudedChoroplethLayer)
-          }
-        });
-
-        // runClusteredHM
-        $('#runClusteredHM').click(function() {  
-            var x = document.getElementById("clusteredHM");
-            if ($(this).is(":checked")) {
-              $('.clusteredHM').css({ display: "block" });
-              clusteredHeatMap();
-            } else {
-              $('.clusteredHM').css({ display: "none" });
-              removeLayer(MyLayers.clusteredHeatMapLayer)
-            }
-        });
-
-        // runConsistentHM
-        $('#runConsistentHM').click(function() {  
-            var x = document.getElementById("consistentHM");
-            if ($(this).is(":checked")) {
-              $('.consistentHM').css({ display: "block" });
-              consistentHeatMap();
-            } else {
-              $('.consistentHM').css({ display: "none" });
-              removeLayer(MyLayers.consistentHeatMapLayer)
-            }
-        });
-
-        // runWeightedHM 
-        $('#runWeightedHM').click(function() {  
-            var x = document.getElementById("weightedHM");
-            if ($(this).is(":checked")) {
-              $('.weightedHM').css({ display: "block" });
-              weightedHeatMap();
-            } else {
-              $('.weightedHM').css({ display: "none" });
-              removeLayer(MyLayers.weightedHeatMapLayer)
-            }
-        });
-
-        // runWeather 
-        $('#runWeather').click(function() {  
-            var x = document.getElementById("weatherMap");
-            if ($(this).is(":checked")) {
-              $('.weatherMap').css({ display: "block" });
-              addWeather();
-            } else {
-              $('.weatherMap').css({ display: "none" });
-              removeLayer(MyLayers.weatherLayer)
-            }
-        });
     });
 }

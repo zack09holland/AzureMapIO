@@ -5,20 +5,16 @@
   <meta charset="UTF-8">
   <title>Azure Map Demo</title>
 
-  <!-- Load JQuery UI -->
+  <!-- Load JQuery Files-->
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
 
   <!-- Bootstrap -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
     integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous">
   </script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -35,14 +31,20 @@
     type="text/css" />
   <script src="https://atlas.microsoft.com/sdk/javascript/drawing/0/atlas-drawing.min.js"></script>
 
+  <!-- Add references to the Azure Maps Map Spatial IO module. -->
+  <script src="https://atlas.microsoft.com/sdk/javascript/spatial/0/atlas-spatial.js"></script>
+
+
   <!-- Local stylesheet -->
   <link rel="stylesheet" href="css/style.css" type="text/css" />
 
   <!-- Font Awesome Glyphicons -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"> -->
   <!-- Font Awesome -->
   <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
     type='text/css' media='all' />
+  <!-- Load in Shapefile-js library which converts Shapefiles into GeoJSON data. -->
+  <script src="data/scripts/shp.min.js"></script>
 </head>
 
 <body onload="GetMap()">
@@ -92,39 +94,44 @@
                 <ul>
                   <!-- Choropleth Layer Selection -->
                   <li>
-                    <input type="checkbox" id="item1" />
-                    <label for="item1">Choropleth</label>
+                    <input type="checkbox" id="choroplethItems" />
+                    <label for="choroplethItems">Choropleth</label>
                     <ul>
+                      <!-- Choropleth Info -->
                       <li>
                         <input type="checkbox" id="simpleChoropleth" />
                         <label for="simpleChoropleth">Simple</label>
-                        <!-- Choropleth Info -->
                         <div class="choroplethInfo" style="display: none;">
-                          <!-- Legend -->
                           <div id="legend">
                             <p>However over the states to get a popup with more information</p>
                             <p>Population Density (people/mi<sup>2</sup>)</p>
                           </div>
                         </div>
                       </li>
+                      <!-- Extruded Choropleth Info -->
                       <li>
                         <input type="checkbox" id="extrudedChoropleth" />
                         <label for="extrudedChoropleth">Extruded</label>
-                        <!-- Extruded Choropleth Info -->
                         <div class="extrudedChoroplethInfo" style="display: none;">
-                          <!-- Legend -->
                           <div id="extrudedLegend">
-                            <p>However over the states to get a popup with more information</p>
                             <p>Population Density (people/mi<sup>2</sup>)</p>
                           </div>
+                        </div>
+                      </li>
+                      <!-- Animated Choropleth Info -->
+                      <li>
+                        <input type="checkbox" id="animatedChoropleth" />
+                        <label for="animatedChoropleth">Animated</label>
+                        <div class="animatedChoroplethInfo" style="display: none;">
+
                         </div>
                       </li>
                     </ul>
                   </li>
                   <!-- Heat Map Layer Selection -->
                   <li>
-                    <input type="checkbox" id="item2" />
-                    <label for="item2">Heat Map</label>
+                    <input type="checkbox" id="heatMapItems" />
+                    <label for="heatMapItems">Heat Map</label>
                     <ul>
                       <li>
                         <input type="checkbox" id="runClusteredHM" />
@@ -180,8 +187,8 @@
                   </li>
                   <!-- Weather Layer Selection -->
                   <li>
-                    <input type="checkbox" id="item3" />
-                    <label for="item3">Weather Maps</label>
+                    <input type="checkbox" id="weatherMapItems" />
+                    <label for="weatherMapItems">Weather Maps</label>
                     <ul>
                       <li>
                         <input type="checkbox" id="runWeather" />
@@ -225,12 +232,190 @@
                         </div>
                       </li>
                     </ul>
-                </ul>
-                </li>
-                <!-- End Layer Selections -->
-                </ul>
-              </div>
+                  </li>
+                  <!-- Bubble Layer Selection -->
+                  <li>
+                    <input type="checkbox" id="bubbleItems" />
+                    <label for="bubbleItems">Bubble</label>
+                    <ul>
+                      <!-- Bubble Layer Info -->
+                      <li>
+                        <input type="checkbox" id="bubbleOptions" />
+                        <label for="bubbleOptions">Bubble Layer Options</label>
+                        <div class="bubbleLayerInfo" id="bubbleHTML" style="display: none;">
+                          <p>
+                            This sample shows how the different options of the bubble layer affect rendering.
+                          </p>
+                          <br />
 
+                          <div class="tab">
+                            <button class="tablinks active" onclick="openTab(this, 'StyleOptions')">Base
+                              Options</button>
+                            <button class="tablinks" onclick="openTab(this, 'BubbleLayerOptions')">Bubble
+                              Options</button>
+                            <button class="tablinks" onclick="openTab(this, 'Code')">Code</button>
+                          </div>
+
+                          <div id="StyleOptions" class="tabcontent" style="display:block;">
+                            <table>
+                              <tr title="An integer specifying the minimum zoom level to render the layer at.">
+                                <td>Min Zoom:</td>
+                                <td>
+                                  <form oninput="minz.value=MinZoom.value">
+                                    <input type="range" id="MinZoom" value="0" min="0" max="24" step="1"
+                                      oninput="updateBubbleLayer()" onchange="updateBubbleLayer()" />
+                                    <output name="minz" for="MinZoom">0</output>
+                                  </form>
+                                </td>
+                              </tr>
+                              <tr title="An integer specifying the maximum zoom level to render the layer at.">
+                                <td>Max Zoom:</td>
+                                <td>
+                                  <form oninput="maxz.value=MaxZoom.value">
+                                    <input type="range" id="MaxZoom" value="24" min="0" max="24" step="1"
+                                      oninput="updateBubbleLayer()" onchange="updateBubbleLayer()" />
+                                    <output name="maxz" for="MaxZoom">24</output>
+                                  </form>
+                                </td>
+                              </tr>
+                            </table>
+                            <p>
+                              In addition to the options in this tool, the BubbleLayer also has options for;
+                              <ul class="bubbleLayerInfo">
+                                <li><strong>sourceLayer</strong> - used with VectorTileSource.</li>
+                                <li><strong>filter</strong> - used to filter data in layer.</li>
+                              </ul>
+                              <br>
+                              Many options in this layer also support Expressions which are not demonstrated in this
+                              sample.
+                            </p>
+                          </div>
+
+                          <div id="BubbleLayerOptions" class="tabcontent">
+                            <table>
+                              <tr title="The color to fill the circle symbol with.">
+                                <td>Color:</td>
+                                <td><input type="color" id="Color" value="#1A73AA" onchange="updateBubbleLayer()" />
+                                </td>
+                              </tr>
+                              <tr
+                                title="A number between 0 and 1 that indicates the opacity at which the circles will be drawn.">
+                                <td>Opacity</td>
+                                <td>
+                                  <form oninput="opacity.value=Opacity.value">
+                                    <input type="range" id="Opacity" value="1" min="0" max="1" step="0.1"
+                                      oninput="updateBubbleLayer()" onchange="updateBubbleLayer()" />
+                                    <output name="opacity" for="Opacity">1</output>
+                                  </form>
+                                </td>
+                              </tr>
+                              <tr title="The color of the circles' outlines.">
+                                <td>Stroke Color:</td>
+                                <td><input type="color" id="StrokeColor" value="#FFFFFF"
+                                    onchange="updateBubbleLayer()" /></td>
+                              </tr>
+                              <tr title="The radius of the circle in pixels.">
+                                <td>Radius</td>
+                                <td>
+                                  <form oninput="radius.value=Radius.value">
+                                    <input type="range" id="Radius" value="5" min="0" max="50" step="1"
+                                      oninput="updateBubbleLayer()" onchange="updateBubbleLayer()" />
+                                    <output name="radius" for="Radius">5</output>
+                                  </form>
+                                </td>
+                              </tr>
+                              <tr
+                                title="A number between 0 and 1 that indicates the opacity at which the circles' outlines will be drawn.">
+                                <td>Stroke Opacity</td>
+                                <td>
+                                  <form oninput="strokeOpacity.value=StrokeOpacity.value">
+                                    <input type="range" id="StrokeOpacity" value="1" min="0" max="1" step="0.1"
+                                      oninput="updateBubbleLayer()" onchange="updateBubbleLayer()" />
+                                    <output name="strokeOpacity" for="StrokeOpacity">1</output>
+                                  </form>
+                                </td>
+                              </tr>
+                              <tr title="The width of the circles" outlines in pixels.">
+                                <td>Stroke Width</td>
+                                <td>
+                                  <form oninput="strokeWidth.value=StrokeWidth.value">
+                                    <input type="range" id="StrokeWidth" value="2" min="0" max="10" step="1"
+                                      oninput="updateBubbleLayer()" onchange="updateBubbleLayer()" />
+                                    <output name="strokeWidth" for="StrokeWidth">2</output>
+                                  </form>
+                                </td>
+                              </tr>
+                              <tr
+                                title="The amount to blur the circles. A value of 1 blurs the circles such that only the center point if at full opacity.">
+                                <td>Blur</td>
+                                <td>
+                                  <form oninput="blur.value=Blur.value">
+                                    <input type="range" id="Blur" value="0" min="0" max="1" step="0.1"
+                                      oninput="updateBubbleLayer()" onchange="updateBubbleLayer()" />
+                                    <output name="blur" for="Blur">0</output>
+                                  </form>
+                                </td>
+                              </tr>
+                              <tr title="Specifies the orientation of circle when map is pitched.">
+                                <td>Pitch Alignment:</td>
+                                <td>
+                                  <select id="PitchAlignment" onchange="updateBubbleLayer()">
+                                    <option value="map">map</option>
+                                    <option value="viewport" selected="selected">viewport</option>
+                                  </select>
+                                </td>
+                              </tr>
+                            </table>
+                          </div>
+
+                          <div id="Code" class="tabcontent">
+                            <textarea id="CodeOutput"></textarea><br /><br />
+                            <input id="RemoveDefaults" type="checkbox" onclick="updateBubbleLayer()"
+                              checked="checked" /> Remove defaults
+                            <button class="copyBtn" data-clipboard-target="#CodeOutput">Copy to clipboard</button>
+                          </div>
+                        </div>
+                      </li>
+                      <!-- Cluster Aggregates in Bubble Layer -->
+                      <li>
+                        <input type="checkbox" id="clusterBubbles" />
+                        <label for="clusterBubbles">Cluster Aggregates </label>
+                        <div class="clusterBubblesInfo" style="display: none;">
+                          <p>
+                            This sample shows how to define custom properties on clusters that are defined using
+                            data-driven style expresison calculation.
+                            These calculations aggregate values across all points contained within the cluster.
+                          </p>
+                        </div>
+                      </li>
+                      <!-- Point Clusters in Bubble Layer -->
+                      <li>
+                        <input type="checkbox" id="pointClusterBubble" />
+                        <label for="pointClusterBubble">Point Clusters in Bubble Layer</label>
+                        <div class="pointClusterBubbleInfo" style="display: none;">
+                          <p>
+                            This sample shows how to enable point based clustering on a data source and render them
+                            differently from individual
+                            points on the map. Clustered points have four properties;
+                          </p>
+
+                          <ul class="pointClusterBubbleInfo">
+                            <li><strong>cluster</strong> - A boolean value indicating that it is a cluster.</li>
+                            <li><strong>cluster_id</strong> - A unique id for the cluster which can be used with the
+                              DataSource
+                              <i>getClusterExpansionZoom</i>, <i>getClusterChildren</i>, and <i>getClusterLeaves</i>
+                              functions.</li>
+                            <li><strong>point_count</strong> - The number of points the cluster contains.</li>
+                            <li><strong>point_count_abbreviated</strong> - A string that abbreviates the point_count
+                              value if it is long. (i.e. 4,000 becomes 4K)</li>
+                          </ul>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+                <!-- End Layer Selections -->
+              </div>
             </div>
           </div>
           <!-- SPATIAL IO MAP STUFF -->
@@ -244,10 +429,48 @@
               </h5>
             </div>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-              <div class="card-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-                moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                Brunch 3 wolf moon tempor, sunt aliqua put a bird
+              <!-- Treeview Component -->
+              <div data-ui-css-component="treeview">
+                <ul>
+                  <!-- Choropleth Layer Selection -->
+                  <li>
+                    <input type="checkbox" id="item5" />
+                    <label for="item5">Geospatial Files</label>
+                    <ul>
+                      <li>
+                        <input type="checkbox" id="shpFiles" />
+                        <label for="shpFiles">SHP Files</label>
+                        <!-- Choropleth Info -->
+                        <div class="shpFileInfo" style="display: none;">
+                          <!-- Legend -->
+                          Load Shapefile:<br />
+                          <input type="button" onclick="loadShapeFile('data/shp/cities')" value="Cities" /><br />
+                          <input type="button" onclick="loadShapeFile('data/shp/BikeRacks.zip')"
+                            value="Chicago bike racks" /><br />
+                          <input type="button" onclick="loadShapeFile('data/shp/US_Interstates')"
+                            value="US Interstates" /><br />
+                          <input type="button" onclick="loadShapeFile('data/shp/greater_london_const_region')"
+                            value="Greater London UK Regions" /><br />
+                          <input type="button" onclick="loadShapeFile('data/shp/POL_adm.zip')"
+                            value="Polish Administrative Divisions" /><br />
+                          <input type="button" onclick="loadShapeFile('data/shp/plzzip5.zip')"
+                            value="German Postal Codes (17MB)" />
+                        </div>
+                      </li>
+                      <li>
+                        <input type="checkbox" id="extrudedChoropleth" />
+                        <label for="extrudedChoropleth">Extruded</label>
+                        <!-- Extruded Choropleth Info -->
+                        <div class="extrudedChoroplethInfo" style="display: none;">
+                          <!-- Legend -->
+                          <div id="extrudedLegend">
+                            <p>Population Density (people/mi<sup>2</sup>)</p>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -271,12 +494,12 @@
           </div>
         </div>
       </div>
+      <!-- Map Container -->
+      <div id="myMap">
 
-      <div id="myMap"></div>
+      </div>
     </div>
 
-
-    <div id="myMap"></div>
     <!-- Footer -->
     <footer class="footer">
       <div class="container">
@@ -286,11 +509,15 @@
 
 
 </body>
+
 <!-- Map Layer JS -->
 <script type="text/javascript" src="js/main.js"></script>
-<script type="text/javascript" src="js/MapLayers/Choropleth/addChoropleth.js"></script>
+<script type="text/javascript" src="js/MapLayers/Choropleth/addChoropleths.js"></script>
 <script type="text/javascript" src="js/MapLayers/removeLayer.js"></script>
-<script type="text/javascript" src="js/MapLayers/Heat Map/addHeatMap.js"></script>
+<script type="text/javascript" src="js/MapLayers/addFileLayer.js"></script>
+<script type="text/javascript" src="js/MapLayers/Heat Map/addHeatMaps.js"></script>
+<script type="text/javascript" src="js/MapLayers/Bubble/addBubbleLayers.js"></script>
+
 <script type="text/javascript" src="js/MapLayers/Weather/addWeather.js"></script>
 <script type="text/javascript" src="js/MapLayers/Weather/AnimatedTileLayer.js"></script>
 <!-- Map Tools JS -->
