@@ -1,5 +1,5 @@
 //Variables to be used by the create legend function
-var choroplethLayer, extrudedPolygonLayer;
+var choroplethLayer, extrudedPolygonLayer, animatedChoroplethLayer;
 var defaultColor = '';
 var colorScale = [];
 
@@ -161,8 +161,8 @@ function addAnimatedChoropleth() {
     });
 
     //Create a data source and add it to the map.
-    datasource = new atlas.source.DataSource();
-    map.sources.add(datasource);
+    animatedChoroplethDatasource = new atlas.source.DataSource();
+    map.sources.add(animatedChoroplethDatasource);
 
     //Create an array of expressions to define the fill color based on 
     for (var i = 0; i <= 10; i++) {
@@ -179,7 +179,7 @@ function addAnimatedChoropleth() {
     }
 
     //Create a layer to render the polygon data.
-    var animatedChoroplethLayer = new atlas.layer.PolygonLayer(datasource, null, {
+    var animatedChoroplethLayer = new atlas.layer.PolygonLayer(animatedChoroplethDatasource, null, {
         fillColor: colorExpressions[0]
     });
     map.layers.add(animatedChoroplethLayer, 'labels');
@@ -217,7 +217,7 @@ function addAnimatedChoropleth() {
     //TODO: Update to use spatial io module.
 
     //Download population estimates for US counties.
-    fetch('data/US_County_2010_Population.csv')
+    fetch('data/SpatialCSV/US_County_2010_Population.csv')
         .then(response => response.text())
         .then(function (text) {
             //Parse the CSV file data into a JSON object.
@@ -274,7 +274,7 @@ function addAnimatedChoropleth() {
                     }
 
                     //Add the feature data to the data source.
-                    datasource.add(features);
+                    animatedChoroplethDatasource.add(features);
 
                     //Create an animation loop. 
                     timer = new FrameAnimationTimer(function (progress, frameIdx) {

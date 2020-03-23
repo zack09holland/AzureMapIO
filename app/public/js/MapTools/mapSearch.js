@@ -1,10 +1,10 @@
 function mapSearch() {
     //Create a data source to store the data in.
-    datasource = new atlas.source.DataSource();
-    map.sources.add(datasource);
+    mapSearchdatasource = new atlas.source.DataSource();
+    map.sources.add(mapSearchdatasource);
 
     //Add a layer for rendering point data.
-    map.layers.add(new atlas.layer.SymbolLayer(datasource));
+    map.layers.add(new atlas.layer.SymbolLayer(mapSearchdatasource));
 
     //Create a jQuery autocomplete UI widget.
     $("#queryTbx").autocomplete({
@@ -34,9 +34,9 @@ function mapSearch() {
         },
         select: function (event, ui) {
             //Remove any previous added data from the map.
-            datasource.clear();
+            mapSearchdatasource.clear();
             //Create a point feature to mark the selected location.
-            datasource.add(new atlas.data.Feature(new atlas.data.Point([ui.item.position.lon, ui.item.position.lat]), ui.item));
+            mapSearchdatasource.add(new atlas.data.Feature(new atlas.data.Point([ui.item.position.lon, ui.item.position.lat]), ui.item));
             //Zoom the map into the selected location.
             map.setCamera({
                 bounds: [

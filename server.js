@@ -2,6 +2,7 @@
 // DEPENDENCIES
 // Series of npm packages that we will use to give our server useful functionality
 // ==============================================================================
+require('dotenv').config();
 var express = require('express'),
     path = require('path'),
     app = express();
@@ -23,6 +24,7 @@ var PORT = process.env.PORT || 8080;
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(upload());
+// get an environment variable
 
 // Express Middleware for serving static files
 app.use(express.static(path.join(__dirname, 'app/public/')));

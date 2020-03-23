@@ -7,21 +7,21 @@ function drawingTools(){
         })
     });
     //Get the rendering layers from the drawing manager and modify their options.
-    var layers = drawingManager.getLayers();
-    layers.pointLayer.setOptions({
+    var drawinglayers = drawingManager.getLayers();
+    drawinglayers.pointLayer.setOptions({
         iconOptions: {
             image: 'marker-blue',
             size: 1
         }
     });
-    layers.lineLayer.setOptions({
+    drawinglayers.lineLayer.setOptions({
         strokeColor: 'red',
         strokeWidth: 4
     });
-    layers.polygonLayer.setOptions({
+    drawinglayers.polygonLayer.setOptions({
         fillColor: 'green'
     });
-    layers.polygonOutlineLayer.setOptions({
+    drawinglayers.polygonOutlineLayer.setOptions({
         strokeColor: 'orange'
     });
 

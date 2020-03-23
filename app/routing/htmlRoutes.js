@@ -3,6 +3,8 @@
 // We need to include the path package to get the correct file path for our html
 // ===============================================================================
 var path = require("path");
+require('dotenv').config();
+
 
 // ===============================================================================
 // ROUTING
@@ -16,7 +18,7 @@ module.exports = function(app) {
   // ---------------------------------------------------------------------------
 
   app.get('/', function(req, res) {
-    res.redirect('index.html');
-});
+    res.render('index.html');
+  });
 
 };
