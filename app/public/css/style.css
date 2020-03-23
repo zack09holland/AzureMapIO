@@ -1,136 +1,72 @@
+/*********************************************
+
+Global page elements
+
+*********************************************/
 html,
 body {
     width: 100%;
     height: 100%;
-    padding: 0;
+    padding: 0 0 10px 0;
     margin: 0;
     overflow: hidden;
-    font-family: segoeui;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color:gainsboro;
+}
+
+.row{
+    background-color: gainsboro;
+    margin-right: 0px !important;
+    margin-left: 0px !important;
 }
 p{
     font-size: 12px;
     color: black;
 }
-#queryTbx {
-    width: 25em;
+/*********************************************
+
+Top Bar 
+
+*********************************************/
+#headerDiv{
+    padding: 10px;
 }
-
-#myMap {
-    width: calc(100% - 300px);
-    height: 100vh !important;
+#headerLogo{
+    height: 20px;
+    width: 200px;
+    margin: 10px;
 }
-
-/* Top Bar */
-
-#top-bar {
-    width: 100%;
-    height: 50px;
-    background-color: #1976d2;
-    padding: 16px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
-    margin: 0;
+.topbarDropdownBtn{
+    position: absolute;
+    top: 10px;
+    right: 0;
 }
-
-.searchRow {
+#dropdownMenuButton{
+    float: right;
+    vertical-align: middle;
     margin: 5px;
 }
 
-/* Choropleth Legend */
-#legend {
-    position: relative;
-    top: 1px;
-    left: 5px;
-    font-family: Arial;
-    font-size: 12px;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 5px;
-    padding: 5px;
-    line-height: 20px;
-}
-#legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
-    opacity: 0.7;
-}
-/* Extruded Choropleth Legend */
-#extrudedLegend {
-    position: relative;
-    top: 5px;
-    left: 5px;
-    font-family: Arial;
-    font-size: 12px;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 5px;
-    padding: 5px;
-    line-height: 20px;
-}
+/*********************************************
 
-#extrudedLegend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    /* margin-right: 8px; */
-    opacity: 0.7;
-}
-/* Animated Legend */
-.animatedLegend {
-    position: relative;
-    bottom: 5px;
-    left: 5px;
-    width: 256px;
-    /* height:; */
-    font-family: Arial;
-    font-size: 12px;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 5px;
-    padding: 5px;
-}
-
-#animatedLegendCanvas {
-    width: 256px;
-    height: 15px;
-    margin-top:5px;
-}
-
-.animatedlegend-min {
-    padding-left: 10px;
-}
-.animatedlegend-mid {
-    text-align: center;
-}
-
-.animatedlegend-max {
-    position: absolute;
-
-    /* float: right !important; */
-    right: 0;
-}
-
-.animatedlegend-label {
-    position: relative;
-}
-
-#playPauseBtn {
-    position: relative;
-    /* margin-top: 5px; */
-}
-
-/* Main Page Layout */
+Leftbox
+    
+ *********************************************/
 #leftbox {
     float: left;
     background: white;
-    border-style: solid;
-    /* border-color: dodgerblue; */
+    padding: 0 10px;
     width: 100%;
     max-width: 300px;
     height: 100vh;
     overflow: auto;
+    background-color: gainsboro;
+    vertical-align: middle;
+}
+.azureMapsLogo{
+    left: 75px;
+    position: absolute;
+    bottom: 10px;
 }
 #panelBodyTitle{
     color: black;
@@ -139,45 +75,32 @@ p{
     font-size: 13px;
     margin: 0 !important;
 }
-#dropdownMenuButton{
-    float: right;
-    /* position: absolute; */
-    /* right: 0;
-    top: 5px; */
-}
-#addFileBtn{
-    float: right;
-}
-#layerInfo{
+/* Leftbox Panel/card items */
+.panel-title {
+    position: relative;
+    font-size: 15px !important;
+  }
+  .panel-title::after {
+      content: "\f107";
+      color: #333;
+      top: -2px;
+      right: 0px;
+      position: absolute;
+      font-family: "FontAwesome"
+  }
+  
+  .panel-title[aria-expanded="true"]::after {
+      content: "\f106";
+  }
+/* Searchbox */
+#queryTbx {
+    width: 95%;
     margin: 5px;
-    font-size: 12px;
-}
-#btnDropDown{
-    margin: 2px !important;
-}
-/* Checkboxes */
-.btn span.glyphicon {    			
-	opacity: 0;				
-}
-.btn.active span.glyphicon {				
-	opacity: 1;				
-}
-
-/* Layer Close */
-#faClose{
-    width: 30px !important;
-    background-color: DodgerBlue;
-    border: none;
-    color: white;
-    /* padding: 12px 16px; */
-    font-size: 16px;
-    cursor: pointer;
 }
 
 .card-header{
     padding: 0 !important;
 }
-
 /* Treeview Menu */
 [data-ui-css-component="treeview"] {
     margin: 10px;
@@ -232,8 +155,79 @@ p{
     content: "+";
   }
 
-  /* Bubble Layer Options */
-  #CodeOutput {
+/* Choropleth Legend */
+#legend {
+    position: relative;
+    top: 1px;
+    left: 5px;
+    font-family: Arial;
+    font-size: 12px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    padding: 5px;
+    line-height: 20px;
+}
+#legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+/* Extruded Choropleth Legend */
+#extrudedLegend {
+    position: relative;
+    top: 5px;
+    left: 5px;
+    font-family: Arial;
+    font-size: 12px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    padding: 5px;
+    line-height: 20px;
+}
+#extrudedLegend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    opacity: 0.7;
+}
+/* Animated Legend */
+.animatedLegend {
+    position: relative;
+    bottom: 5px;
+    left: 5px;
+    width: 256px;
+    font-family: Arial;
+    font-size: 12px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    padding: 5px;
+}
+#animatedLegendCanvas {
+    width: 256px;
+    height: 15px;
+    margin-top:5px;
+}
+.animatedlegend-min {
+    padding-left: 10px;
+}
+.animatedlegend-mid {
+    text-align: center;
+}
+.animatedlegend-max {
+    position: absolute;
+    right: 0;
+}
+.animatedlegend-label {
+    position: relative;
+}
+#playPauseBtn {
+    position: relative;
+}
+
+/* Bubble Layer Options */
+#CodeOutput {
     width: 200px;
     height: 200px;
     overflow-y: auto;
@@ -284,69 +278,82 @@ table td:nth-of-type(2) {
 }
 
 
+/*********************************************
 
+Map 
 
-
-
-
-
-
-
-
-/* Drag and Drop */
-.sidePanel {
-    width: 325px;
-    height: 580px;
-    float: left;
-    margin-right: 10px;
+*********************************************/
+#myMap {
+    /* width: calc(100% - 300px); */
+    height: 100vh;
+}
+.mapContainer{
+    width: calc(100% - 300px);
+    padding: 0 10px 10px 0 !important;
+    height: calc(100vh - 10px);
 }
 
-#Instructions {
-    display: block;
-    height: 490px;
-    width: 306px;
+
+
+
+
+
+
+
+
+
+
+/*********************************************
+
+Drag and drop file upload
+
+*********************************************/
+#fileslbl {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* height: 25vh; */
+    background-color: red;
+    color: white;
+    padding: 16px;
+    text-align: center;
+    transition: .5s;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
 }
-
-#statusPanel {
-    width: 300px;
-    height: 490px;
-    overflow-y: auto;
-}
-
-#dataPanel {
-    width: 300px;
-    height: 360px;
-    overflow-y: auto;
-}
-
-.tab {
-    overflow: hidden;
-    border: 1px solid #ccc;
-    background-color: #f1f1f1;
-}
-
-    .tab button {
-        background-color: inherit;
-        float: left;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        padding: 6px 8px;
-        transition: 0.3s;
-        font-size: 14px;
-    }
-
-        .tab button:hover {
-            background-color: #ddd;
-        }
-
-        .tab button.active {
-            background-color: #ccc;
-        }
-
-.tabcontent {
+#filesfld {
     display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
+}
+#progress {
+    width: 0;
+    background-color: #1976d2;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 25px;
+    padding: 0 5px;
+}
+@keyframes dropbox {
+    0% {
+        background-image: repeating-linear-gradient(30deg, green 1%, green 3%, darkgreen 5%, darkgreen 5%);
+    }
+    50% {
+        background-image: repeating-linear-gradient(30deg, darkgreen 1%, darkgreen 3%, green 5%, green 5%);
+    }
+    100% {
+        background-image: repeating-linear-gradient(30deg, green 1%, green 3%, darkgreen 5%, darkgreen 5%);
+    }
+}
+
+/*********************************************
+
+File Modal 
+
+*********************************************/
+#inputGroupSelect01{
+    width: 100% !important;
+}
+.fileTypeSelection{
+    width: 50%;
 }

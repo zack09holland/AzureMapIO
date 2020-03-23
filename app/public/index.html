@@ -19,6 +19,9 @@
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
+  <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/> -->
+
+
   <!-- Add references to the Azure Maps Map control JavaScript and CSS files. -->
   <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css" type="text/css" />
   <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
@@ -45,50 +48,169 @@
 
   <!-- Load in Shapefile-js library which converts Shapefiles into GeoJSON data. -->
   <script src="data/scripts/shp.min.js"></script>
+
+
+
+  
+
+
 </head>
 
 <body onload="GetMap()">
   <!-- Content Container -->
-  <h3 id="top-bar">Azure Map Demo</h3>
-  <div class="container-fluid">
-    <!-- Top Container Row -->
-    <div class="row searchRow">
-      <div class="col-8">
-        <div class="ui-widget">
-          <label for="queryTbx">Search: </label>
-          <input id="queryTbx">
-        </div>
-      </div>
+  <div class="row ">
+    <div class="" id="headerDiv">
+      <img id="headerLogo" src="./css/headerLogo.png" alt="Guy Carpenter">
+    </div>
+
       <!-- Dropdown for map options -->
-      <div class="col-4">
+      <div class="topbarDropdownBtn" id="addFileDropdown">
         <div id="dropdownMenuButton" class="dropdown ">
           <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenu2"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Map Data Options
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button class="dropdown-item" type="button">Data view</button>
-            <button class="dropdown-item" type="button">Full screen</button>
+            <button class="dropdown-item btn btn-sm" type="button" disabled>Drawing Tools</button>
+
+
+            <!-- Button trigger modal -->
+            <button class="dropdown-item btn" data-toggle="modal" data-target="#exampleModal">
+              Add File(s)
+            </button>
           </div>
+
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+  
+                  <h4 class="modal-title" id="myModalLabel">
+                    File Layer Options
+                  </h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                      &times;
+                    </span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label>
+                      Class name
+                    </label>
+                    <input type="name" placeholder="Choose a name for your group" class="form-control">
+                  </div>
+
+                  <div class="form-group">
+                    <label>
+                      Description
+                    </label>
+                    <input type="desc" placeholder="Add a description for your group" class="form-control">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="font-noraml">
+                      Select
+                    </label>
+                    <div class="input-group">
+                      <select data-placeholder="Select a grade..." class="form-control chosen-select" style="width:350px;" tabindex="2">
+                        <option value="">
+                        </option>
+                        <option value="Prekindergarten">
+                          Prekindergarten
+                        </option>
+                        <option value="Kindergarten">
+                          Kindergarten
+                        </option>
+                        <option value="1st">
+                          1st
+                        </option>
+                        <option value="2nd">
+                          2nd
+                        </option>
+                        <option value="3rd">
+                          3rd
+                        </option>
+                        <option value="4th">
+                          4th
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Close
+                  </button>
+                  <button type="button" class="btn btn-primary">
+                    Save changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+         
+
+          <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <button class="dropdown-item btn btn-sm" type="button" disabled>Drawing Tools</button>
+
+            <input class="dropdown-item btn btn-sm" type="button" id="addFileBtn" value="Add File(s)">
+              <form id="filesfrm" action="/upload" method="post" onsubmit="return submitFilesForm(this);"
+                style="display: none;">
+                <input type="file" name="filesfld" id="filesfld" onchange="submitFilesForm(this.form);"
+                  multiple />
+                <label for="filesfld" id="fileslbl" ondragover="stopDefault(event);"
+                  ondragenter="stopDefault(event);" ondragleave="stopDefault(event);"
+                  ondrop="stopDefault(event);addFilesAndSubmit(event);"></label>
+              </form>
+            </div> -->
         </div>
       </div>
-    </div>
+  </div>
+   
+  <div style="text-align: left;"><div id="progress"></div></div>
 
     <!-- Map Container -->
     <div class="row">
       <div id="leftbox">
-        <div id="accordion">
+        <div class="panel-group" id="accordion">
+
 <!-- LAYERS MAP STUFF -->
           <div class="card">
+          <!-- First Panel -->
             <div class="card-header" id="headingOne">
-              <h5 class="m-0">
-                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                  aria-controls="collapseOne">
-                  Layers
-                </button>
-              </h5>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h5 class="panel-title" data-toggle="collapse" data-target="#collapseOne">
+                    Search                  
+                  </h5>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <div class="ui-widget">
+                      <input id="queryTbx" placeholder="Search address">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
-            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+          </div>
+          <div class="card">
+            <div class="card-header" id="headingTwo">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h5 class="panel-title" data-toggle="collapse" data-target="#collapseTwo">
+                    Layers                  
+                  </h5>
+                </div>
+              </div>
+
+            </div>
+            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">
               <!-- Treeview Component -->
               <div data-ui-css-component="treeview">
                 <ul>
@@ -456,15 +578,16 @@
           </div>
 <!-- SPATIAL IO MAP STUFF -->
           <div class="card">
-            <div class="card-header" id="headingTwo">
-              <h5 class="m-0">
-                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
-                  aria-expanded="false" aria-controls="collapseTwo">
-                  Spatial IO
-                </button>
-              </h5>
+            <div class="card-header" id="headingThree">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h5 class="panel-title" data-toggle="collapse" data-target="#collapseThree">
+                    Spatial IO                  
+                  </h5>
+                </div>
+              </div>
             </div>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
               <!-- Treeview Component -->
               <div data-ui-css-component="treeview">
                 <ul>
@@ -472,16 +595,36 @@
                   <li>
                     <input type="checkbox" id="geospatialItems" />
                     <label for="geospatialItems">Geospatial Files</label>
-                    <input class="btn btn-secondary btn-sm"type="button" id="addFileBtn" value="Select File">
-                    <input type="file" id="fileUpload" style="display: none" />
-
                     <ul>
+                      <!-- Simple Spatial Data -->
                       <li>
 
+                        <input type="checkbox" id="simpleSpatial" />
+                        <label for="simpleSpatial">Simple Spatial Data</label>
+                        <div class="simpleSpatialInfo" style="display: none;">                          
+                          <p>
+                            To add a file click the addFile button in the top right corner
+                          </p>
+                         
+                          <p>
+                            Here is a list of all the properties within a SpatialDataSet object.
+                          </p>
+                          <ul class="simpleSpatialInfo">
+                              <li><strong>bbox</strong> - Bounding box of all the data in the data set.</li>
+                              <li><strong>features</strong> - GeoJSON features within the data set.</li>
+                              <li><strong>groundOverlays</strong> - An array of image or OGC map layers that represent KML GroundOverlays.</li>
+                              <li><strong>properties</strong> - Property information provided at the document level of a spatial data set.</li>
+                              <li><strong>stats</strong> - Statistics about the content and processing time of a spatial data set.</li>
+                              <li><strong>icons</strong> - A set of icon URL's. Key = icon name, Value = URL.</li>
+                              <li><strong>type</strong> - The GeoJSON type; "FeatureCollection".</li>
+                          </ul>
+                        </div>
+                      </li>
+                      <!-- SHP Files -->
+                      <li>
                         <input type="checkbox" id="shpFiles" />
                         <label for="shpFiles">SHP Files</label>
-                        
-                      <div class="shpFileInfo" style="display: none;">                          
+                        <div class="shpFileInfo" style="display: none;">                          
 
                         </div>
                         <ul>
@@ -543,70 +686,33 @@
           </div>
           <!-- EXTRA MAP STUFF -->
           <div class="card">
-            <div class="card-header" id="headingThree">
-              <h5 class="m-0">
-                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree"
-                  aria-expanded="false" aria-controls="collapseThree">
-                  Extras
-                </button>
-              </h5>
+            <div class="card-header" id="headingFour">
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h5 class="panel-title" data-toggle="collapse" data-target="#collapseFour">
+                    Extras                  
+                  </h5>
+                </div>
+              </div>
             </div>
-            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-              <!-- <div class="card-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-                moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                Brunch 3 wolf moon tempor, sunt aliqua put a bird on
-              </div> -->
-
-              <fieldset class="sidePanel">
-                <legend><h1 style="font-size:16px">Drag and drop spatial files onto map</h1></legend>
-        
-                <div class="tab">
-                    <button class="tablinks active" onclick="openTab(this, 'Instructions')">Instructions</button>
-                    <button id="StatusBtn" class="tablinks" onclick="openTab(this, 'Status')">Status</button>
-                    <button id="DataBtn" class="tablinks" onclick="openTab(this, 'Data')">Data</button>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+              <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                <div class="panel-body">
+                  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
                 </div>
-        
-                <div id="Instructions" class="tabcontent">
-                    Drag and drop one or more KML, KMZ, GeoRSS, GPX, GML, GeoJSON or CSV files onto the map.<br /><br />
-        
-                    <select id="fileType">
-                        <option>CSV</option>
-                        <option>GeoRSS</option>
-                        <option>GeoJSON</option>
-                        <option>GML</option>
-                        <option>GPX</option>
-                        <option selected="selected">KML</option>
-                    </select>
-        
-                    <input type="button" value="Write data" onclick="writeData()" />
-        
-                    <input type="button" value="Download Zip" onclick="downloadZip()" /><br /><br />
-        
-                    <input type="button" value="Clear Map" onclick="clearMap();" />
-                </div>
-        
-                <div id="Status" class="tabcontent">
-                    <textarea id="statusPanel"></textarea>
-                </div>
-        
-                <div id="Data" class="tabcontent">
-                    <textarea id="dataPanel"></textarea>
-                    <br /><br />
-                    Add XML, GeoJSON, CSV or an URL that points to a file of these types into the data panel and press the "Read data" button to render the data on the map.
-                    <br /><br />
-                    <input type="button" value="Read data" onclick="readDataPanel()" />
-                </div>
-                <img id="loadingIcon" src="../Common/images/loadingIcon.gif" style="position:absolute;top:270px;left:calc(50% - 30px);display:none;" />
-
-            </fieldset>
+              </div>
             </div>
           </div>
         </div>
+        <div class="azureMapsLogo" id="">
+          <img id="" src="./css/azure_maps_logo.png" alt="Azure Maps Logo">
+        </div>
       </div>
       <!-- Map Container -->
-      <div id="myMap">
-
+      <div class="mapContainer">
+        <div id="myMap">
+  
+        </div>
       </div>
     </div>
 
@@ -615,7 +721,6 @@
       <div class="container">
       </div>
     </footer>
-  </div>
 
 
 </body>
@@ -623,7 +728,7 @@
 <!-- Map Layer JS -->
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/MapLayers/Choropleth/addChoropleths.js"></script>
-<script type="text/javascript" src="js/MapLayers/removeLayer.js"></script>
+
 <script type="text/javascript" src="js/MapLayers/Heat Map/addHeatMaps.js"></script>
 <script type="text/javascript" src="js/MapLayers/Bubble/addBubbleLayers.js"></script>
 
@@ -634,7 +739,7 @@
 <script type="text/javascript" src="js/MapTools/mapControls.js"></script>
 <script type="text/javascript" src="js/MapTools/mapSearch.js"></script>
 <!-- Spatial Map JS -->
-<script type="text/javascript" src="js/MapSpatial/addSHPFiles.js"></script>
-<script type="text/javascript" src="js/MapLayers/addFileLayer.js"></script>
+<script type="text/javascript" src="js/MapSpatial/removeLayer.js"></script>
+<script type="text/javascript" src="js/MapSpatial/addFileLayer.js"></script>
 
 </html>

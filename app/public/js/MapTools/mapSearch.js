@@ -28,16 +28,15 @@ function mapSearch() {
                 url: requestUrl,
                 success: function (data) {
                     response(data.results);
+
                 }
             });
         },
         select: function (event, ui) {
             //Remove any previous added data from the map.
             datasource.clear();
-
             //Create a point feature to mark the selected location.
             datasource.add(new atlas.data.Feature(new atlas.data.Point([ui.item.position.lon, ui.item.position.lat]), ui.item));
-
             //Zoom the map into the selected location.
             map.setCamera({
                 bounds: [
@@ -46,8 +45,11 @@ function mapSearch() {
                 ],
                 padding: 30
             });
+            
         }
+        
     }).autocomplete("instance")._renderItem = function (ul, item) {
+
         //Format the displayed suggestion to show the formatted suggestion string.
         var suggestionLabel = item.address.freeformAddress;
 
@@ -59,4 +61,5 @@ function mapSearch() {
             .append("<a>" + suggestionLabel + "</a>")
             .appendTo(ul);
     };
+
 }
