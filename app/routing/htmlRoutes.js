@@ -16,7 +16,7 @@ module.exports = function(app) {
   // ---------------------------------------------------------------------------
 
   app.get('/', function(req, res) {
-    res.redirect('index.html');
+    res.render('index.html');
   });
 
 };
