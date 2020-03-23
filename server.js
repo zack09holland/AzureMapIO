@@ -2,7 +2,6 @@
 // DEPENDENCIES
 // Series of npm packages that we will use to give our server useful functionality
 // ==============================================================================
-require('dotenv').config();
 var express = require('express'),
     path = require('path'),
     app = express();
