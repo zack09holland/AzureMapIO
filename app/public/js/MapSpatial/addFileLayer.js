@@ -1,4 +1,3 @@
-var datasource
 //Create a popup.
 var popup = new atlas.Popup();
 //Add a layers for rendering the data.

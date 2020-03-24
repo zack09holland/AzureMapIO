@@ -57,7 +57,7 @@ Leftbox
     background: white;
     padding: 0 10px;
     width: 100%;
-    max-width: 300px;
+    max-width: 325px;
     height: 100vh;
     overflow: auto;
     background-color: gainsboro;
@@ -101,6 +101,8 @@ Leftbox
 .card-header{
     padding: 0 !important;
 }
+
+
 /* Treeview Menu */
 [data-ui-css-component="treeview"] {
     margin: 10px;
@@ -155,6 +157,8 @@ Leftbox
     content: "+";
   }
 
+
+
 /* Choropleth Legend */
 #legend {
     position: relative;
@@ -174,6 +178,7 @@ Leftbox
     margin-right: 8px;
     opacity: 0.7;
 }
+
 /* Extruded Choropleth Legend */
 #extrudedLegend {
     position: relative;
@@ -192,12 +197,13 @@ Leftbox
     float: left;
     opacity: 0.7;
 }
+
 /* Animated Legend */
 .animatedLegend {
     position: relative;
     bottom: 5px;
     left: 5px;
-    width: 256px;
+    width: 100%;
     font-family: Arial;
     font-size: 12px;
     background-color: rgba(255, 255, 255, 0.8);
@@ -205,7 +211,7 @@ Leftbox
     padding: 5px;
 }
 #animatedLegendCanvas {
-    width: 256px;
+    width: 100%;
     height: 15px;
     margin-top:5px;
 }
@@ -222,12 +228,25 @@ Leftbox
 .animatedlegend-label {
     position: relative;
 }
+#animatedlegend-row{
+    background-color: white;
+}
 #playPauseBtn {
     position: relative;
 }
 
-/* Bubble Layer Options */
+
+/*********************************************
+
+ Layer Options in leftbox for Bubble and Heat Maps
+
+*********************************************/
 #CodeOutput {
+    width: 200px;
+    height: 200px;
+    overflow-y: auto;
+}
+#hmCodeOutput {
     width: 200px;
     height: 200px;
     overflow-y: auto;
@@ -278,6 +297,61 @@ table td:nth-of-type(2) {
 }
 
 
+.hmtabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+ /* Dropdown Button */
+ .dropbtn {
+    background-color: white;
+    color: white;
+    height: 20px;
+    width: 150px;
+    border: none;
+    cursor: pointer;
+}
+
+    /* Dropdown button on hover & focus */
+    .dropbtn:hover, .dropbtn:focus {
+        background-color: white;
+    }
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+    /* Links inside the dropdown */
+    .dropdown-content a {
+        color: black;
+        padding: 6px;
+        display: block;
+    }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {
+            background-color: #ddd
+        }
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {
+    display: block;
+} 
+
 /*********************************************
 
 Map 
@@ -288,7 +362,7 @@ Map
     height: 100vh;
 }
 .mapContainer{
-    width: calc(100% - 300px);
+    width: calc(100% - 325px);
     padding: 0 10px 10px 0 !important;
     height: calc(100vh - 10px);
 }

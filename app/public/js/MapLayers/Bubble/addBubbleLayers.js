@@ -1,4 +1,4 @@
-var datasource, bubbleLayer, defaultOptions, testDataSize = 100,
+var bubbleLayer, defaultOptions, testDataSize = 100,
     removeDefaults;
 var popup;
 
@@ -31,7 +31,7 @@ function addbubbleLayer() {
 }
 
 function updateBubbleLayer() {
-    var options = getInputOptions();
+    var options = getBubbleInputOptions();
 
     //Update all the options in the bubble layer.
     bubbleLayer.setOptions(options);
@@ -39,7 +39,7 @@ function updateBubbleLayer() {
     document.getElementById('CodeOutput').value = JSON.stringify(options, null, '\t').replace(/\"([^(\")"]+)\":/g, "$1:");
 }
 
-function getInputOptions() {
+function getBubbleInputOptions() {
     removeDefaults = document.getElementById('RemoveDefaults').checked;
 
     return {
