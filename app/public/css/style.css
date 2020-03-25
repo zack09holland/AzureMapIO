@@ -15,7 +15,7 @@ body {
 }
 
 .row{
-    background-color: gainsboro;
+    /* background-color: gainsboro; */
     margin-right: 0px !important;
     margin-left: 0px !important;
 }
@@ -29,6 +29,7 @@ Top Bar
 
 *********************************************/
 #headerDiv{
+    background-color: gainsboro;
     padding: 10px;
 }
 #headerLogo{
@@ -102,34 +103,33 @@ Leftbox
     padding: 0 !important;
 }
 
-
-/* Treeview Menu */
-[data-ui-css-component="treeview"] {
+.treeview {
     margin: 10px;
     font-family: Verdana;
     font-size: 12px;
     color: black;
-  }
-  [data-ui-css-component="treeview"] [type=checkbox] {
+}
+/* Treeview Menu */
+  .treeview .treeviewChBx {
     display: none;
   }
-  [data-ui-css-component="treeview"] ul {
+  .treeview ul {
     padding: 0 0 0 15px;
     display: none;
     list-style: none;
   }
-  [data-ui-css-component="treeview"] ul:first-child {
+  .treeview ul:first-child {
     padding-left: 0;
   }
-  [data-ui-css-component="treeview"] li {
+  .treeview li {
     padding: 0;
   }
-  [data-ui-css-component="treeview"] li span {
+  .treeview li span {
     margin: 2px 0;
     display: list-item;
     list-style: square;
   }
-  [data-ui-css-component="treeview"] label {
+  .treeview label {
     display: inline-block;
     transition: 0.2s;
     padding-right: 10px;
@@ -138,7 +138,7 @@ Leftbox
     line-height: 20px;
     cursor: pointer;
   }
-  [data-ui-css-component="treeview"] label::before {
+  .treeview label::before {
     display: inline-block;
     margin-right: 5px;
     width: 20px;
@@ -147,13 +147,13 @@ Leftbox
     background: #1976d2;
     color: #FFF;
   }
-  [data-ui-css-component="treeview"] ul:first-child, [data-ui-css-component="treeview"] [type=checkbox]:checked ~ ul {
+  .treeview ul:first-child, .treeview [type=checkbox]:checked ~ ul {
     display: block;
   }
-  [data-ui-css-component="treeview"] [type=checkbox]:checked ~ label::before {
+  .treeview [type=checkbox]:checked ~ label::before {
     content: "-";
   }
-  [data-ui-css-component="treeview"] [type=checkbox]:not(:checked) ~ label::before {
+  .treeview [type=checkbox]:not(:checked) ~ label::before {
     content: "+";
   }
 
@@ -366,7 +366,11 @@ Map
     padding: 0 10px 10px 0 !important;
     height: calc(100vh - 10px);
 }
-
+#previewMap{
+    width: 350px;
+    height: 300px;
+    overflow: hidden;
+}
 
 
 
@@ -425,9 +429,87 @@ Drag and drop file upload
 File Modal 
 
 *********************************************/
-#inputGroupSelect01{
+/* #inputGroupSelect01{
     width: 100% !important;
+} */
+select.form-control:not([size]):not([multiple]){
+    height: auto !important;   
 }
 .fileTypeSelection{
     width: 50%;
+}
+/* .modal {
+    width: 100vw !important;
+    height: 100vh !important;
+ } */
+.modal-dialog {
+    position: absolute;
+    top: 200px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10040;
+    overflow: auto;
+    overflow-y: auto;
+}
+.addFileDesc{
+    font-size: 13px;
+}
+#textCenter{
+    text-align: center;
+}
+.sidePanel {
+    width: 325px;
+    height: 300px;
+    float: left;
+    margin-right: 10px;
+}
+#CodeOutput {
+    width: 300px;
+    height: 420px;
+    overflow-y: auto;
+}
+
+.copyBtn {
+    float: right;
+}
+
+table td:nth-of-type(1) {
+    width: 120px;
+}
+
+table td:nth-of-type(2) {
+    width: 200px;
+}
+
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+    .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 6px 8px;
+        transition: 0.3s;
+        font-size: 14px;
+    }
+
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
 }

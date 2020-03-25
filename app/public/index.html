@@ -41,7 +41,7 @@
   <link rel="stylesheet" href="css/style.css" type="text/css" />
 
   <!-- Font Awesome Glyphicons -->
-  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"> -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
   <!-- Font Awesome -->
   <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
     type='text/css' media='all' />
@@ -49,10 +49,8 @@
   <!-- Load in Shapefile-js library which converts Shapefiles into GeoJSON data. -->
   <script src="data/scripts/shp.min.js"></script>
 
-
-
-  
-
+  <!-- Load in Catiline.js library which makes it easier to work with web workers. -->
+  <script src="data/scripts/catiline.min.js"></script>
 
 </head>
 
@@ -75,83 +73,10 @@
 
 
             <!-- Button trigger modal -->
-            <button class="dropdown-item btn" data-toggle="modal" data-target="#exampleModal">
+            <button class="dropdown-item btn" data-toggle="modal" data-target="#exampleModal" onclick="createPreviewMap()">
               Add File(s)
             </button>
           </div>
-
-          <!-- Modal -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-  
-                  <h4 class="modal-title" id="myModalLabel">
-                    File Layer Options
-                  </h4>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">
-                      &times;
-                    </span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <div class="form-group">
-                    <label>
-                      Class name
-                    </label>
-                    <input type="name" placeholder="Choose a name for your group" class="form-control">
-                  </div>
-
-                  <div class="form-group">
-                    <label>
-                      Description
-                    </label>
-                    <input type="desc" placeholder="Add a description for your group" class="form-control">
-                  </div>
-
-                  <div class="form-group">
-                    <label class="font-noraml">
-                      Select
-                    </label>
-                    <div class="input-group">
-                      <select data-placeholder="Select a grade..." class="form-control chosen-select" style="width:350px;" tabindex="2">
-                        <option value="">
-                        </option>
-                        <option value="Prekindergarten">
-                          Prekindergarten
-                        </option>
-                        <option value="Kindergarten">
-                          Kindergarten
-                        </option>
-                        <option value="1st">
-                          1st
-                        </option>
-                        <option value="2nd">
-                          2nd
-                        </option>
-                        <option value="3rd">
-                          3rd
-                        </option>
-                        <option value="4th">
-                          4th
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">
-                    Close
-                  </button>
-                  <button type="button" class="btn btn-primary">
-                    Save changes
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
          
 
           <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
@@ -212,16 +137,16 @@
             </div>
             <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">
               <!-- Treeview Component -->
-              <div data-ui-css-component="treeview">
+              <div class="treeview"  data-ui-css-component="treeview">
                 <ul>
 <!-- Choropleth Layer Selection -->
                   <li>
-                    <input type="checkbox" id="choroplethItems" />
+                    <input class="treeviewChBx" type="checkbox" id="choroplethItems" />
                     <label for="choroplethItems">Choropleth</label>
                     <ul>
                       <!-- Choropleth Info -->
                       <li>
-                        <input type="checkbox" id="simpleChoropleth" />
+                        <input class="treeviewChBx" type="checkbox" id="simpleChoropleth" />
                         <label for="simpleChoropleth">Simple</label>
                         <div class="choroplethInfo" style="display: none;">
                           <div id="legend">
@@ -232,7 +157,7 @@
                       </li>
                       <!-- Extruded Choropleth Info -->
                       <li>
-                        <input type="checkbox" id="extrudedChoropleth" />
+                        <input class="treeviewChBx" type="checkbox" id="extrudedChoropleth" />
                         <label for="extrudedChoropleth">Extruded</label>
                         <div class="extrudedChoroplethInfo" style="display: none;">
                           <div id="extrudedLegend">
@@ -242,7 +167,7 @@
                       </li>
                       <!-- Animated Choropleth Info -->
                       <li>
-                        <input type="checkbox" id="animatedChoropleth" />
+                        <input class="treeviewChBx" type="checkbox" id="animatedChoropleth" />
                         <label for="animatedChoropleth">Animated</label>
                         <div class="animatedChoroplethInfo" style="display: none;">
                           <div class="animatedLegend">
@@ -285,11 +210,11 @@
                   </li>
 <!-- Heat Map Layer Selection -->
                   <li>
-                    <input type="checkbox" id="heatMapItems" />
+                    <input class="treeviewChBx" type="checkbox" id="heatMapItems" />
                     <label for="heatMapItems">Heat Map</label>
                     <ul>
                       <li>
-                        <input type="checkbox" id="runHMOptions" />
+                        <input class="treeviewChBx" type="checkbox" id="runHMOptions" />
                         <label for="runHMOptions">Options</label>
                         <!-- Clustered Heat Map Info -->
                         <div class="hmOptions" style="display: none;">
@@ -404,7 +329,7 @@
                         </div>
                       </li>
                       <li>
-                        <input type="checkbox" id="runClusteredHM" />
+                        <input class="treeviewChBx" type="checkbox" id="runClusteredHM" />
                         <label for="runClusteredHM">Clustered</label>
                         <!-- Clustered Heat Map Info -->
                         <div class="clusteredHM" style="display: none;">
@@ -420,7 +345,7 @@
                       </li>
 
                       <li>
-                        <input type="checkbox" id="runConsistentHM" />
+                        <input class="treeviewChBx" type="checkbox" id="runConsistentHM" />
                         <label for="runConsistentHM">Consistent</label>
                         <!-- Consistent Heat Map Info -->
                         <div class="consistentHM" style="display: none;">
@@ -438,7 +363,7 @@
                       </li>
 
                       <li>
-                        <input type="checkbox" id="runWeightedHM" />
+                        <input class="treeviewChBx" type="checkbox" id="runWeightedHM" />
                         <label for="runWeightedHM">Weighted</label>
                         <!-- Weighted Heat Map Info -->
                         <div class="weightedHM" style="display: none;">
@@ -457,11 +382,11 @@
                   </li>
 <!-- Weather Layer Selection -->
                   <li>
-                    <input type="checkbox" id="weatherMapItems" />
+                    <input class="treeviewChBx" type="checkbox" id="weatherMapItems" />
                     <label for="weatherMapItems">Weather Maps</label>
                     <ul>
                       <li>
-                        <input type="checkbox" id="runWeather" />
+                        <input class="treeviewChBx" type="checkbox" id="runWeather" />
                         <label for="runWeather">Static Weather</label>
                         <!-- Weather Info -->
                         <div class="weatherMap" style="display: none;">
@@ -480,7 +405,7 @@
                         </div>
                       </li>
                       <li>
-                        <input type="checkbox" id="animatedWeatherMap" />
+                        <input class="treeviewChBx" type="checkbox" id="animatedWeatherMap" />
                         <label for="animatedWeatherMap">Animated Weather</label>
                         <!-- Animated Weather Info -->
                         <div class="animatedWeatherMapInfo" style="display: none;">
@@ -505,12 +430,12 @@
                   </li>
 <!-- Bubble Layer Selection -->
                   <li>
-                    <input type="checkbox" id="bubbleItems" />
+                    <input class="treeviewChBx" type="checkbox" id="bubbleItems" />
                     <label for="bubbleItems">Bubble</label>
                     <ul>
                       <!-- Bubble Layer Info -->
                       <li>
-                        <input type="checkbox" id="bubbleOptions" />
+                        <input class="treeviewChBx" type="checkbox" id="bubbleOptions" />
                         <label for="bubbleOptions">Bubble Layer Options</label>
                         <div class="bubbleLayerInfo" id="bubbleHTML" style="display: none;">
                           <p>
@@ -648,7 +573,7 @@
                       </li>
                       <!-- Cluster Aggregates in Bubble Layer -->
                       <li>
-                        <input type="checkbox" id="clusterBubbles" />
+                        <input class="treeviewChBx" type="checkbox" id="clusterBubbles" />
                         <label for="clusterBubbles">Cluster Aggregates </label>
                         <div class="clusterBubblesInfo" style="display: none;">
                           <p>
@@ -660,7 +585,7 @@
                       </li>
                       <!-- Point Clusters in Bubble Layer -->
                       <li>
-                        <input type="checkbox" id="pointClusterBubble" />
+                        <input class="treeviewChBx" type="checkbox" id="pointClusterBubble" />
                         <label for="pointClusterBubble">Point Clusters in Bubble Layer</label>
                         <div class="pointClusterBubbleInfo" style="display: none;">
                           <p>
@@ -705,13 +630,13 @@
                 <ul>
                   <!-- Geospatial Layer Selection -->
                   <li>
-                    <input type="checkbox" id="geospatialItems" />
+                    <input class="treeviewChBx" type="checkbox" id="geospatialItems" />
                     <label for="geospatialItems">Geospatial Files</label>
                     <ul>
                       <!-- Simple Spatial Data -->
                       <li>
 
-                        <input type="checkbox" id="simpleSpatial" />
+                        <input class="treeviewChBx" type="checkbox" id="simpleSpatial" />
                         <label for="simpleSpatial">Simple Spatial Data</label>
                         <div class="simpleSpatialInfo" style="display: none;">                          
                           <p>
@@ -734,7 +659,7 @@
                       </li>
                       <!-- SHP Files -->
                       <li>
-                        <input type="checkbox" id="shpFiles" />
+                        <input class="treeviewChBx" type="checkbox" id="shpFiles" />
                         <label for="shpFiles">SHP Files</label>
                         <div class="shpFileInfo" style="display: none;">                          
 
@@ -742,7 +667,7 @@
                         <ul>
                           <!-- City SHP File  -->
                           <li>
-                            <input type="checkbox" id="citiesSHP" />
+                            <input class="treeviewChBx" type="checkbox" id="citiesSHP" />
                             <label for="citiesSHP">Cities</label>
                             <div class="citiesSHPInfo" style="display: none;">                          
                             
@@ -750,7 +675,7 @@
                           </li>
                           <!-- Bike Racks SHP File  -->
                           <li>
-                            <input type="checkbox" id="chicagoBikeRacksSHP" />
+                            <input class="treeviewChBx" type="checkbox" id="chicagoBikeRacksSHP" />
                             <label for="chicagoBikeRacksSHP">Chicago Bike Racks </label>
                             <div class="chicagoBikeRacksSHPInfo" style="display: none;">                          
                             
@@ -758,7 +683,7 @@
                           </li>
                           <!-- US Interstates SHP File  -->
                           <li>
-                            <input type="checkbox" id="usInterstatesSHP" />
+                            <input class="treeviewChBx" type="checkbox" id="usInterstatesSHP" />
                             <label for="usInterstatesSHP">US Interstates</label>
                             <div class="usInterstatesSHPInfo" style="display: none;">                          
                             
@@ -766,7 +691,7 @@
                           </li>
                           <!-- Greater London UK Regions SHP File  -->
                           <li>
-                            <input type="checkbox" id="londonUKRegionsSHP" />
+                            <input class="treeviewChBx" type="checkbox" id="londonUKRegionsSHP" />
                             <label for="londonUKRegionsSHP">Greater London UK Regions</label>
                             <div class="londonUKRegionsSHPInfo" style="display: none;">                          
                             
@@ -774,7 +699,7 @@
                           </li>
                           <!-- Polish Administrative Divisions SHP File  -->
                           <li>
-                            <input type="checkbox" id="polishAdminDivisionSHP" />
+                            <input class="treeviewChBx" type="checkbox" id="polishAdminDivisionSHP" />
                             <label for="polishAdminDivisionSHP">Polish Administrative Divisions</label>
                             <div class="polishAdminDivisionSHPInfo" style="display: none;">                          
                             
@@ -782,7 +707,7 @@
                           </li>
                           <!-- German Postal Codes (17MB) SHP File  -->
                           <li>
-                            <input type="checkbox" id="germanPostalCodesSHP" />
+                            <input class="treeviewChBx" type="checkbox" id="germanPostalCodesSHP" />
                             <label for="germanPostalCodesSHP">German Postal Codes (17MB)</label>
                             <div class="germanPostalCodesSHPInfo" style="display: none;">                          
                             
@@ -796,7 +721,7 @@
               </div>
             </div>
           </div>
-          <!-- EXTRA MAP STUFF -->
+<!-- EXTRA MAP STUFF -->
           <div class="card">
             <div class="card-header" id="headingFour">
               <div class="panel panel-default">
@@ -823,7 +748,131 @@
       <!-- Map Container -->
       <div class="mapContainer">
         <div id="myMap">
+        </div>
+      </div>
+    </div>
+<!--------------------------------------------------------
+
+  Modal Popup for adding files
   
+  -Modal is placed here in the html code as we wanted it to have absolute positioning
+  and needed to remove it from the button it is associated with
+
+--------------------------------------------------------->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">
+              File Layer Options
+            </h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">
+                &times;
+              </span>
+            </button>
+            
+          </div>
+          <!-- Modal Body -->
+          <div class="modal-body">
+            <div class="">
+              <p class="addFileDesc">You can add SHP files large and small as either zip or all the files in a single selection. 
+                Also supports reading KML, KMZ, GPX, GeoRSS, GML, GeoJSON, CSV (with spatial columns). 
+              </p>
+              <p class="addFileDesc text-center">
+                <strong>
+                  To allow proper customization
+                  to your file, limit your selection to one file name.
+                </strong>
+              </p> 
+              <p class="addFileDesc">  
+                Files will be displayed in the preview map with options to customize the layer. Once you are reading to add the file to the map
+                click save changes. 
+              </p>
+            </div>
+            <!-- File Type Selection -->
+            <div class="text-center">
+             
+              <div class="col-12">
+                 <!-- Select File -->
+                <input class="btn btn-sm btn-secondary" type="button" id="addFileBtn" value="Select File(s)">
+                <form id="filesfrm" action="/upload" method="post" onsubmit="return submitFilesForm(this);"
+                  style="display: none;">
+                  <input type="file" name="filesfld" id="filesfld" onchange="submitFilesForm(this.form);"
+                    multiple />
+                  <label for="filesfld" id="fileslbl" ondragover="stopDefault(event);"
+                    ondragenter="stopDefault(event);" ondragleave="stopDefault(event);"
+                    ondrop="stopDefault(event);addFilesAndSubmit(event);"></label>
+                </form>
+              </div>
+            </div>
+           
+            <!-- Filename -->
+            <div class="form-group">
+              <label>
+                File name
+              </label>
+              <input type="name" placeholder="Filename to be added to map..." class="form-control" style="width: 350px;">
+            </div>
+
+            <!-- Layer Selection For Designs -->
+            <div class="form-group">
+              <label class="font-noraml">
+                Select Layer Design Options
+              </label>
+              <div class="input-group">
+                <select data-placeholder="Select a grade..." class="form-control chosen-select" style="width:350px;"
+                  tabindex="2">
+                  <option value="">
+                  </option>
+                  <option value="LineString" id="lineStringSelect">
+                    Line
+                  </option>
+                  <option value="PolygonLayer">
+                    Polygon
+                  </option>
+                  <option value="Point">
+                    Point
+                  </option>
+                  
+                </select>
+              </div>
+            </div>
+            <!-- Preview Map -->
+            <div class="row">
+              <div class="col-6">
+                <fieldset class="sidePanel">
+                  
+                  <div class="layerDesignBox" style="display: none;">
+                    <div class="tab">
+                      <button class="tablinks active" onclick="openTab(this, 'StyleOptions')">Base Options</button>
+                      <button class="tablinks" onclick="openTab(this, 'BubbleLayerOptions')">Bubble Options</button>
+                      <button class="tablinks" onclick="openTab(this, 'Code')">Code</button>
+                    </div>
+                  </div>
+
+                </fieldset>
+              </div>
+              <div id="previewMap">
+              </div>
+            </div>
+            
+          </div>
+
+          <!-- Modal Footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Close
+            </button>
+            <!-- TO ADD to BUTTON
+            data-dismiss="modal"
+            -->
+            <button id="saveFileBtn" type="button" class="btn btn-primary" >
+              Save changes
+            </button>
+          </div>
         </div>
       </div>
     </div>
