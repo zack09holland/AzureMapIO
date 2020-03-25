@@ -1,9 +1,7 @@
-/*********************************************
-
-
-heatMapOptions
-    
-
+/**********************************************
+ * 
+ * Variables
+ * 
 *********************************************/
 var magWeight = [
     'interpolate',
@@ -179,7 +177,11 @@ var heatGradients = [
 ];
 var removeDefaults, selectedGradientIdx = 0;
 var heatMapLayer, defaultOptions;
-
+/*********************************************
+ * 
+ * heatMapOptions
+ * 
+*********************************************/
 function heatMapOptions() {
     //CreateGradientOptions
     createGradientOptions();
@@ -308,9 +310,9 @@ function toggleGradientDropdown() {
 
 
 /*********************************************
-
-clusteredHeatMap
-    
+ * 
+ * clusteredHeatMap
+ * 
 *********************************************/
 
 function clusteredHeatMap() {
@@ -353,9 +355,9 @@ function clusteredHeatMap() {
 
 
 /*********************************************
-
-consistentHeatMap
-    
+ * 
+ * consistentHeatMap
+ * 
 *********************************************/
 function consistentHeatMap() {
     //Create a data source and add it to the map.
@@ -387,9 +389,9 @@ function consistentHeatMap() {
 };
 
 /*********************************************
-
-weightedHeatMap
-    
+ * 
+ * weightedHeatMap
+ * 
 *********************************************/
 function weightedHeatMap() {
     //Create a data source and add it to the map.
@@ -438,13 +440,10 @@ function weightedHeatMap() {
 
 
 
-
-
-
 /*********************************************
-
-JQUERY ONCLICK EVENTS
-    
+ * 
+ * JQUERY ONCLICK EVENTS
+ *    
 *********************************************/
 
 // heatMapItems

@@ -1,3 +1,8 @@
+/*********************************************
+ * 
+ * Variables
+ *    
+*********************************************/
 var bubbleLayer, defaultOptions, testDataSize = 100,
     removeDefaults;
 var popup;
@@ -11,6 +16,11 @@ var earthquakeFeed = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/
 //Colors for each EntityType property in point data: [Gas Station, Grocery Store, Restaurant, School]
 var entityTypes = ['Gas Station', 'Grocery Store', 'Restaurant', 'School'];
 
+/*********************************************
+ * 
+ * addbubbleLayer w/ Options
+ *    
+*********************************************/
 function addbubbleLayer() {
     //Create a data source and add it to the map.
     datasource = new atlas.source.DataSource();
@@ -95,6 +105,12 @@ function openTab(elm, tabName) {
     elm.className += " active";
 }
 
+
+/*********************************************
+ * 
+ * addClusterBubbleLayer
+ *    
+*********************************************/
 function addClusterBubbleLayer() {
     //Create a reusable popup.
     popup = new atlas.Popup();
@@ -290,12 +306,11 @@ function pointClusterClicked(e) {
 
 
 
-
-
-
-
-// JQUERY ONCLICK EVENTS
-
+/*********************************************
+ * 
+ * JQUERY ONCLICK EVENTS
+ *    
+*********************************************/
 // bubbleItems
 // When the entire block is closed. Remove all of those layers and close the child tabs
 $("#bubbleItems").click(function () {

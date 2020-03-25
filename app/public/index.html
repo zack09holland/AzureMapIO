@@ -755,8 +755,9 @@
 
   Modal Popup for adding files
   
-  -Modal is placed here in the html code as we wanted it to have absolute positioning
-  and needed to remove it from the button it is associated with
+  -Modal is placed here in the html code as we wanted it to have 
+  absolute positioning of the body and needed to remove it from 
+  being nested with the button it is associated with
 
 --------------------------------------------------------->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -823,11 +824,11 @@
                 Select Layer Design Options
               </label>
               <div class="input-group">
-                <select data-placeholder="Select a grade..." class="form-control chosen-select" style="width:350px;"
+                <select name="layerDesignSelections" data-placeholder="Select a grade..." class="form-control chosen-select" style="width:350px;"
                   tabindex="2">
                   <option value="">
                   </option>
-                  <option value="LineString" id="lineStringSelect">
+                  <option value="LineString">
                     Line
                   </option>
                   <option value="PolygonLayer">
@@ -844,21 +845,155 @@
             <div class="row">
               <div class="col-6">
                 <fieldset class="sidePanel">
-                  
-                  <div class="layerDesignBox" style="display: none;">
-                    <div class="tab">
-                      <button class="tablinks active" onclick="openTab(this, 'StyleOptions')">Base Options</button>
-                      <button class="tablinks" onclick="openTab(this, 'BubbleLayerOptions')">Bubble Options</button>
-                      <button class="tablinks" onclick="openTab(this, 'Code')">Code</button>
+                  <div class="layerDesignBox">
+                    <!-- Line Design Options -->
+                    <div class="lineDesignOptions" style="display: none;">
+
                     </div>
+                    <!-- Polygon Design Options -->
+                    <div class="polygonDesignOptions" style="display: none;">
+
+                    </div>
+
+                    <!-- Point and Multipoint Options -->
+                    <div class="pointDesignOptions" style="display: none;">
+                      <div class="tab">
+                        <button class="tablinks active" onclick="openPointTab(this, 'pointBaseOptions')">Base
+                          Options</button>
+                        <button class="tablinks" onclick="openPointTab(this, 'pointLayerOptions')">Point
+                          Options</button>
+                        <button class="tablinks" onclick="openPointTab(this, 'pointCode')">Code</button>
+                      </div>
+
+                      <div id="pointBaseOptions" class="tabcontent" style="display:block;">
+                        <table>
+                          <tr title="An integer specifying the minimum zoom level to render the layer at.">
+                            <td>Min Zoom:</td>
+                            <td>
+                              <form oninput="minz.value=MinZoom.value">
+                                <input type="range" id="pointMinZoom" value="0" min="0" max="24" step="1"
+                                  oninput="updatePointLayer()" onchange="updatePointLayer()" />
+                                <output name="minz" for="pointMinZoom">0</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr title="An integer specifying the maximum zoom level to render the layer at.">
+                            <td>Min Zoom:</td>
+                            <td>
+                              <form oninput="maxz.value=MaxZoom.value">
+                                <input type="range" id="pointMaxZoom" value="24" min="0" max="24" step="1"
+                                  oninput="updatePointLayer()" onchange="updatePointLayer()" />
+                                <output name="maxz" for="pointMaxZoom">24</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr title="Specifies if the layer is visible or not.">
+                            <td>Visible:</td>
+                            <td><input id="pointVisible" type="checkbox" onclick="updatePointLayer()" checked="checked" />
+                            </td>
+                          </tr>
+                        </table>
+
+                        <p>
+                          In addition to the options in this tool, the BubbleLayer also has options for;
+                          <ul>
+                            <li>sourceLayer - used with VectorTileSource.</li>
+                            <li>filter - used to filter data in layer.</li>
+                          </ul>
+                          Many options in this layer also support Expressions which are not demonstrated in this sample.
+                        </p>
+                      </div>
+                      <div id="pointLayerOptions" class="tabcontent">
+                        <table>
+                          <tr title="The color to fill the circle symbol with.">
+                            <td>Color:</td>
+                            <td><input type="color" id="pointColor" value="#1A73AA" onchange="updatePointLayer()" /></td>
+                          </tr>
+                          <tr
+                            title="A number between 0 and 1 that indicates the opacity at which the circles will be drawn.">
+                            <td>Opacity</td>
+                            <td>
+                              <form oninput="opacity.value=Opacity.value">
+                                <input type="range" id="pointOpacity" value="1" min="0" max="1" step="0.1"
+                                  oninput="updatePointLayer()" onchange="updatePointLayer()" />
+                                <output name="opacity" for="pointOpacity">1</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr title="The color of the circles' outlines.">
+                            <td>Stroke Color:</td>
+                            <td><input type="color" id="pointStrokeColor" value="#FFFFFF" onchange="updatePointLayer()" />
+                            </td>
+                          </tr>
+                          <tr title="The radius of the circle in pixels.">
+                            <td>Radius</td>
+                            <td>
+                              <form oninput="radius.value=Radius.value">
+                                <input type="range" id="pointRadius" value="5" min="0" max="50" step="1"
+                                  oninput="updatePointLayer()" onchange="updatePointLayer()" />
+                                <output name="radius" for="pointRadius">5</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr
+                            title="A number between 0 and 1 that indicates the opacity at which the circles' outlines will be drawn.">
+                            <td>Stroke Opacity</td>
+                            <td>
+                              <form oninput="strokeOpacity.value=StrokeOpacity.value">
+                                <input type="range" id="pointStrokeOpacity" value="1" min="0" max="1" step="0.1"
+                                  oninput="updatePointLayer()" onchange="updatePointLayer()" />
+                                <output name="strokeOpacity" for="pointStrokeOpacity">1</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr title="The width of the circles" outlines in pixels.">
+                            <td>Stroke Width</td>
+                            <td>
+                              <form oninput="strokeWidth.value=StrokeWidth.value">
+                                <input type="range" id="pointStrokeWidth" value="2" min="0" max="10" step="1"
+                                  oninput="updatePointLayer()" onchange="updatePointLayer()" />
+                                <output name="strokeWidth" for="pointStrokeWidth">2</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr
+                            title="The amount to blur the circles. A value of 1 blurs the circles such that only the center point if at full opacity.">
+                            <td>Blur</td>
+                            <td>
+                              <form oninput="blur.value=Blur.value">
+                                <input type="range" id="pointBlur" value="0" min="0" max="1" step="0.1"
+                                  oninput="updatePointLayer()" onchange="updatePointLayer()" />
+                                <output name="blur" for="pointBlur">0</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr title="Specifies the orientation of circle when map is pitched.">
+                            <td>Pitch Alignment:</td>
+                            <td>
+                              <select id="pointPitchAlignment" onchange="updatePointLayer()">
+                                <option value="map">map</option>
+                                <option value="viewport" selected="selected">viewport</option>
+                              </select>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+
+                      <div id="pointCode" class="tabcontent">
+                        <textarea id="designCodeOutput"></textarea><br /><br />
+                        <input id="pointRemoveDefaults" type="checkbox" onclick="updatePointLayer()" checked="checked" />
+                        Remove defaults
+                        <button class="copyBtn" data-clipboard-target="#designCodeOutput">Copy to clipboard</button>
+                      </div>
+                    </div>
+
                   </div>
 
-                </fieldset>
-              </div>
-              <div id="previewMap">
-              </div>
-            </div>
-            
+                  </fieldset>
+                  </div>
+                  <div id="previewMap">
+                  </div>
+                  </div>
           </div>
 
           <!-- Modal Footer -->
@@ -886,19 +1021,19 @@
 
 </body>
 
-<!-- Map Layer JS -->
+<!-- Main -->
 <script type="text/javascript" src="js/main.js"></script>
+<!-- Map Layer JS -->
 <script type="text/javascript" src="js/MapLayers/Choropleth/addChoropleths.js"></script>
-
 <script type="text/javascript" src="js/MapLayers/Heat Map/addHeatMaps.js"></script>
 <script type="text/javascript" src="js/MapLayers/Bubble/addBubbleLayers.js"></script>
-
 <script type="text/javascript" src="js/MapLayers/Weather/addWeather.js"></script>
 <script type="text/javascript" src="js/MapLayers/Weather/AnimatedTileLayer.js"></script>
 <!-- Map Tools JS -->
 <script type="text/javascript" src="js/MapTools/drawingTools.js"></script>
 <script type="text/javascript" src="js/MapTools/mapControls.js"></script>
 <script type="text/javascript" src="js/MapTools/mapSearch.js"></script>
+<script type="text/javascript" src="js/MapTools/layerDesignOptions.js"></script>
 <!-- Spatial Map JS -->
 <script type="text/javascript" src="js/MapSpatial/removeLayer.js"></script>
 <script type="text/javascript" src="js/MapSpatial/addFileLayer.js"></script>

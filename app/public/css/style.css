@@ -438,10 +438,9 @@ select.form-control:not([size]):not([multiple]){
 .fileTypeSelection{
     width: 50%;
 }
-/* .modal {
-    width: 100vw !important;
-    height: 100vh !important;
- } */
+.modal-body {
+    height: 675px;
+ }
 .modal-dialog {
     position: absolute;
     top: 200px;
@@ -464,12 +463,6 @@ select.form-control:not([size]):not([multiple]){
     float: left;
     margin-right: 10px;
 }
-#CodeOutput {
-    width: 300px;
-    height: 420px;
-    overflow-y: auto;
-}
-
 .copyBtn {
     float: right;
 }
@@ -512,4 +505,9 @@ table td:nth-of-type(2) {
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;
+}
+#designCodeOutput{
+    width: 300px;
+    height: 250px;
+    overflow-y: auto;
 }

@@ -1,3 +1,8 @@
+/*********************************************
+ * 
+ * drawingTools
+ *    
+*********************************************/
 function drawingTools(){
     //Create an instance of the drawing manager and display the drawing toolbar.
     drawingManager = new atlas.drawing.DrawingManager(map, {

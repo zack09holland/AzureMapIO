@@ -1,14 +1,20 @@
+/*****************************************************
+ * 
+ * Variables 
+ *    
+*****************************************************/
 //Create a popup.
 var popup = new atlas.Popup();
 var previewpopup = new atlas.Popup();
 //Add a layers for rendering the data.
 var layers, previewlayers, shpWorker;
 var polygongonPreviewLayer,linePreviewLayer, pointPreviewLayer;
-////////////////////////////////////////////
 
-// loadShapeFile
-
-////////////////////////////////////////////
+/*****************************************************
+ * 
+ * createPreviewMap 
+ *    
+*****************************************************/
 function createPreviewMap(){
      //Initialize a map instance.
      previewMap = new atlas.Map('previewMap', {
@@ -93,6 +99,9 @@ function createPreviewMap(){
 
         shpWorker = cw({ data: wfunc }, 2);
 
+        defaultOptions = previewlayers[3].getOptions();
+        updatePointLayer();
+
     })
 }
 function createLayers(){
@@ -118,11 +127,13 @@ function createLayers(){
     map.events.add('click', layers, featureClicked);
 
 }
-////////////////////////////////////////////
 
-// loadShapeFile functions
 
-////////////////////////////////////////////
+/*****************************************************
+ * 
+ * loadShapeFile functions
+ *    
+*****************************************************/
 function loadShapeFile(url) {
     popup.close();
     // OLD SHAPEFILE LOADER
@@ -191,21 +202,26 @@ function featureClicked(e) {
         popup.open(map);
     }
 }
-////////////////////////////////////////////
 
-// addFileLayer
-//  -Used to add basic spatial files
-//  -function supports reading:
-//      - KML 
-//      - KMZ 
-//      - GPX
-//      - GeoRSS
-//      - GML
-//      - GeoJSON
-//      - CSV (with spatial columns).
-
-////////////////////////////////////////////
-
+/*********************************************
+ * 
+ * addFileLayer
+ *
+ * -Used to add basic spatial files
+ *  -function supports reading:
+ *      - KML 
+ *      - KMZ 
+ *      - GPX
+ *      - GeoRSS
+ *      - GML
+ *      - GeoJSON
+ *      - CSV (with spatial columns).
+ * 
+ * 
+ * 
+ * 
+ *     
+*********************************************/
 function addFileLayer(fileName) {
     //Create a data source and add it to the map.
     datasource = new atlas.source.DataSource();
@@ -236,12 +252,11 @@ function addFileLayer(fileName) {
     });
 }
 
-/////////////////////////////////////////////////////
-
-// Functions to add and upload file(s) to the server
-
-/////////////////////////////////////////////////////
-
+/*****************************************************
+ * 
+ * Functions to add and upload file(s) to the server
+ *    
+*****************************************************/
 var fileNameURL;
 var JSONFile
 function stopDefault(event) {
@@ -309,6 +324,21 @@ function submitFilesForm(form) {
     return false;
 }
 
+
+// function openTab(elm, tabName) {
+//     var i, tabcontent, tablinks;
+//     tabcontent = document.getElementsByClassName("tabcontent");
+//     for (i = 0; i < tabcontent.length; i++) {
+//         tabcontent[i].style.display = "none";
+//     }
+//     tablinks = document.getElementsByClassName("tablinks");
+//     for (i = 0; i < tablinks.length; i++) {
+//         tablinks[i].className = tablinks[i].className.replace(" active", "");
+//     }
+//     document.getElementById(tabName).style.display = "block";
+//     elm.className += " active";
+// }
+
 /////////////////////////////////////////////////////
 
 // Jquwey Onclick events
@@ -323,6 +353,43 @@ $("#lineStringSelect").select(function () {
     console.log("its a line")
 });
 
+// Layer Design Selections
+$('[name="layerDesignSelections"]').change(function() {
+    if ($('[name="layerDesignSelections"]').val() === "LineString") {
+        // Show the layer design options
+        $('.pointDesignOptions').css({
+            display: "none"
+        });
+        $('.polygonDesignOptions').css({
+            display: "none"
+        });
+        $('.lineDesignOptions').css({
+            display: "block"
+        });
+    }
+    else if($('[name="layerDesignSelections"]').val() === "PolygonLayer"){
+        $('.pointDesignOptions').css({
+            display: "none"
+        });
+        $('.polygonDesignOptions').css({
+            display: "block"
+        });
+        $('.lineDesignOptions').css({
+            display: "none"
+        });
+    }
+    else if($('[name="layerDesignSelections"]').val() === "Point"){
+        $('.pointDesignOptions').css({
+            display: "block"
+        });
+        $('.polygonDesignOptions').css({
+            display: "none"
+        });
+        $('.lineDesignOptions').css({
+            display: "none"
+        });
+    }
+})
 
 var fileupload = $("#filesfld");
 // // addFiles
