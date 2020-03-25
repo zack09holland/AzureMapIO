@@ -4,12 +4,15 @@
  *    
 *****************************************************/
 //Create a popup.
-var popup = new atlas.Popup();
+// var popup = new atlas.Popup();
 var previewpopup = new atlas.Popup();
 //Add a layers for rendering the data.
 var layers, previewlayers, shpWorker;
 var polygongonPreviewLayer,linePreviewLayer, pointPreviewLayer;
-
+var defaultPolygonOptions,
+    defaultPolygonLineOptions,
+    defaultLineOptions,
+    defaultPointOptions;
 /*****************************************************
  * 
  * createPreviewMap 
@@ -33,11 +36,11 @@ function createPreviewMap(){
     });
     previewMap.events.add('ready', function () {
         //Create a data source to add your data to.
-        datasource = new atlas.source.DataSource();
-        previewMap.sources.add(datasource);
+        previewMapDatasource = new atlas.source.DataSource();
+        previewMap.sources.add(previewMapDatasource);
 
         //Create a popup.
-        previewpopup = new atlas.Popup();
+        popup = new atlas.Popup();
 
         // //Add a layers for rendering the data.
         // polygongonPreviewLayer = [new atlas.layer.PolygonLayer(datasource, null, {
@@ -74,58 +77,34 @@ function createPreviewMap(){
         // previewMap.layers.add(pointPreviewLayer, 'labels');
 
         previewlayers = [
-            new atlas.layer.PolygonLayer(datasource, null, {
+            new atlas.layer.PolygonLayer(previewMapDatasource, null, {
                 filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']]	//Only render Polygon or MultiPolygon in this layer.
             }),
-            new atlas.layer.LineLayer(datasource, null, {
+            new atlas.layer.LineLayer(previewMapDatasource, null, {
                 strokeColor: 'white',
                 strokeWidth: 2,
                 filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']]	//Only render Polygon or MultiPolygon in this layer.
             }),
-            new atlas.layer.LineLayer(datasource, null, {
+            new atlas.layer.LineLayer(previewMapDatasource, null, {
                 strokeColor: 'red',
                 filter: ['any', ['==', ['geometry-type'], 'LineString'], ['==', ['geometry-type'], 'MultiLineString']]	//Only render LineString or MultiLineString in this layer.
             }),
-            new atlas.layer.BubbleLayer(datasource, null, {
+            new atlas.layer.BubbleLayer(previewMapDatasource, null, {
                 filter: ['any', ['==', ['geometry-type'], 'Point'], ['==', ['geometry-type'], 'MultiPoint']] //Only render Point or MultiPoints in this layer.
             })
         ];
+
         previewMap.layers.add(previewlayers, 'labels');
 
-        var wfunc = function (base, cb) {
-            importScripts('data/scripts/shp.min.js');
-            shp(base).then(cb);
-        };
+ 
+        defaultPolygonOptions = previewlayers[0].getOptions();
+        defaultPolygonLineOptions = previewlayers[1].getOptions();
+        defaultLineOptions = previewlayers[2].getOptions();
+        defaultPointOptions = previewlayers[3].getOptions();
 
-        shpWorker = cw({ data: wfunc }, 2);
-
-        defaultOptions = previewlayers[3].getOptions();
         updatePointLayer();
-
+        MyLayers.newLayers = previewlayers
     })
-}
-function createLayers(){
-    layers = [
-        new atlas.layer.PolygonLayer(datasource, null, {
-            filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']]	//Only render Polygon or MultiPolygon in this layer.
-        }),
-        new atlas.layer.LineLayer(datasource, null, {
-            strokeColor: 'white',
-            strokeWidth: 2,
-            filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']]	//Only render Polygon or MultiPolygon in this layer.
-        }),
-        new atlas.layer.LineLayer(datasource, null, {
-            strokeColor: 'red',
-            filter: ['any', ['==', ['geometry-type'], 'LineString'], ['==', ['geometry-type'], 'MultiLineString']]	//Only render LineString or MultiLineString in this layer.
-        }),
-        new atlas.layer.BubbleLayer(datasource, null, {
-            filter: ['any', ['==', ['geometry-type'], 'Point'], ['==', ['geometry-type'], 'MultiPoint']] //Only render Point or MultiPoints in this layer.
-        })
-    ];
-    map.layers.add(layers, 'labels');
-    //Add a click event to the layers to show a popup of what the user clicked on.
-    map.events.add('click', layers, featureClicked);
-
 }
 
 
@@ -134,27 +113,21 @@ function createLayers(){
  * loadShapeFile functions
  *    
 *****************************************************/
-function loadShapeFile(url) {
+function loadShapeFile(ds,mapInput,url) {
+    var wfunc = function (base, cb) {
+        importScripts('data/scripts/shp.min.js');
+        shp(base).then(cb);
+    };
+    shpWorker = cw({ data: wfunc }, 2);
+
     popup.close();
-    // OLD SHAPEFILE LOADER
-    // CHANGED TO WORK WITH LARGER FILES AS WELL
-
-    // shp(url).then(function (data) {
-    //     //Load the shapefile into the data source and overwrite any existing data. 
-    //     datasource.setShapes(data);
-
-    //     //Bring the data into view on the map.
-    //     previewMap.setCamera({
-    //         bounds: atlas.data.BoundingBox.fromData(data),
-    //         padding: 50
-    //     });
-    // });
 
     shpWorker.data(cw.makeUrl(url)).then(function (data) {
         //Load the shapefile into the data source.
-        datasource.add(data);
+        ds.add(data);
+
         //Bring the data into view on the map.
-        previewMap.setCamera({
+        mapInput.setCamera({
             bounds: atlas.data.BoundingBox.fromData(data),
             padding: 50
         });
@@ -216,10 +189,6 @@ function featureClicked(e) {
  *      - GML
  *      - GeoJSON
  *      - CSV (with spatial columns).
- * 
- * 
- * 
- * 
  *     
 *********************************************/
 function addFileLayer(fileName) {
@@ -230,7 +199,7 @@ function addFileLayer(fileName) {
     //Add a simple data layer for rendering the data.
     filelayer = new atlas.layer.SimpleDataLayer(datasource);
     map.layers.add(filelayer);
-
+    console.log(filelayer)
     //Read an XML file from a URL or pass in a raw XML string.
     atlas.io.read(fileName).then(r => {
         if (r) {
@@ -271,7 +240,6 @@ function addFilesAndSubmit(event) {
 }
 
 function submitFilesForm(form) {
-    console.log(form)
     var fd = new FormData();
     for (var i = 0; i < form.filesfld.files.length; i++) {
         var field = form.filesfld;
@@ -289,22 +257,29 @@ function submitFilesForm(form) {
         if (x.readyState == 4) {
             progress.innerText = progress.style.width = "";
             // form.filesfld.value = "";
-            console.log(x)
+            // console.log(x)
             if (x.status == 200) {
                 JSONFile = JSON.parse(x.responseText);
                 console.log(JSONFile[0])
                 fileNameURL = '/data/File Uploads' + JSONFile[0]
-                MyFiles.newFile = fileNameURL
+                console.log(fileNameURL)
+
                 fileName = fileNameURL.split('.')[0]
                 fileExtension = fileNameURL.split('.')[1]
+                console.log(fileName)
+                console.log(fileExtension)
+                MyFiles.newFileURL = fileNameURL
+                MyFiles.newFileName = fileName
+                MyFiles.newFileExt = fileExtension
+
                 //Check the file extensions for the file being uploaded
                 try {
                     if(fileExtension === 'shp' || fileExtension === 'prj' || fileExtension === 'dbf' || fileExtension === 'cpg'){
                         console.log(fileName)
-                        loadShapeFile(fileName)
+                        loadShapeFile(previewMapDatasource,previewMap,fileName)
                     }
                     else if(fileExtension === 'zip'){
-                        loadShapeFile(fileNameURL)
+                        loadShapeFile(previewMapDatasource,previewMap,fileNameURL)
                     }
                     else{
     
@@ -324,31 +299,97 @@ function submitFilesForm(form) {
     return false;
 }
 
+/***************************************************
+ * 
+ * createLayers
+ * 
+ *  -Function acts as the catalyst to add the layers
+ *  created in the design modal to the map
+ *    
+/***************************************************/
+function createLayers(){
+    
+    map.events.add('ready', function () {
+        var newLayerDatasource = new atlas.source.DataSource();
+        map.sources.add(newLayerDatasource);
+        
+        newlyAddedLayers = [
+            new atlas.layer.PolygonLayer(newLayerDatasource, null, {
+                filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']]	//Only render Polygon or MultiPolygon in this layer.
+            }),
+            new atlas.layer.LineLayer(newLayerDatasource, null, {
+                strokeColor: 'white',
+                strokeWidth: 2,
+                filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']]	//Only render Polygon or MultiPolygon in this layer.
+            }),
+            new atlas.layer.LineLayer(newLayerDatasource, null, {
+                strokeColor: 'red',
+                filter: ['any', ['==', ['geometry-type'], 'LineString'], ['==', ['geometry-type'], 'MultiLineString']]	//Only render LineString or MultiLineString in this layer.
+            }),
+            new atlas.layer.BubbleLayer(newLayerDatasource, null, {
+                filter: ['any', ['==', ['geometry-type'], 'Point'], ['==', ['geometry-type'], 'MultiPoint']] //Only render Point or MultiPoints in this layer.
+            })
+        ];
+        
+      
+        // Get the options from the newlayer created and set
+        // them to the new layer  
+        polygonOptions = MyLayers.newLayers[0].options
+        polygonLineOptions = MyLayers.newLayers[1].options
+        lineOptions = MyLayers.newLayers[2].options
+        pointOptions = MyLayers.newLayers[3].options
+        // Set the options for all the newlyAddedLayers
+        // - All of them are set to ensure the layer that
+        //  had its options changed are set.
+        newlyAddedLayers[0].setOptions(polygonOptions);
+        newlyAddedLayers[1].setOptions(polygonLineOptions);
+        newlyAddedLayers[2].setOptions(lineOptions);
+        newlyAddedLayers[3].setOptions(pointOptions);
+        // Set the datasource of the added layers to the new
+        // datasource so it can be added to the main map
+        newlyAddedLayers[0].options.source = newLayerDatasource
+        newlyAddedLayers[1].options.source = newLayerDatasource
+        newlyAddedLayers[2].options.source = newLayerDatasource
+        newlyAddedLayers[3].options.source = newLayerDatasource
 
-// function openTab(elm, tabName) {
-//     var i, tabcontent, tablinks;
-//     tabcontent = document.getElementsByClassName("tabcontent");
-//     for (i = 0; i < tabcontent.length; i++) {
-//         tabcontent[i].style.display = "none";
-//     }
-//     tablinks = document.getElementsByClassName("tablinks");
-//     for (i = 0; i < tablinks.length; i++) {
-//         tablinks[i].className = tablinks[i].className.replace(" active", "");
-//     }
-//     document.getElementById(tabName).style.display = "block";
-//     elm.className += " active";
-// }
+        
+        //Change the source back to the newly created layer
+        // Add them to the map and reload the shapefile function
+        map.layers.add(newlyAddedLayers, 'labels');
+        
+        //Add a click event to the layers to show a popup of what the user clicked on.
+        map.events.add('click', newlyAddedLayers, featureClicked);
 
-/////////////////////////////////////////////////////
+        // Check the file type to load it, files are loaded in differently
+        // based on their extension type
+        if (MyFiles.newFileExt === 'zip') {
+            loadShapeFile(newLayerDatasource,map,MyFiles.newFileURL)
+        }
+        else if (MyFiles.newFileExt === 'shp' || MyFiles.newFileExt === 'prj' || MyFiles.newFileExt === 'dbf' || MyFiles.newFileExt === 'cpg' ){
+            console.log(MyFiles.newFileName)
+            loadShapeFile(newLayerDatasource,map,MyFiles.newFileName)
+        }
+        
+    })
 
-// Jquwey Onclick events
+}
 
-/////////////////////////////////////////////////////
 
-// Save file
+
+
+/*********************************************
+ * 
+ * Jquery Onclick events
+ *    
+*********************************************/
+
 $("#saveFileBtn").click(function () {
-    console.log(MyFiles.newFile)
+    
+    createLayers()    
 });
+
+
+
 $("#lineStringSelect").select(function () {
     console.log("its a line")
 });
@@ -394,13 +435,14 @@ $('[name="layerDesignSelections"]').change(function() {
 var fileupload = $("#filesfld");
 // // addFiles
 $("#addFileBtn").click(function () {
-        // addFileLayer()
-        fileupload.click();
-        fileupload.change(function () {
-            var fileName = MyFiles
-            // fileName = document.getElementById("fileUpload").files[0].path
-            console.log(fileName)
-        })
+    createPreviewMap()
+    // addFileLayer()
+    fileupload.click();
+    fileupload.change(function () {
+        var fileName = MyFiles
+        // fileName = document.getElementById("fileUpload").files[0].path
+        console.log(fileName)
+    })
 });
 // simpleSpatial
 $("#simpleSpatial").click(function () {

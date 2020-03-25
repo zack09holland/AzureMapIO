@@ -1,6 +1,6 @@
 function mapSearch() {
     //Create a data source to store the data in.
-    datasource = new atlas.source.DataSource();
+    var datasource = new atlas.source.DataSource();
     map.sources.add(datasource);
 
     //Add a layer for rendering point data.

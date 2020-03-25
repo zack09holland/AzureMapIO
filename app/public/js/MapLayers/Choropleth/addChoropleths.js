@@ -1,9 +1,18 @@
-//Variables to be used by the create legend function
+/*********************************************
+ * 
+ *  Variables
+ *    
+*********************************************/
 var choroplethLayer, extrudedPolygonLayer;
 var defaultColor = '';
 var colorScale = [];
 
 
+/*********************************************
+ * 
+ * addChoropleth
+ *    
+*********************************************/
 function addChoropleth() {
 
     choroplethLayer;
@@ -31,8 +40,8 @@ function addChoropleth() {
     });
 
     //Create a data source and add it to the map.
-    var datasource = new atlas.source.DataSource();
-    map.sources.add(datasource);
+    var choroplethLayerDatasource = new atlas.source.DataSource();
+    map.sources.add(choroplethLayerDatasource);
 
     //Create a stepped expression based on the color scale. 
     var steppedExp = [
@@ -44,12 +53,12 @@ function addChoropleth() {
     steppedExp = steppedExp.concat(colorScale);
 
     //Create a layer to render the polygon data.
-    choroplethLayer = new atlas.layer.PolygonLayer(datasource, null, {
+    choroplethLayer = new atlas.layer.PolygonLayer(choroplethLayerDatasource, null, {
         fillColor: steppedExp
     });
     map.layers.add(choroplethLayer, 'labels');
     MyLayers.choroplethLayer = choroplethLayer;
-
+    console.log("MyLayers.choroplethLayer: ",MyLayers.choroplethLayer)
     //Add a mouse move event to the polygon layer to show a popup with information.
     map.events.add('mousemove', choroplethLayer, function (e) {
         if (e.shapes && e.shapes.length > 0) {
@@ -72,10 +81,15 @@ function addChoropleth() {
     });
 
     //Download a GeoJSON feed and add the data to the data source.
-    datasource.importDataFromUrl('data/geojson/US_States_Population_Density.json');
+    choroplethLayerDatasource.importDataFromUrl('data/geojson/US_States_Population_Density.json');
 
 }
 
+/*********************************************
+ * 
+ * addExtrudedChoropleth
+ *    
+*********************************************/
 function addExtrudedChoropleth() {
 
     defaultColor = '#00ff80';
@@ -89,11 +103,11 @@ function addExtrudedChoropleth() {
         1000, '#f72505'
     ];
     //Create a data source to add your data to.
-    var datasource = new atlas.source.DataSource();
-    map.sources.add(datasource);
+    var addExtrudedChoroplethDatasource = new atlas.source.DataSource();
+    map.sources.add(addExtrudedChoroplethDatasource);
 
     //Load a dataset of polygons that have metadata we can style against.
-    datasource.importDataFromUrl('data/geojson/US_States_Population_Density.json');
+    addExtrudedChoroplethDatasource.importDataFromUrl('data/geojson/US_States_Population_Density.json');
 
     //Create a stepped expression based on the color scale.
     var steppedExp = [
@@ -104,7 +118,7 @@ function addExtrudedChoropleth() {
     steppedExp = steppedExp.concat(colorScale);
 
     //Create and add a polygon extrusion layer to the map below the labels so that they are still readable.
-    extrudedChoroplethLayer = new atlas.layer.PolygonExtrusionLayer(datasource, null, {
+    extrudedChoroplethLayer = new atlas.layer.PolygonExtrusionLayer(addExtrudedChoroplethDatasource, null, {
         base: 100,
         fillColor: steppedExp,
         fillOpacity: 0.7,
@@ -131,7 +145,11 @@ function addExtrudedChoropleth() {
     });
 }
 
-//Create the Legend
+/*********************************************
+ * 
+ * createLegend
+ *    
+*********************************************/
 function createLegend(id) {
     var html = ['<div id="' + id + 'Item">'];
 
@@ -148,6 +166,11 @@ function createLegend(id) {
 }
 
 
+/*********************************************
+ * 
+ * addAnimatedChoropleth
+ *    
+*********************************************/
 var isPaused = true;
 var timer;
 function addAnimatedChoropleth() {
@@ -161,8 +184,8 @@ function addAnimatedChoropleth() {
     });
 
     //Create a data source and add it to the map.
-    datasource = new atlas.source.DataSource();
-    map.sources.add(datasource);
+    addAnimatedChoroplethDatasource = new atlas.source.DataSource();
+    map.sources.add(addAnimatedChoroplethDatasource);
 
     //Create an array of expressions to define the fill color based on 
     for (var i = 0; i <= 10; i++) {
@@ -179,7 +202,7 @@ function addAnimatedChoropleth() {
     }
 
     //Create a layer to render the polygon data.
-    var animatedChoroplethLayer = new atlas.layer.PolygonLayer(datasource, null, {
+    var animatedChoroplethLayer = new atlas.layer.PolygonLayer(addAnimatedChoroplethDatasource, null, {
         fillColor: colorExpressions[0]
     });
     map.layers.add(animatedChoroplethLayer, 'labels');
@@ -253,7 +276,6 @@ function addAnimatedChoropleth() {
                 for (j = 5; j < row.length; j++) {
                     obj['PopChange' + (j - 5)] = Math.round((parseFloat(row[j]) / censusPop - 1) * 100 * 10) / 10;
                 }
-
                 populationInfo[stateId][countyId] = obj;
             }
 
@@ -293,6 +315,11 @@ function addAnimatedChoropleth() {
 }
 
 
+/*********************************************
+ * 
+ * createLegendScaleBar
+ *    
+*********************************************/
 function createLegendScaleBar() {
     var canvas = document.getElementById('animatedLegendCanvas');
     var ctx = canvas.getContext('2d');
@@ -315,7 +342,6 @@ function togglePlayPause() {
     } else {
         timer.pause();
     }
-
     isPaused = !isPaused;
 }
 
@@ -366,7 +392,6 @@ function FrameAnimationTimer(renderFrameCallback, numFrames, duration, loop) {
         if (_timerId != null) {
             clearInterval(_timerId);
         }
-
         frameIdx = 0;
         _isPaused = false;
     }
@@ -376,11 +401,11 @@ function FrameAnimationTimer(renderFrameCallback, numFrames, duration, loop) {
 
 
 
-
-
-
-// JQUERY ONCLICK EVENTS
-
+/*********************************************
+ * 
+ * JQUERY ONCLICK EVENTS
+ *    
+*********************************************/
 // choroplethItems
 // When the entire block is closed. Remove all of those layers and close the child tabs
 $("#choroplethItems").click(function () {

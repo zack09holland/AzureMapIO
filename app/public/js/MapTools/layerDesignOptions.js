@@ -32,11 +32,11 @@ function getPointInputOptions() {
 }
 
 function getPropertyValue(propertyName, value) {
-    console.log(propertyName)
-    console.log(value)
-    if (removeDefaults && defaultOptions[propertyName] === value) {
-        return undefined;
-    }
+    // console.log(propertyName)
+    // console.log(value)
+    // if (removeDefaults && defaultOptions[propertyName] === value) {
+    //     return undefined;
+    // }
     return value;
 }
 
@@ -71,3 +71,20 @@ function openPointTab(elm, tabName) {
     document.getElementById(tabName).style.display = "block";
     elm.className += " active";
 }
+
+
+/*********************************************
+ * 
+ * Jquery Onclick events
+ *    
+*********************************************/
+// Save file
+// $("#saveFileBtn").click(function () {
+//     console.log("MyFiles.newFile: ", MyFiles.newFile)
+//     console.log("MyLayers.newLayer: ", MyLayers.newLayer)
+//     console.log("MyLayers.newLayer.options: ", MyLayers.newLayer.options)
+    
+//     console.log("MyLayers: ", MyLayers)
+
+//     createLayers()    
+// });

@@ -104,11 +104,11 @@
         <div class="panel-group" id="accordion">
 
 <!-- LAYERS MAP STUFF -->
-          <div class="card">
+          <div class="card bmcard">
           <!-- First Panel -->
-            <div class="card-header" id="headingOne">
+            <div class="card-header bmcard-header" id="headingOne">
               <div class="panel panel-default">
-                <div class="panel-heading">
+                <div class="panel-heading bmpanel-heading">
                   <h5 class="panel-title" data-toggle="collapse" data-target="#collapseOne">
                     Search                  
                   </h5>
@@ -124,8 +124,8 @@
 
             </div>
           </div>
-          <div class="card">
-            <div class="card-header" id="headingTwo">
+          <div class="card bmcard">
+            <div class="card-header bmcard-header" id="headingTwo">
               <div class="panel panel-default">
                 <div class="panel-heading">
                   <h5 class="panel-title" data-toggle="collapse" data-target="#collapseTwo">
@@ -142,12 +142,12 @@
 <!-- Choropleth Layer Selection -->
                   <li>
                     <input class="treeviewChBx" type="checkbox" id="choroplethItems" />
-                    <label for="choroplethItems">Choropleth</label>
+                    <label class="bmlabel" for="choroplethItems">Choropleth</label>
                     <ul>
                       <!-- Choropleth Info -->
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="simpleChoropleth" />
-                        <label for="simpleChoropleth">Simple</label>
+                        <label class="bmlabel" for="simpleChoropleth">Simple</label>
                         <div class="choroplethInfo" style="display: none;">
                           <div id="legend">
                             <p>However over the states to get a popup with more information</p>
@@ -158,7 +158,7 @@
                       <!-- Extruded Choropleth Info -->
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="extrudedChoropleth" />
-                        <label for="extrudedChoropleth">Extruded</label>
+                        <label class="bmlabel" for="extrudedChoropleth">Extruded</label>
                         <div class="extrudedChoroplethInfo" style="display: none;">
                           <div id="extrudedLegend">
                             <p>Population Density (people/mi<sup>2</sup>)</p>
@@ -168,7 +168,7 @@
                       <!-- Animated Choropleth Info -->
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="animatedChoropleth" />
-                        <label for="animatedChoropleth">Animated</label>
+                        <label class="bmlabel" for="animatedChoropleth">Animated</label>
                         <div class="animatedChoroplethInfo" style="display: none;">
                           <div class="animatedLegend">
                             <br>
@@ -211,11 +211,11 @@
 <!-- Heat Map Layer Selection -->
                   <li>
                     <input class="treeviewChBx" type="checkbox" id="heatMapItems" />
-                    <label for="heatMapItems">Heat Map</label>
+                    <label class="bmlabel" for="heatMapItems">Heat Map</label>
                     <ul>
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="runHMOptions" />
-                        <label for="runHMOptions">Options</label>
+                        <label class="bmlabel" for="runHMOptions">Options</label>
                         <!-- Clustered Heat Map Info -->
                         <div class="hmOptions" style="display: none;">
                           <div id="layerInfo">
@@ -330,7 +330,7 @@
                       </li>
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="runClusteredHM" />
-                        <label for="runClusteredHM">Clustered</label>
+                        <label class="bmlabel" for="runClusteredHM">Clustered</label>
                         <!-- Clustered Heat Map Info -->
                         <div class="clusteredHM" style="display: none;">
                           <!-- <hr> -->
@@ -346,7 +346,7 @@
 
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="runConsistentHM" />
-                        <label for="runConsistentHM">Consistent</label>
+                        <label class="bmlabel" for="runConsistentHM">Consistent</label>
                         <!-- Consistent Heat Map Info -->
                         <div class="consistentHM" style="display: none;">
                           <!-- <hr> -->
@@ -364,7 +364,7 @@
 
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="runWeightedHM" />
-                        <label for="runWeightedHM">Weighted</label>
+                        <label class="bmlabel" for="runWeightedHM">Weighted</label>
                         <!-- Weighted Heat Map Info -->
                         <div class="weightedHM" style="display: none;">
                           <!-- <hr> -->
@@ -383,11 +383,11 @@
 <!-- Weather Layer Selection -->
                   <li>
                     <input class="treeviewChBx" type="checkbox" id="weatherMapItems" />
-                    <label for="weatherMapItems">Weather Maps</label>
+                    <label class="bmlabel" for="weatherMapItems">Weather Maps</label>
                     <ul>
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="runWeather" />
-                        <label for="runWeather">Static Weather</label>
+                        <label class="bmlabel" for="runWeather">Static Weather</label>
                         <!-- Weather Info -->
                         <div class="weatherMap" style="display: none;">
                           <!-- <hr> -->
@@ -406,7 +406,7 @@
                       </li>
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="animatedWeatherMap" />
-                        <label for="animatedWeatherMap">Animated Weather</label>
+                        <label class="bmlabel" for="animatedWeatherMap">Animated Weather</label>
                         <!-- Animated Weather Info -->
                         <div class="animatedWeatherMapInfo" style="display: none;">
                           <!-- <hr> -->
@@ -431,12 +431,12 @@
 <!-- Bubble Layer Selection -->
                   <li>
                     <input class="treeviewChBx" type="checkbox" id="bubbleItems" />
-                    <label for="bubbleItems">Bubble</label>
+                    <label class="bmlabel" for="bubbleItems">Bubble</label>
                     <ul>
                       <!-- Bubble Layer Info -->
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="bubbleOptions" />
-                        <label for="bubbleOptions">Bubble Layer Options</label>
+                        <label class="bmlabel" for="bubbleOptions">Bubble Layer Options</label>
                         <div class="bubbleLayerInfo" id="bubbleHTML" style="display: none;">
                           <p>
                             This sample shows how the different options of the bubble layer affect rendering.
@@ -574,7 +574,7 @@
                       <!-- Cluster Aggregates in Bubble Layer -->
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="clusterBubbles" />
-                        <label for="clusterBubbles">Cluster Aggregates </label>
+                        <label class="bmlabel" for="clusterBubbles">Cluster Aggregates </label>
                         <div class="clusterBubblesInfo" style="display: none;">
                           <p>
                             This sample shows how to define custom properties on clusters that are defined using
@@ -586,7 +586,7 @@
                       <!-- Point Clusters in Bubble Layer -->
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="pointClusterBubble" />
-                        <label for="pointClusterBubble">Point Clusters in Bubble Layer</label>
+                        <label class="bmlabel" for="pointClusterBubble">Point Clusters in Bubble Layer</label>
                         <div class="pointClusterBubbleInfo" style="display: none;">
                           <p>
                             This sample shows how to enable point based clustering on a data source and render them
@@ -614,10 +614,10 @@
             </div>
           </div>
 <!-- SPATIAL IO MAP STUFF -->
-          <div class="card">
-            <div class="card-header" id="headingThree">
+          <div class="card bmcard">
+            <div class="card-header bmcard-header" id="headingThree">
               <div class="panel panel-default">
-                <div class="panel-heading">
+                <div class="panel-heading bmpanel-heading">
                   <h5 class="panel-title" data-toggle="collapse" data-target="#collapseThree">
                     Spatial IO                  
                   </h5>
@@ -722,10 +722,10 @@
             </div>
           </div>
 <!-- EXTRA MAP STUFF -->
-          <div class="card">
-            <div class="card-header" id="headingFour">
+          <div class="card bmcard">
+            <div class="card-header bmcard-header" id="headingFour">
               <div class="panel panel-default">
-                <div class="panel-heading">
+                <div class="panel-heading bmpanel-heading">
                   <h5 class="panel-title" data-toggle="collapse" data-target="#collapseFour">
                     Extras                  
                   </h5>
@@ -1004,7 +1004,7 @@
             <!-- TO ADD to BUTTON
             data-dismiss="modal"
             -->
-            <button id="saveFileBtn" type="button" class="btn btn-primary" >
+            <button id="saveFileBtn" type="button" class="btn btn-primary" data-dismiss="modal">
               Save changes
             </button>
           </div>

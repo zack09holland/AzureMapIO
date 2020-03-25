@@ -23,7 +23,7 @@ var entityTypes = ['Gas Station', 'Grocery Store', 'Restaurant', 'School'];
 *********************************************/
 function addbubbleLayer() {
     //Create a data source and add it to the map.
-    datasource = new atlas.source.DataSource();
+    var datasource = new atlas.source.DataSource();
     map.sources.add(datasource);
 
     //Add random point features to data source.
