@@ -42,40 +42,6 @@ function createPreviewMap(){
         //Create a popup.
         popup = new atlas.Popup();
 
-        // //Add a layers for rendering the data.
-        // polygongonPreviewLayer = [new atlas.layer.PolygonLayer(datasource, null, {
-        //         filter: ['any', ['==', ['geometry-type'], 'Polygon'],
-        //             ['==', ['geometry-type'], 'MultiPolygon']
-        //         ] //Only render Polygon or MultiPolygon in this layer.
-        //     }),
-        //     new atlas.layer.LineLayer(datasource, null, {
-        //         strokeColor: 'white',
-        //         strokeWidth: 2,
-        //         filter: ['any', ['==', ['geometry-type'], 'Polygon'],
-        //             ['==', ['geometry-type'], 'MultiPolygon']
-        //         ] //Only render Polygon or MultiPolygon in this layer.
-        //     })
-        // ]
-        // linePreviewLayer = [
-        //     new atlas.layer.LineLayer(datasource, null, {
-        //         strokeColor: 'red',
-        //         filter: ['any', ['==', ['geometry-type'], 'LineString'],
-        //             ['==', ['geometry-type'], 'MultiLineString']
-        //         ] //Only render LineString or MultiLineString in this layer.
-        //     })
-        // ]
-        // pointPreviewLayer = [
-        //     new atlas.layer.BubbleLayer(datasource, null, {
-        //         filter: ['any', ['==', ['geometry-type'], 'Point'],
-        //             ['==', ['geometry-type'], 'MultiPoint']
-        //         ] //Only render Point or MultiPoints in this layer.
-        //     })
-        // ];
-        
-        // previewMap.layers.add(polygongonPreviewLayer, 'labels');
-        // previewMap.layers.add(linePreviewLayer, 'labels');
-        // previewMap.layers.add(pointPreviewLayer, 'labels');
-
         previewlayers = [
             new atlas.layer.PolygonLayer(previewMapDatasource, null, {
                 filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']]	//Only render Polygon or MultiPolygon in this layer.
@@ -121,6 +87,11 @@ function loadShapeFile(ds,mapInput,url) {
     shpWorker = cw({ data: wfunc }, 2);
 
     popup.close();
+    if(mapInput === previewMap){
+        document.getElementById('previewLoadingIcon').style.display = '';
+    }else{
+        document.getElementById('mainLoadingIcon').style.display = '';
+    }
 
     shpWorker.data(cw.makeUrl(url)).then(function (data) {
         //Load the shapefile into the data source.
@@ -131,8 +102,12 @@ function loadShapeFile(ds,mapInput,url) {
             bounds: atlas.data.BoundingBox.fromData(data),
             padding: 50
         });
-
-        // document.getElementById('loadingIcon').style.display = 'none';
+        if(mapInput === previewMap){
+            document.getElementById('previewLoadingIcon').style.display = 'none';
+        }else{
+            document.getElementById('mainLoadingIcon').style.display = 'none';
+        }
+        
     });
 }
 
@@ -435,8 +410,7 @@ $('[name="layerDesignSelections"]').change(function() {
 var fileupload = $("#filesfld");
 // // addFiles
 $("#addFileBtn").click(function () {
-    createPreviewMap()
-    // addFileLayer()
+    // createPreviewMap()
     fileupload.click();
     fileupload.change(function () {
         var fileName = MyFiles

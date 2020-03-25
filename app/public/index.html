@@ -58,7 +58,7 @@
   <!-- Content Container -->
   <div class="row ">
     <div class="" id="headerDiv">
-      <img id="headerLogo" src="./css/headerLogo.png" alt="Guy Carpenter">
+      <img id="headerLogo" src="./images/headerLogo.png" alt="Guy Carpenter">
     </div>
 
       <!-- Dropdown for map options -->
@@ -626,7 +626,7 @@
             </div>
             <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
               <!-- Treeview Component -->
-              <div data-ui-css-component="treeview">
+              <div class="treeview">
                 <ul>
                   <!-- Geospatial Layer Selection -->
                   <li>
@@ -742,13 +742,15 @@
           </div>
         </div>
         <div class="azureMapsLogo" id="">
-          <img id="" src="./css/azure_maps_logo.png" alt="Azure Maps Logo">
+          <img id="" src="./images/azure_maps_logo.png" alt="Azure Maps Logo">
         </div>
       </div>
       <!-- Map Container -->
       <div class="mapContainer">
         <div id="myMap">
         </div>
+        <img id="mainLoadingIcon" src="./images/loadingIcon.gif" title="Loading" style="display:none;" />
+
       </div>
     </div>
 <!--------------------------------------------------------
@@ -848,7 +850,134 @@
                   <div class="layerDesignBox">
                     <!-- Line Design Options -->
                     <div class="lineDesignOptions" style="display: none;">
+                      <div class="tab">
+                        <button class="tablinks active" onclick="openLineTab(this, 'lineBaseOptions')">Base
+                          Options</button>
+                        <button class="tablinks" onclick="openLineTab(this, 'lineLayerOptions')">Line
+                          Options</button>
+                        <button class="tablinks" onclick="openLineTab(this, 'lineCode')">Code</button>
+                      </div>
 
+                      <div id="lineBaseOptions" class="tabcontent" style="display:block;">
+                        <table>
+                          <tr title="An integer specifying the minimum zoom level to render the layer at.">
+                            <td>Min Zoom:</td>
+                            <td>
+                              <form oninput="minz.value=MinZoom.value">
+                                <input type="range" id="lineMinZoom" value="0" min="0" max="24" step="1"
+                                  oninput="updateLineLayer()" onchange="updateLineLayer()" />
+                                <output name="minz" for="lineMinZoom">0</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr title="An integer specifying the maximum zoom level to render the layer at.">
+                            <td>Min Zoom:</td>
+                            <td>
+                              <form oninput="maxz.value=MaxZoom.value">
+                                <input type="range" id="lineMaxZoom" value="24" min="0" max="24" step="1"
+                                  oninput="updateLineLayer()" onchange="updateLineLayer()" />
+                                <output name="maxz" for="lineMaxZoom">24</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr title="Specifies if the layer is visible or not.">
+                            <td>Visible:</td>
+                            <td><input id="lineVisible" type="checkbox" onclick="updateLineLayer()" checked="checked" />
+                            </td>
+                          </tr>
+                        </table>
+
+                        <p>
+                          In addition to the options in this tool, the BubbleLayer also has options for;
+                          <ul>
+                            <li>sourceLayer - used with VectorTileSource.</li>
+                            <li>filter - used to filter data in layer.</li>
+                          </ul>
+                          Many options in this layer also support Expressions which are not demonstrated in this sample.
+                        </p>
+                      </div>
+                      <div id="lineLayerOptions" class="tabcontent">
+                        <table>
+                          <tr title="The color to fill the circle symbol with.">
+                            <td>Color:</td>
+                            <td><input type="color" id="lineColor" value="#1A73AA" onchange="updateLineLayer()" /></td>
+                          </tr>
+                          <tr
+                            title="A number between 0 and 1 that indicates the opacity at which the circles will be drawn.">
+                            <td>Opacity</td>
+                            <td>
+                              <form oninput="opacity.value=Opacity.value">
+                                <input type="range" id="lineOpacity" value="1" min="0" max="1" step="0.1"
+                                  oninput="updateLineLayer()" onchange="updateLineLayer()" />
+                                <output name="opacity" for="lineOpacity">1</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr title="The color of the circles' outlines.">
+                            <td>Stroke Color:</td>
+                            <td><input type="color" id="lineStrokeColor" value="#FFFFFF" onchange="updateLineLayer()" />
+                            </td>
+                          </tr>
+                          <tr title="The radius of the circle in pixels.">
+                            <td>Radius</td>
+                            <td>
+                              <form oninput="radius.value=Radius.value">
+                                <input type="range" id="lineRadius" value="5" min="0" max="50" step="1"
+                                  oninput="updateLineLayer()" onchange="updateLineLayer()" />
+                                <output name="radius" for="lineRadius">5</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr
+                            title="A number between 0 and 1 that indicates the opacity at which the circles' outlines will be drawn.">
+                            <td>Stroke Opacity</td>
+                            <td>
+                              <form oninput="strokeOpacity.value=StrokeOpacity.value">
+                                <input type="range" id="lineStrokeOpacity" value="1" min="0" max="1" step="0.1"
+                                  oninput="updateLineLayer()" onchange="updateLineLayer()" />
+                                <output name="strokeOpacity" for="lineStrokeOpacity">1</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr title="The width of the circles" outlines in pixels.">
+                            <td>Stroke Width</td>
+                            <td>
+                              <form oninput="strokeWidth.value=StrokeWidth.value">
+                                <input type="range" id="lineStrokeWidth" value="2" min="0" max="10" step="1"
+                                  oninput="updateLineLayer()" onchange="updateLineLayer()" />
+                                <output name="strokeWidth" for="lineStrokeWidth">2</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr
+                            title="The amount to blur the circles. A value of 1 blurs the circles such that only the center line if at full opacity.">
+                            <td>Blur</td>
+                            <td>
+                              <form oninput="blur.value=Blur.value">
+                                <input type="range" id="lineBlur" value="0" min="0" max="1" step="0.1"
+                                  oninput="updateLineLayer()" onchange="updateLineLayer()" />
+                                <output name="blur" for="lineBlur">0</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr title="Specifies the orientation of circle when map is pitched.">
+                            <td>Pitch Alignment:</td>
+                            <td>
+                              <select id="linePitchAlignment" onchange="updateLineLayer()">
+                                <option value="map">map</option>
+                                <option value="viewport" selected="selected">viewport</option>
+                              </select>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+
+                      <div id="lineCode" class="tabcontent">
+                        <textarea id="designCodeOutput"></textarea><br /><br />
+                        <input id="lineRemoveDefaults" type="checkbox" onclick="updateLineLayer()" checked="checked" />
+                        Remove defaults
+                        <button class="copyBtn" data-clipboard-target="#designCodeOutput">Copy to clipboard</button>
+                      </div>
                     </div>
                     <!-- Polygon Design Options -->
                     <div class="polygonDesignOptions" style="display: none;">
@@ -993,12 +1122,14 @@
                   </div>
                   <div id="previewMap">
                   </div>
+                  <img id="previewLoadingIcon" src="./images/loadingIcon.gif" title="Loading" style="display:none;" />
+
                   </div>
           </div>
 
           <!-- Modal Footer -->
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="previewMapDatasource.clear()">
               Close
             </button>
             <!-- TO ADD to BUTTON

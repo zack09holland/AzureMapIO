@@ -1,6 +1,6 @@
 /*****************************************************
  * 
- * updateBubbleLayer 
+ * updatePointLayer 
  *    
 *****************************************************/
 var defaultOptions, removeDefaults;
@@ -17,26 +17,26 @@ function updatePointLayer() {
 function getPointInputOptions() {
     removeDefaults = document.getElementById('pointRemoveDefaults').checked;
     return {
-        color: getPropertyValue('color', document.getElementById('pointColor').value),
-        strokeColor: getPropertyValue('strokeColor', document.getElementById('pointStrokeColor').value),
-        blur: getPropertyValue('blur', parseFloat(document.getElementById('pointBlur').value)),
-        opacity: getPropertyValue('opacity', parseFloat(document.getElementById('pointOpacity').value)),
-        strokeOpacity: getPropertyValue('strokeOpacity', parseFloat(document.getElementById('pointStrokeOpacity').value)),
-        strokeWidth: getPropertyValue('strokeWidth', parseFloat(document.getElementById('pointStrokeWidth').value)),
-        radius: getPropertyValue('radius', parseFloat(document.getElementById('pointRadius').value)),
-        minZoom: getPropertyValue('minZoom', parseFloat(document.getElementById('pointMinZoom').value)),
-        maxZoom: getPropertyValue('maxZoom', parseFloat(document.getElementById('pointMaxZoom').value)),
-        visible: getPropertyValue('visible', document.getElementById('pointVisible').checked),
-        pitchAlignment: getPropertyValue('pitchAlignment', getSelectValue('PitchAlignment'))
+        color: getPointPropertyValue('color', document.getElementById('pointColor').value),
+        strokeColor: getPointPropertyValue('strokeColor', document.getElementById('pointStrokeColor').value),
+        blur: getPointPropertyValue('blur', parseFloat(document.getElementById('pointBlur').value)),
+        opacity: getPointPropertyValue('opacity', parseFloat(document.getElementById('pointOpacity').value)),
+        strokeOpacity: getPointPropertyValue('strokeOpacity', parseFloat(document.getElementById('pointStrokeOpacity').value)),
+        strokeWidth: getPointPropertyValue('strokeWidth', parseFloat(document.getElementById('pointStrokeWidth').value)),
+        radius: getPointPropertyValue('radius', parseFloat(document.getElementById('pointRadius').value)),
+        minZoom: getPointPropertyValue('minZoom', parseFloat(document.getElementById('pointMinZoom').value)),
+        maxZoom: getPointPropertyValue('maxZoom', parseFloat(document.getElementById('pointMaxZoom').value)),
+        visible: getPointPropertyValue('visible', document.getElementById('pointVisible').checked),
+        pitchAlignment: getPointPropertyValue('pitchAlignment', getSelectValue('PitchAlignment'))
     };
 }
 
-function getPropertyValue(propertyName, value) {
+function getPointPropertyValue(propertyName, value) {
     // console.log(propertyName)
     // console.log(value)
-    // if (removeDefaults && defaultOptions[propertyName] === value) {
-    //     return undefined;
-    // }
+    if (removeDefaults && defaultPointOptions[propertyName] === value) {
+        return undefined;
+    }
     return value;
 }
 
@@ -71,6 +71,85 @@ function openPointTab(elm, tabName) {
     document.getElementById(tabName).style.display = "block";
     elm.className += " active";
 }
+/*****************************************************
+ * 
+ * updateLineLayer 
+ *    
+*****************************************************/
+var defaultOptions, removeDefaults;
+function updateLineLayer() {
+    var options = getLineInputOptions();
+
+    //Update all the options in the bubble layer.
+    previewlayers[2].setOptions(options);
+
+    document.getElementById('designCodeOutput').value = JSON.stringify(options, null, '\t').replace(/\"([^(\")"]+)\":/g, "$1:");
+}
+
+function getLineInputOptions() {
+    removeDefaults = document.getElementById('pointRemoveDefaults').checked;
+    return {
+        color: getLinePropertyValue('color', document.getElementById('lineColor').value),
+        strokeColor: getLinePropertyValue('strokeColor', document.getElementById('lineStrokeColor').value),
+        blur: getLinePropertyValue('blur', parseFloat(document.getElementById('lineBlur').value)),
+        opacity: getLinePropertyValue('opacity', parseFloat(document.getElementById('lineOpacity').value)),
+        strokeOpacity: getLinePropertyValue('strokeOpacity', parseFloat(document.getElementById('lineStrokeOpacity').value)),
+        strokeWidth: getLinePropertyValue('strokeWidth', parseFloat(document.getElementById('lineStrokeWidth').value)),
+        radius: getLinePropertyValue('radius', parseFloat(document.getElementById('lineRadius').value)),
+        minZoom: getLinePropertyValue('minZoom', parseFloat(document.getElementById('lineMinZoom').value)),
+        maxZoom: getLinePropertyValue('maxZoom', parseFloat(document.getElementById('lineMaxZoom').value)),
+        visible: getLinePropertyValue('visible', document.getElementById('lineVisible').checked),
+        pitchAlignment: getLinePropertyValue('pitchAlignment', getSelectValue('PitchAlignment'))
+    };
+}
+
+function getLinePropertyValue(propertyName, value) {
+    // console.log(propertyName)
+    // console.log(value)
+    if (removeDefaults && defaultPointOptions[propertyName] === value) {
+        return undefined;
+    }
+    return value;
+}
+
+
+function getSelectValue(id) {
+    var elm = document.getElementById(id);
+    return elm.options[elm.selectedIndex].value;
+}
+
+function openLineTab(elm, tabName) {
+    console.log(tabName)
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    elm.className += " active";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*********************************************
@@ -78,13 +157,3 @@ function openPointTab(elm, tabName) {
  * Jquery Onclick events
  *    
 *********************************************/
-// Save file
-// $("#saveFileBtn").click(function () {
-//     console.log("MyFiles.newFile: ", MyFiles.newFile)
-//     console.log("MyLayers.newLayer: ", MyLayers.newLayer)
-//     console.log("MyLayers.newLayer.options: ", MyLayers.newLayer.options)
-    
-//     console.log("MyLayers: ", MyLayers)
-
-//     createLayers()    
-// });
