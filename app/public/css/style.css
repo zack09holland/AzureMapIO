@@ -11,36 +11,41 @@ body {
     margin: 0;
     overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    background-color:#fafafa;
+    background-color: #fafafa;
 }
 
-.row{
+.row {
     /* background-color: gainsboro; */
     margin-right: 0px !important;
     margin-left: 0px !important;
 }
-p{
+
+p {
     font-size: 12px;
     color: black;
 }
+
 /*********************************************
 
 Top Bar 
 
 *********************************************/
-#headerDiv{
+#headerDiv {
     background-color: #fafafa;
     padding: 10px;
 }
-#headerLogo{
+
+#headerLogo {
     margin: 10px;
 }
-.topbarDropdownBtn{
+
+.topbarDropdownBtn {
     position: absolute;
     top: 10px;
     right: 0;
 }
-#dropdownMenuButton{
+
+#dropdownMenuButton {
     float: right;
     vertical-align: middle;
     margin: 5px;
@@ -53,9 +58,9 @@ Brent's Bootstrap Tweaks
  *********************************************/
 
 .bmcard {
-border: 0 !important;
-border-radius: 1 !important;
-background-color: #fafafa !important;
+    border: 0 !important;
+    border-radius: 1 !important;
+    background-color: #fafafa !important;
 }
 
 .bmcard-header {
@@ -69,6 +74,11 @@ background-color: #fafafa !important;
 .bmlabel {
     font-size: 13px !important;
     font-weight: 400 !important;
+}
+
+.bmpanel {
+    background-color: #fff;
+    border: 1px solid #ddd;
 }
 
 /*********************************************
@@ -87,42 +97,47 @@ Leftbox
     background-color: #fafafa;
     vertical-align: middle;
 }
-.azureMapsLogo{
+
+.azureMapsLogo {
     left: 75px;
     position: absolute;
     bottom: 10px;
 }
-#panelBodyTitle{
+
+#panelBodyTitle {
     color: black;
     font-weight: bold;
     text-decoration: underline;
     font-size: 13px;
     margin: 0 !important;
 }
+
 /* Leftbox Panel/card items */
 .panel-title {
     position: relative;
     font-size: 13px !important;
-  }
-  .panel-title::after {
-      content: "\f107";
-      color: #333;
-      top: -2px;
-      right: 0px;
-      position: absolute;
-      font-family: "FontAwesome"
-  }
-  
-  .panel-title[aria-expanded="true"]::after {
-      content: "\f106";
-  }
+}
+
+.panel-title::after {
+    content: "\f107";
+    color: #333;
+    top: -2px;
+    right: 0px;
+    position: absolute;
+    font-family: "FontAwesome"
+}
+
+.panel-title[aria-expanded="true"]::after {
+    content: "\f106";
+}
+
 /* Searchbox */
 #queryTbx {
     width: 95%;
     margin: 5px;
 }
 
-.card-header{
+.card-header {
     padding: 0 !important;
     margin-bottom: 8px;
 }
@@ -133,27 +148,33 @@ Leftbox
     font-size: 12px;
     color: black;
 }
+
 /* Treeview Menu */
-  .treeview .treeviewChBx {
+.treeview .treeviewChBx {
     display: none;
-  }
-  .treeview ul {
+}
+
+.treeview ul {
     padding: 0 0 0 15px;
     display: none;
     list-style: none;
-  }
-  .treeview ul:first-child {
+}
+
+.treeview ul:first-child {
     padding-left: 0;
-  }
-  .treeview li {
+}
+
+.treeview li {
     padding: 0;
-  }
-  .treeview li span {
+}
+
+.treeview li span {
     margin: 2px 0;
     display: list-item;
     list-style: square;
-  }
-  .treeview label {
+}
+
+.treeview label {
     display: inline-block;
     transition: 0.2s;
     padding-right: 10px;
@@ -161,8 +182,9 @@ Leftbox
     height: 20px;
     line-height: 14px;
     cursor: pointer;
-  }
-  .treeview label::before {
+}
+
+.treeview label::before {
     display: inline-block;
     margin-right: 5px;
     width: 14px;
@@ -170,16 +192,20 @@ Leftbox
     text-align: center;
     background: #1976d2;
     color: #FFF;
-  }
-  .treeview ul:first-child, .treeview [type=checkbox]:checked ~ ul {
+}
+
+.treeview ul:first-child,
+.treeview [type=checkbox]:checked~ul {
     display: block;
-  }
-  .treeview [type=checkbox]:checked ~ label::before {
+}
+
+.treeview [type=checkbox]:checked~label::before {
     content: "-";
-  }
-  .treeview [type=checkbox]:not(:checked) ~ label::before {
+}
+
+.treeview [type=checkbox]:not(:checked)~label::before {
     content: "+";
-  }
+}
 
 
 
@@ -195,6 +221,7 @@ Leftbox
     padding: 5px;
     line-height: 20px;
 }
+
 #legend i {
     width: 18px;
     height: 18px;
@@ -215,6 +242,7 @@ Leftbox
     padding: 5px;
     line-height: 20px;
 }
+
 #extrudedLegend i {
     width: 18px;
     height: 18px;
@@ -234,27 +262,34 @@ Leftbox
     border-radius: 5px;
     padding: 5px;
 }
+
 #animatedLegendCanvas {
     width: 100%;
     height: 15px;
-    margin-top:5px;
+    margin-top: 5px;
 }
+
 .animatedlegend-min {
     padding-left: 10px;
 }
+
 .animatedlegend-mid {
     text-align: center;
 }
+
 .animatedlegend-max {
     position: absolute;
     right: 0;
 }
+
 .animatedlegend-label {
     position: relative;
 }
-#animatedlegend-row{
+
+#animatedlegend-row {
     background-color: white;
 }
+
 #playPauseBtn {
     position: relative;
 }
@@ -270,6 +305,7 @@ Leftbox
     height: 200px;
     overflow-y: auto;
 }
+
 #hmCodeOutput {
     width: 200px;
     height: 200px;
@@ -294,24 +330,24 @@ table td:nth-of-type(2) {
     background-color: #f1f1f1;
 }
 
-    .tab button {
-        background-color: inherit;
-        float: left;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        padding: 5px;
-        transition: 0.3s;
-        font-size: 12px;
-    }
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 5px;
+    transition: 0.3s;
+    font-size: 12px;
+}
 
-        .tab button:hover {
-            background-color: #ddd;
-        }
+.tab button:hover {
+    background-color: #ddd;
+}
 
-        .tab button.active {
-            background-color: #ccc;
-        }
+.tab button.active {
+    background-color: #ccc;
+}
 
 .tabcontent {
     display: none;
@@ -328,8 +364,8 @@ table td:nth-of-type(2) {
     border-top: none;
 }
 
- /* Dropdown Button */
- .dropbtn {
+/* Dropdown Button */
+.dropbtn {
     background-color: white;
     color: white;
     height: 20px;
@@ -338,10 +374,11 @@ table td:nth-of-type(2) {
     cursor: pointer;
 }
 
-    /* Dropdown button on hover & focus */
-    .dropbtn:hover, .dropbtn:focus {
-        background-color: white;
-    }
+/* Dropdown button on hover & focus */
+.dropbtn:hover,
+.dropbtn:focus {
+    background-color: white;
+}
 
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
@@ -355,26 +392,26 @@ table td:nth-of-type(2) {
     position: absolute;
     background-color: #f1f1f1;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
-    /* Links inside the dropdown */
-    .dropdown-content a {
-        color: black;
-        padding: 6px;
-        display: block;
-    }
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 6px;
+    display: block;
+}
 
-        /* Change color of dropdown links on hover */
-        .dropdown-content a:hover {
-            background-color: #ddd
-        }
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #ddd
+}
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {
     display: block;
-} 
+}
 
 /*********************************************
 
@@ -384,13 +421,15 @@ Map
 #myMap {
     height: 100vh;
 }
-.mapContainer{
+
+.mapContainer {
     position: relative;
     width: calc(100% - 325px);
     padding: 0 10px 10px 0 !important;
     height: calc(100vh - 10px);
 }
-#previewMap{
+
+#previewMap {
     width: 350px;
     height: 300px;
     overflow: hidden;
@@ -416,9 +455,11 @@ Drag and drop file upload
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
 }
+
 #filesfld {
     display: none;
 }
+
 #progress {
     width: 0;
     background-color: #1976d2;
@@ -428,13 +469,16 @@ Drag and drop file upload
     line-height: 25px;
     padding: 0 5px;
 }
+
 @keyframes dropbox {
     0% {
         background-image: repeating-linear-gradient(30deg, green 1%, green 3%, darkgreen 5%, darkgreen 5%);
     }
+
     50% {
         background-image: repeating-linear-gradient(30deg, darkgreen 1%, darkgreen 3%, green 5%, green 5%);
     }
+
     100% {
         background-image: repeating-linear-gradient(30deg, green 1%, green 3%, darkgreen 5%, darkgreen 5%);
     }
@@ -448,15 +492,18 @@ File Modal
 /* #inputGroupSelect01{
     width: 100% !important;
 } */
-select.form-control:not([size]):not([multiple]){
-    height: auto !important;   
+select.form-control:not([size]):not([multiple]) {
+    height: auto !important;
 }
-.fileTypeSelection{
+
+.fileTypeSelection {
     width: 50%;
 }
+
 .modal-body {
     height: 675px;
- }
+}
+
 .modal-dialog {
     position: absolute;
     top: 200px;
@@ -467,18 +514,22 @@ select.form-control:not([size]):not([multiple]){
     overflow: auto;
     overflow-y: auto;
 }
-.addFileDesc{
+
+.addFileDesc {
     font-size: 13px;
 }
-#textCenter{
+
+#textCenter {
     text-align: center;
 }
+
 .sidePanel {
     width: 325px;
     height: 300px;
     float: left;
     margin-right: 10px;
 }
+
 .copyBtn {
     float: right;
 }
@@ -497,24 +548,24 @@ table td:nth-of-type(2) {
     background-color: #f1f1f1;
 }
 
-    .tab button {
-        background-color: inherit;
-        float: left;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        padding: 6px 8px;
-        transition: 0.3s;
-        font-size: 14px;
-    }
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 6px 8px;
+    transition: 0.3s;
+    font-size: 14px;
+}
 
-        .tab button:hover {
-            background-color: #ddd;
-        }
+.tab button:hover {
+    background-color: #ddd;
+}
 
-        .tab button.active {
-            background-color: #ccc;
-        }
+.tab button.active {
+    background-color: #ccc;
+}
 
 .tabcontent {
     display: none;
@@ -522,19 +573,22 @@ table td:nth-of-type(2) {
     border: 1px solid #ccc;
     border-top: none;
 }
-#designCodeOutput{
+
+#designCodeOutput {
     width: 300px;
     height: 250px;
     overflow-y: auto;
 }
 
-#previewLoadingIcon{
-    position:absolute;
+#previewLoadingIcon {
+    position: absolute;
     right: 20%;
     bottom: 25%;
 }
-#mainLoadingIcon{
-    position:absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%,-50%);
+
+#mainLoadingIcon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
