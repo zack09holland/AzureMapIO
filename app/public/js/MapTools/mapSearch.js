@@ -1,3 +1,20 @@
+/*****************************************************
+ * 
+ *  mapSearch 
+ *    
+*****************************************************/
+
+//Note that the typeahead parameter is set to true.
+var geocodeServiceUrlTemplate = 'https://atlas.microsoft.com/search/{searchType}/json?typeahead=true&subscription-key={subscription-key}&api-version=1&query={query}&language={language}&lon={lon}&lat={lat}&countrySet={countrySet}&view=Auto';
+// Use SubscriptionKeyCredential with a subscription key
+var subscriptionKeyCredential = new atlas.service.SubscriptionKeyCredential(atlas.getSubscriptionKey());
+
+// Use subscriptionKeyCredential to create a pipeline
+var pipeline = atlas.service.MapsURL.newPipeline(subscriptionKeyCredential);
+
+// Construct the SearchURL object
+var searchURL = new atlas.service.SearchURL(pipeline);
+
 function mapSearch() {
     //Create a data source to store the data in.
     var datasource = new atlas.source.DataSource();

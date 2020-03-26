@@ -848,14 +848,15 @@
               <div class="col-6">
                 <fieldset class="sidePanel">
                   <div class="layerDesignBox">
+
                     <!-- Line Design Options -->
                     <div class="lineDesignOptions" style="display: none;">
                       <div class="tab">
-                        <button class="tablinks active" onclick="openLineTab(this, 'lineBaseOptions')">Base
+                        <button id="lineBaseOptionsTab" class="tablinks active" onclick="openLineTab(this, 'lineBaseOptions')">Base
                           Options</button>
-                        <button class="tablinks" onclick="openLineTab(this, 'lineLayerOptions')">Line
+                        <button id="lineLayerOptionsTab" class="tablinks" onclick="openLineTab(this, 'lineLayerOptions')">Line
                           Options</button>
-                        <button class="tablinks" onclick="openLineTab(this, 'lineCode')">Code</button>
+                        <button id="lineCodeTab" class="tablinks" onclick="openLineTab(this, 'lineCode')">Code</button>
                       </div>
 
                       <div id="lineBaseOptions" class="tabcontent" style="display:block;">
@@ -888,7 +889,7 @@
                         </table>
 
                         <p>
-                          In addition to the options in this tool, the BubbleLayer also has options for;
+                          In addition to the options in this tool, the LineLayer also has options for;
                           <ul>
                             <li>sourceLayer - used with VectorTileSource.</li>
                             <li>filter - used to filter data in layer.</li>
@@ -898,38 +899,34 @@
                       </div>
                       <div id="lineLayerOptions" class="tabcontent">
                         <table>
-                          <tr title="The color to fill the circle symbol with.">
-                            <td>Color:</td>
-                            <td><input type="color" id="lineColor" value="#1A73AA" onchange="updateLineLayer()" /></td>
-                          </tr>
-                          <tr
-                            title="A number between 0 and 1 that indicates the opacity at which the circles will be drawn.">
-                            <td>Opacity</td>
+                          <tr title="Specifies how the ends of the lines are rendered">
+                            <td>Line Cap:</td>
                             <td>
-                              <form oninput="opacity.value=Opacity.value">
-                                <input type="range" id="lineOpacity" value="1" min="0" max="1" step="0.1"
-                                  oninput="updateLineLayer()" onchange="updateLineLayer()" />
-                                <output name="opacity" for="lineOpacity">1</output>
-                              </form>
+                              <select id="lineCap" onchange="updateLineLayer()">
+                                <option title="A cap with a squared-off end which is drawn to the exact endpoint of the line." value="butt">butt</option>
+                                <option title="A cap with a rounded end which is drawn beyond the endpoint of the line at a radius of one-half of the lines width and centered on the endpoint of the line." value="round" selected="selected">round</option>
+                                <option title="A cap with a squared-off end which is drawn beyond the endpoint of the line at a distance of one-half of the line width." value="square">square</option>
+                              </select>
                             </td>
                           </tr>
-                          <tr title="The color of the circles' outlines.">
+                          <tr title="Specifies how the joints in the lines are rendered">
+                            <td>Line Join:</td>
+                            <td>
+                              <select id="lineJoin" onchange="updateLineLayer()">
+                                <option title="A join with a squared-off end drawn beyond the endpoint of the line at a distance of one-half of the lines width" value="bevel">bevel</option>
+                                <option title="A join with a rounded end which is drawn beyond the endpoint of the line at a radius of one-half of the lines width and centered on the endpoint of the line." value="round" selected="selected">round</option>
+                                <option title="A join with a sharp, angled corner which is drawn with the outer sides beyond the endpoint of the path until they meet." value="mitter">miter</option>
+                              </select>
+                            </td>
+                          </tr>
+                          <tr title="Specifies the color of the line. Default #1E90FF.">
                             <td>Stroke Color:</td>
-                            <td><input type="color" id="lineStrokeColor" value="#FFFFFF" onchange="updateLineLayer()" />
+                            <td><input type="color" id="lineStrokeColor" value="#1E90FF" onchange="updateLineLayer()" />
                             </td>
                           </tr>
-                          <tr title="The radius of the circle in pixels.">
-                            <td>Radius</td>
-                            <td>
-                              <form oninput="radius.value=Radius.value">
-                                <input type="range" id="lineRadius" value="5" min="0" max="50" step="1"
-                                  oninput="updateLineLayer()" onchange="updateLineLayer()" />
-                                <output name="radius" for="lineRadius">5</output>
-                              </form>
-                            </td>
-                          </tr>
+                         
                           <tr
-                            title="A number between 0 and 1 that indicates the opacity at which the circles' outlines will be drawn.">
+                            title="A number between 0 and 1 that indicates the opacity at which the line will be drawn.">
                             <td>Stroke Opacity</td>
                             <td>
                               <form oninput="strokeOpacity.value=StrokeOpacity.value">
@@ -939,7 +936,13 @@
                               </form>
                             </td>
                           </tr>
-                          <tr title="The width of the circles" outlines in pixels.">
+                          <tr title="Specifies the lengths of the alternating dashes and gaps that form the dash pattern.">
+                            <td>Stroke Dash</td>
+                              <td>
+                                <input type="text" id="lineStrokeDashArray" onkeyup="updateLineLayer()" />
+                              </td>
+                          </tr>
+                          <tr title="The width of the line in pixels."">
                             <td>Stroke Width</td>
                             <td>
                               <form oninput="strokeWidth.value=StrokeWidth.value">
@@ -950,17 +953,19 @@
                             </td>
                           </tr>
                           <tr
-                            title="The amount to blur the circles. A value of 1 blurs the circles such that only the center line if at full opacity.">
+                            title="The amount of blur to apply to the line in pixels. Default 0.">
                             <td>Blur</td>
                             <td>
-                              <form oninput="blur.value=Blur.value">
-                                <input type="range" id="lineBlur" value="0" min="0" max="1" step="0.1"
-                                  oninput="updateLineLayer()" onchange="updateLineLayer()" />
-                                <output name="blur" for="lineBlur">0</output>
+                              <form oninput="b.value=Blur.value">
+                                  <input type="range" id="lineBlur" value="0" min="0" max="25" step="1" oninput="updateLineLayer()" onchange="updateLineLayer()" />
+                                  <output name="b" for="lineBlur">0</output>
                               </form>
                             </td>
+                            <td>
+                               
+                            </td>
                           </tr>
-                          <tr title="Specifies the orientation of circle when map is pitched.">
+                          <tr title="Specifies the orientation of the line when map is pitched.">
                             <td>Pitch Alignment:</td>
                             <td>
                               <select id="linePitchAlignment" onchange="updateLineLayer()">
@@ -979,19 +984,102 @@
                         <button class="copyBtn" data-clipboard-target="#designCodeOutput">Copy to clipboard</button>
                       </div>
                     </div>
+
                     <!-- Polygon Design Options -->
                     <div class="polygonDesignOptions" style="display: none;">
+                        <div class="tab">
+                          <button id="polyStyleOptionsTab" class="tablinks active" onclick="openPolyTab(this, 'polyStyleOptions')">Polygon Options</button>
+                          <button id="polyCodeTab" class="tablinks" onclick="openPolyTab(this, 'polyCode')">Code</button>
+                        </div>
 
-                    </div>
+                        <div id="polyStyleOptions" class="tabcontent" style="display:block;">
+                          <table>
+                            <tr title="The color to fill the polygons with.">
+                              <td><input id="fillColorBtn" name="fillGroup" type="radio" onclick="updatePolygonLayer()"
+                                  checked="checked" /> Fill Color:</td>
+                              <td>
+                                <input type="color" value="#1A73AA" id="FillColor" onchange="updatePolygonLayer()" />
+                                <input type="checkbox" id="FillColorTransparent"
+                                  onclick="updatePolygonLayer()" />Transparent
+                              </td>
+                            </tr>
+                            <tr title="The color gradient expression to colorize the heat map.">
+                              <td><input name="fillGroup" type="radio" onclick="updatePolygonLayer()" />Fill Pattern:
+                              </td>
+                              <td>
+                                <div class="dropdown">
+                                  <button id="fillPatternBtn" onclick="toggleFillPatternDropdown()"
+                                    class="dropbtn"></button>
+                                  <div id="fillPatternDropdown" class="dropdown-content">
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr
+                              title="A number between 0 and 1 that indicates the opacity at which the fill will be drawn.">
+                              <td>Fill Opacity:</td>
+                              <td>
+                                <form oninput="o.value=FillOpacity.value">
+                                  <input type="range" id="polyFillOpacity" value="0.5" min="0" max="1" step="0.1"
+                                    oninput="updatePolygonLayer()" onchange="updatePolygonLayer()" />
+                                  <output name="o" for="polyFillOpacity">0.5</output>
+                                </form>
+                              </td>
+                            </tr>
+                            <tr title="An integer specifying the minimum zoom level to render the layer at.">
+                              <td>Min Zoom:</td>
+                              <td>
+                                <form oninput="minz.value=MinZoom.value">
+                                  <input type="range" id="polyMinZoom" value="0" min="0" max="24" step="1"
+                                    oninput="updatePolygonLayer()" onchange="updatePolygonLayer()" />
+                                  <output name="minz" for="polyMinZoom">0</output>
+                                </form>
+                              </td>
+                            </tr>
+                            <tr title="An integer specifying the maximum zoom level to render the layer at.">
+                              <td>Min Zoom:</td>
+                              <td>
+                                <form oninput="maxz.value=MaxZoom.value">
+                                  <input type="range" id="polyMaxZoom" value="24" min="0" max="24" step="1"
+                                    oninput="updatePolygonLayer()" onchange="updatePolygonLayer()" />
+                                  <output name="maxz" for="polyMaxZoom">24</output>
+                                </form>
+                              </td>
+                            </tr>
+                            <tr title="Specifies if the layer is visible or not.">
+                              <td>Visible:</td>
+                              <td><input id="polyVisible" type="checkbox" onclick="updatePolygonLayer()"
+                                  checked="checked" /></td>
+                            </tr>
+                          </table>
 
-                    <!-- Point and Multipoint Options -->
-                    <div class="pointDesignOptions" style="display: none;">
-                      <div class="tab">
-                        <button class="tablinks active" onclick="openPointTab(this, 'pointBaseOptions')">Base
-                          Options</button>
-                        <button class="tablinks" onclick="openPointTab(this, 'pointLayerOptions')">Point
-                          Options</button>
-                        <button class="tablinks" onclick="openPointTab(this, 'pointCode')">Code</button>
+                          <p>
+                            In addition to the options in this tool, the PolygonLayer also has options for;
+                            <ul>
+                              <li>sourceLayer - used with VectorTileSource.</li>
+                              <li>filter - used to filter data in layer.</li>
+                            </ul>
+                          </p>
+                        </div>
+                        <div id="polyCode" class="tabcontent">
+                          <textarea id="polyCodeOutput"></textarea><br /><br />
+                          <input id="RemoveDefaults" type="checkbox" onclick="updatePolygonLayer()" checked="checked" />
+                          Remove defaults
+                          <button class="copyBtn" data-clipboard-target="#polyCodeOutput">Copy to clipboard</button>
+                        </div>
+                        </div>
+
+                        <!-- Point and Multipoint Options -->
+                        <div class="pointDesignOptions" style="display: none;">
+                          <div class="tab">
+                            <button id="pointBaseOptionsTab" class="tablinks active"
+                              onclick="openPointTab(this, 'pointBaseOptions')">Base
+                              Options</button>
+                            <button id="pointLayerOptionsTab" class="tablinks"
+                              onclick="openPointTab(this, 'pointLayerOptions')">Point
+                              Options</button>
+                            <button id="pointCodeTab" class="tablinks"
+                              onclick="openPointTab(this, 'pointCode')">Code</button>
                       </div>
 
                       <div id="pointBaseOptions" class="tabcontent" style="display:block;">

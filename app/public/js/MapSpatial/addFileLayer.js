@@ -1,23 +1,21 @@
 /*****************************************************
  * 
- * Variables 
- *    
-*****************************************************/
-//Create a popup.
-// var popup = new atlas.Popup();
-var previewpopup = new atlas.Popup();
-//Add a layers for rendering the data.
-var layers, previewlayers, shpWorker;
-var polygongonPreviewLayer,linePreviewLayer, pointPreviewLayer;
-var defaultPolygonOptions,
-    defaultPolygonLineOptions,
-    defaultLineOptions,
-    defaultPointOptions;
-/*****************************************************
- * 
  * createPreviewMap 
+ * 
+ *  - Function creates a new map to preview the layer
+ *    and file being added to the main map
+ * 
+ *  - Design options added to the preview layers are saved to
+ *    the MyLayers object to be accessed when adding them
+ *    to the main map
+ *      - NOTE: Due to the nature of loading the layers/files
+ *              to the preview map, loadShapeFile is called twice.
+ *              Once when viewing them in the preview map and again
+ *              when adding them to the main map
  *    
 *****************************************************/
+var defaultPolygonOptions, defaultLineOptions, defaultPointOptions;
+
 function createPreviewMap(){
      //Initialize a map instance.
      previewMap = new atlas.Map('previewMap', {
@@ -28,47 +26,46 @@ function createPreviewMap(){
         zoom: 3,
         view: 'Auto',
         style: 'grayscale_light',
-        //Add your Azure Maps subscription key to the map SDK. Get an Azure Maps key at https://azure.com/maps
         authOptions: {
             authType: 'subscriptionKey',
             subscriptionKey: 'TfUWvWqVnTGKGMcIvxr5coNt7eiWrKxh6wJe0keVZSs'
         }
     });
     previewMap.events.add('ready', function () {
-        //Create a data source to add your data to.
+        //Create a data source and add it to the map.
         previewMapDatasource = new atlas.source.DataSource();
         previewMap.sources.add(previewMapDatasource);
 
-        //Create a popup.
+        //Create a popup
         popup = new atlas.Popup();
 
         previewlayers = [
+            //Used to configure design options for Polygon layers.
             new atlas.layer.PolygonLayer(previewMapDatasource, null, {
-                filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']]	//Only render Polygon or MultiPolygon in this layer.
+                filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']]	
             }),
-            new atlas.layer.LineLayer(previewMapDatasource, null, {
-                strokeColor: 'white',
-                strokeWidth: 2,
-                filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']]	//Only render Polygon or MultiPolygon in this layer.
-            }),
+            //Used to configure design options for Line layers.
             new atlas.layer.LineLayer(previewMapDatasource, null, {
                 strokeColor: 'red',
-                filter: ['any', ['==', ['geometry-type'], 'LineString'], ['==', ['geometry-type'], 'MultiLineString']]	//Only render LineString or MultiLineString in this layer.
             }),
+            //Used to configure design options for Point layers.
             new atlas.layer.BubbleLayer(previewMapDatasource, null, {
-                filter: ['any', ['==', ['geometry-type'], 'Point'], ['==', ['geometry-type'], 'MultiPoint']] //Only render Point or MultiPoints in this layer.
+                filter: ['any', ['==', ['geometry-type'], 'Point'], ['==', ['geometry-type'], 'MultiPoint']] 
             })
         ];
-
+        // Add layers to preview map
         previewMap.layers.add(previewlayers, 'labels');
-
- 
+        // Get the options and set them as the default options for those layers
         defaultPolygonOptions = previewlayers[0].getOptions();
-        defaultPolygonLineOptions = previewlayers[1].getOptions();
-        defaultLineOptions = previewlayers[2].getOptions();
-        defaultPointOptions = previewlayers[3].getOptions();
+        defaultLineOptions = previewlayers[1].getOptions();
+        defaultPointOptions = previewlayers[2].getOptions();
 
+        // Call functions to update the layers
         updatePointLayer();
+        updateLineLayer();
+        updatePolygonLayer();
+        // Add the layers with the options set during the updating processing 
+        // to the global MyLayers object so they can be added to the main map
         MyLayers.newLayers = previewlayers
     })
 }
@@ -76,8 +73,15 @@ function createPreviewMap(){
 
 /*****************************************************
  * 
- * loadShapeFile functions
- *    
+ * Load Shapefiles
+ * 
+ *  loadShapeFile()
+ *  - Function is used to add shapefiles of any size
+ *    to the map.    
+ * 
+ *  featureClicked()
+ *  - Function is used to determine if a feature of the
+ *    data has beem clicked to initiate the popup 
 *****************************************************/
 function loadShapeFile(ds,mapInput,url) {
     var wfunc = function (base, cb) {
@@ -87,6 +91,7 @@ function loadShapeFile(ds,mapInput,url) {
     shpWorker = cw({ data: wfunc }, 2);
 
     popup.close();
+    // Check to see which map were loading the files into
     if(mapInput === previewMap){
         document.getElementById('previewLoadingIcon').style.display = '';
     }else{
@@ -94,6 +99,7 @@ function loadShapeFile(ds,mapInput,url) {
     }
 
     shpWorker.data(cw.makeUrl(url)).then(function (data) {
+
         //Load the shapefile into the data source.
         ds.add(data);
 
@@ -102,15 +108,15 @@ function loadShapeFile(ds,mapInput,url) {
             bounds: atlas.data.BoundingBox.fromData(data),
             padding: 50
         });
+        
+        // Check to see which map were loading the files into
         if(mapInput === previewMap){
             document.getElementById('previewLoadingIcon').style.display = 'none';
         }else{
             document.getElementById('mainLoadingIcon').style.display = 'none';
-        }
-        
+        }  
     });
 }
-
 
 function featureClicked(e) {
     //Make sure the event occurred on a shape feature.
@@ -180,7 +186,6 @@ function addFileLayer(fileName) {
         if (r) {
             //Add the feature data to the data source.
             datasource.add(r);
-
             //If bounding box information is known for data, set the map view to it.
             if (r.bbox) {
                 map.setCamera({
@@ -189,16 +194,22 @@ function addFileLayer(fileName) {
                 });
             }
         }
-
-        //NOTE: KML/KMZ can contain ground overlays which are returned in the "groundOverlay" property of the data set.
-        //Additionally, any images parsed for use as custom icons when rendering points are in the "icons" property of the data set and should be added to the maps resource before adding the data to the data source.
-        //See the "Load KML onto map" sample for more complete example for KML/KMZ data sets.
+        // NOTE: KML/KMZ can contain ground overlays which are returned in the "groundOverlay" property of the data set.
+        //       Additionally, any images parsed for use as custom icons when rendering points are in the "icons" property of 
+        //       the data set and should be added to the maps resource before adding the data to the data source.
+        //       See the "Load KML onto map" sample for more complete example for KML/KMZ data sets.
     });
 }
 
 /*****************************************************
  * 
- * Functions to add and upload file(s) to the server
+ *  Add and Upload Files Functions
+ * 
+ *  - These functions allow the user to add files from
+ *    their local drive onto the map by first uploading
+ *    the file to the web server allowing the azure maps
+ *    to access the file 
+ *    
  *    
 *****************************************************/
 var fileNameURL;
@@ -236,9 +247,13 @@ function submitFilesForm(form) {
             if (x.status == 200) {
                 JSONFile = JSON.parse(x.responseText);
                 console.log(JSONFile[0])
+
+                // Added files are moved via the web server to 'app/public/data/File Uploads'
+                // Create a file name URL to pass into other functions to load the data
                 fileNameURL = '/data/File Uploads' + JSONFile[0]
                 console.log(fileNameURL)
 
+                // Get and set the file information to the MyFiles object
                 fileName = fileNameURL.split('.')[0]
                 fileExtension = fileNameURL.split('.')[1]
                 console.log(fileName)
@@ -279,74 +294,56 @@ function submitFilesForm(form) {
  * createLayers
  * 
  *  -Function acts as the catalyst to add the layers
- *  created in the design modal to the map
+ *   to the main map by creating a new datasource
+ *   and new layers associated with the main map
+ *   and setting the options of the preview layers
+ *   to the newly added layers
  *    
 /***************************************************/
 function createLayers(){
-    
     map.events.add('ready', function () {
+        //Create a data source and add it to the map.
         var newLayerDatasource = new atlas.source.DataSource();
         map.sources.add(newLayerDatasource);
         
+        // Create new layers with a new datasource associated with the main map
         newlyAddedLayers = [
-            new atlas.layer.PolygonLayer(newLayerDatasource, null, {
-                filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']]	//Only render Polygon or MultiPolygon in this layer.
-            }),
-            new atlas.layer.LineLayer(newLayerDatasource, null, {
-                strokeColor: 'white',
-                strokeWidth: 2,
-                filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']]	//Only render Polygon or MultiPolygon in this layer.
-            }),
-            new atlas.layer.LineLayer(newLayerDatasource, null, {
-                strokeColor: 'red',
-                filter: ['any', ['==', ['geometry-type'], 'LineString'], ['==', ['geometry-type'], 'MultiLineString']]	//Only render LineString or MultiLineString in this layer.
-            }),
-            new atlas.layer.BubbleLayer(newLayerDatasource, null, {
-                filter: ['any', ['==', ['geometry-type'], 'Point'], ['==', ['geometry-type'], 'MultiPoint']] //Only render Point or MultiPoints in this layer.
-            })
+            new atlas.layer.PolygonLayer(newLayerDatasource, null, {}),
+            new atlas.layer.LineLayer(newLayerDatasource, null, {}),
+            new atlas.layer.BubbleLayer(newLayerDatasource, null, {})
         ];
         
-      
-        // Get the options from the newlayer created and set
-        // them to the new layer  
+        // Get the options from the newlayers object
         polygonOptions = MyLayers.newLayers[0].options
-        polygonLineOptions = MyLayers.newLayers[1].options
-        lineOptions = MyLayers.newLayers[2].options
-        pointOptions = MyLayers.newLayers[3].options
+        lineOptions = MyLayers.newLayers[1].options
+        pointOptions = MyLayers.newLayers[2].options
+
         // Set the options for all the newlyAddedLayers
-        // - All of them are set to ensure the layer that
-        //  had its options changed are set.
         newlyAddedLayers[0].setOptions(polygonOptions);
-        newlyAddedLayers[1].setOptions(polygonLineOptions);
-        newlyAddedLayers[2].setOptions(lineOptions);
-        newlyAddedLayers[3].setOptions(pointOptions);
+        newlyAddedLayers[1].setOptions(lineOptions);
+        newlyAddedLayers[2].setOptions(pointOptions);
+
         // Set the datasource of the added layers to the new
         // datasource so it can be added to the main map
         newlyAddedLayers[0].options.source = newLayerDatasource
         newlyAddedLayers[1].options.source = newLayerDatasource
         newlyAddedLayers[2].options.source = newLayerDatasource
-        newlyAddedLayers[3].options.source = newLayerDatasource
 
-        
-        //Change the source back to the newly created layer
         // Add them to the map and reload the shapefile function
         map.layers.add(newlyAddedLayers, 'labels');
         
         //Add a click event to the layers to show a popup of what the user clicked on.
         map.events.add('click', newlyAddedLayers, featureClicked);
 
-        // Check the file type to load it, files are loaded in differently
+        // Check the file type of the new layer, files are loaded in differently
         // based on their extension type
         if (MyFiles.newFileExt === 'zip') {
             loadShapeFile(newLayerDatasource,map,MyFiles.newFileURL)
         }
         else if (MyFiles.newFileExt === 'shp' || MyFiles.newFileExt === 'prj' || MyFiles.newFileExt === 'dbf' || MyFiles.newFileExt === 'cpg' ){
-            console.log(MyFiles.newFileName)
             loadShapeFile(newLayerDatasource,map,MyFiles.newFileName)
-        }
-        
+        }       
     })
-
 }
 
 
@@ -357,67 +354,21 @@ function createLayers(){
  * Jquery Onclick events
  *    
 *********************************************/
-
-$("#saveFileBtn").click(function () {
-    
+// Create the layers when they click save changes
+$("#saveFileBtn").click(function () { 
     createLayers()    
 });
-
-
-
-$("#lineStringSelect").select(function () {
-    console.log("its a line")
-});
-
-// Layer Design Selections
-$('[name="layerDesignSelections"]').change(function() {
-    if ($('[name="layerDesignSelections"]').val() === "LineString") {
-        // Show the layer design options
-        $('.pointDesignOptions').css({
-            display: "none"
-        });
-        $('.polygonDesignOptions').css({
-            display: "none"
-        });
-        $('.lineDesignOptions').css({
-            display: "block"
-        });
-    }
-    else if($('[name="layerDesignSelections"]').val() === "PolygonLayer"){
-        $('.pointDesignOptions').css({
-            display: "none"
-        });
-        $('.polygonDesignOptions').css({
-            display: "block"
-        });
-        $('.lineDesignOptions').css({
-            display: "none"
-        });
-    }
-    else if($('[name="layerDesignSelections"]').val() === "Point"){
-        $('.pointDesignOptions').css({
-            display: "block"
-        });
-        $('.polygonDesignOptions').css({
-            display: "none"
-        });
-        $('.lineDesignOptions').css({
-            display: "none"
-        });
-    }
-})
-
+// Add the files and initiate the upload process
 var fileupload = $("#filesfld");
-// // addFiles
 $("#addFileBtn").click(function () {
-    // createPreviewMap()
     fileupload.click();
-    fileupload.change(function () {
-        var fileName = MyFiles
-        // fileName = document.getElementById("fileUpload").files[0].path
-        console.log(fileName)
-    })
+    // fileupload.change(function () {
+    //     var fileName = MyFiles
+    //     // fileName = document.getElementById("fileUpload").files[0].path
+    //     console.log(fileName)
+    // })
 });
+
 // simpleSpatial
 $("#simpleSpatial").click(function () {
     if ($(this).is(":checked")) {

@@ -1,15 +1,29 @@
 /*****************************************************
  * 
- * updatePointLayer 
- *    
+ *  Point Design Options  
+ *
+ * 
+ *  updatePointLayer()
+ *      - Returns the settings chosen in the designer
+ * 
+ *  getPointInputOptions()
+ *      - Get the settings from the designer 
+ * 
+ *  getPointPropertyValue()
+ *      - Gets the property value of the elements 
+ * 
+ *  getSelectValue()
+ *      - Gets the selected value from the drop downs
+ *  
+ *  openLineTab()
+ *      - Opens the tab within the designer       
 *****************************************************/
 var defaultOptions, removeDefaults;
 function updatePointLayer() {
     var options = getPointInputOptions();
 
-    //Update all the options in the bubble layer.
-    previewlayers[3].setOptions(options);
-    console.log(previewlayers)
+    //Update all the options in the point layer component of the preview layers.
+    previewlayers[2].setOptions(options);
 
     document.getElementById('designCodeOutput').value = JSON.stringify(options, null, '\t').replace(/\"([^(\")"]+)\":/g, "$1:");
 }
@@ -27,7 +41,7 @@ function getPointInputOptions() {
         minZoom: getPointPropertyValue('minZoom', parseFloat(document.getElementById('pointMinZoom').value)),
         maxZoom: getPointPropertyValue('maxZoom', parseFloat(document.getElementById('pointMaxZoom').value)),
         visible: getPointPropertyValue('visible', document.getElementById('pointVisible').checked),
-        pitchAlignment: getPointPropertyValue('pitchAlignment', getSelectValue('PitchAlignment'))
+        pitchAlignment: getPointPropertyValue('pitchAlignment', getSelectValue('pointPitchAlignment'))
     };
 }
 
@@ -38,18 +52,6 @@ function getPointPropertyValue(propertyName, value) {
         return undefined;
     }
     return value;
-}
-
-function generateRandomPoints(cnt) {
-    var layerData = [];
-
-    for (var i = 0; i < cnt; i++) {
-        layerData.push(new atlas.data.Feature(new atlas.data.Point([Math.random() * 360 - 180, Math.random() * 170 - 85]), {
-            title: 'Pin_' + i
-        }));
-    }
-
-    return layerData;
 }
 
 function getSelectValue(id) {
@@ -73,45 +75,72 @@ function openPointTab(elm, tabName) {
 }
 /*****************************************************
  * 
- * updateLineLayer 
- *    
+ *  Line Layer Design Options  
+ *
+ * 
+ *  updateLineLayer()
+ *      - Returns the settings chosen in the designer
+ * 
+ *  getLineInputOptions()
+ *      - Get the settings from the designer 
+ * 
+ *  getLinePropertyValue()
+ *      - Gets the property value of the elements 
+ * 
+ *  getSelectValue()
+ *      - Gets the selected value from the drop downs
+ *  
+ *  openLineTab()
+ *      - Opens the tab within the designer       
 *****************************************************/
 var defaultOptions, removeDefaults;
 function updateLineLayer() {
     var options = getLineInputOptions();
 
     //Update all the options in the bubble layer.
-    previewlayers[2].setOptions(options);
+    previewlayers[1].setOptions(options);
 
     document.getElementById('designCodeOutput').value = JSON.stringify(options, null, '\t').replace(/\"([^(\")"]+)\":/g, "$1:");
 }
 
 function getLineInputOptions() {
-    removeDefaults = document.getElementById('pointRemoveDefaults').checked;
+    removeDefaults = document.getElementById('lineRemoveDefaults').checked;
+
+    var sda = document.getElementById('lineStrokeDashArray').value;
+    var dashArray = undefined;
+
+    if (sda && sda != '') {
+        sda = sda.split(/[\s,]+/);
+        if (sda && sda.length > 1) {
+            dashArray = [];
+            for (var i = 0; i < sda.length; i++) {
+                dashArray.push(parseInt(sda[i]));
+            }
+        }
+    }   
+
     return {
-        color: getLinePropertyValue('color', document.getElementById('lineColor').value),
+        lineCap: getLinePropertyValue('lineCap', getSelectValue('lineCap').value),
+        lineJoin: getLinePropertyValue('lineJoin', getSelectValue('lineJoin').value),
+        strokeDashArray: dashArray,
         strokeColor: getLinePropertyValue('strokeColor', document.getElementById('lineStrokeColor').value),
         blur: getLinePropertyValue('blur', parseFloat(document.getElementById('lineBlur').value)),
-        opacity: getLinePropertyValue('opacity', parseFloat(document.getElementById('lineOpacity').value)),
         strokeOpacity: getLinePropertyValue('strokeOpacity', parseFloat(document.getElementById('lineStrokeOpacity').value)),
         strokeWidth: getLinePropertyValue('strokeWidth', parseFloat(document.getElementById('lineStrokeWidth').value)),
-        radius: getLinePropertyValue('radius', parseFloat(document.getElementById('lineRadius').value)),
+        
         minZoom: getLinePropertyValue('minZoom', parseFloat(document.getElementById('lineMinZoom').value)),
         maxZoom: getLinePropertyValue('maxZoom', parseFloat(document.getElementById('lineMaxZoom').value)),
         visible: getLinePropertyValue('visible', document.getElementById('lineVisible').checked),
-        pitchAlignment: getLinePropertyValue('pitchAlignment', getSelectValue('PitchAlignment'))
+        pitchAlignment: getLinePropertyValue('pitchAlignment', getSelectValue('linePitchAlignment'))
     };
 }
 
 function getLinePropertyValue(propertyName, value) {
-    // console.log(propertyName)
-    // console.log(value)
-    if (removeDefaults && defaultPointOptions[propertyName] === value) {
+    if (removeDefaults && defaultLineOptions[propertyName] === value) {
         return undefined;
     }
     return value;
 }
-
 
 function getSelectValue(id) {
     var elm = document.getElementById(id);
@@ -133,23 +162,128 @@ function openLineTab(elm, tabName) {
     elm.className += " active";
 }
 
+/***********************************************************
+ * 
+ *  Polygon Design Options
+ * 
+ *  updatePolygonLayer()
+ *      - Allows the user to update design settings
+ *        of polygons
+ * 
+ *  getPolygonInputOptions()
+ *      - Get the settings from the designer 
+ * 
+ *  getPolygonPropertyValue()
+ *      - Gets the property value of the elements 
+ * 
+ *  getSelectValue()
+ *      - Gets the selected value from the drop downs
+ *  
+ *  openPolyTab()
+ *      - Opens the tab within the polygon designer      
+ *  
+ *  createFillPatternOptions()
+ *      - Creates the fill pattern options for the polygon  
+ *    
+ *  fillPatternSelected()
+ *      - Fills the polygon with the chosen selection and
+ *        calls updatePolygonLayer() to update the layer  
+ *  
+ *  toggleFillPatternDropdown()
+ *      - Opens a color selection window  
+ *    
+***********************************************************/
+
+var fillPatterns = [
+    'fill-checker-blue', 'fill-checker-darkblue', 'fill-checker-green', 'fill-checker-red', 'fill-checker-yellow',
+    'fill-diamond-blue', 'fill-diamond-darkblue', 'fill-diamond-green', 'fill-diamond-red', 'fill-diamond-yellow',
+    'fill-grid-blue', 'fill-grid-darkblue', 'fill-grid-green', 'fill-grid-red', 'fill-grid-yellow',
+    'fill-smallgrid-blue', 'fill-smallgrid-darkblue', 'fill-smallgrid-green', 'fill-smallgrid-red', 'fill-smallgrid-yellow',
+    'fill-stripes-downwards-blue', 'fill-stripes-downwards-darkblue', 'fill-stripes-downwards-green', 'fill-stripes-downwards-red', 'fill-stripes-downwards-yellow',
+    'fill-stripes-upwards-blue', 'fill-stripes-upwards-darkblue', 'fill-stripes-upwards-green', 'fill-stripes-upwards-red', 'fill-stripes-upwards-yellow',
+];
+
+function updatePolygonLayer() {
+    var options = getPolygonInputOptions();
+
+    //Update all the options in the polygon layer.
+    previewlayers[0].setOptions(options);
 
 
+    document.getElementById('CodeOutput').value = JSON.stringify(options, null, '\t').replace(/\"([^(\")"]+)\":/g, "$1:");
+}
 
+function getPolygonInputOptions() {
+    removeDefaults = document.getElementById('RemoveDefaults').checked;
 
+    var options = {                
+        fillOpacity: getPolygonPropertyValue('fillOpacity', parseFloat(document.getElementById('polyFillOpacity').value)),
+        minZoom: getPolygonPropertyValue('minZoom', parseFloat(document.getElementById('polyMinZoom').value)),
+        maxZoom: getPolygonPropertyValue('maxZoom', parseFloat(document.getElementById('polyMaxZoom').value)),
+        visible: getPolygonPropertyValue('visible', document.getElementById('polyVisible').checked)
+    };
 
+    //Need to make the fill pattern undefined to override it.
+    previewlayers[0].setOptions({ fillPattern: undefined });
 
+    if (document.getElementById('fillColorBtn').checked || document.getElementById('FillColorTransparent').checked) {
+        options.fillColor = getPolygonPropertyValue('fillColor', document.getElementById('FillColorTransparent').checked ? 'transparent' : document.getElementById('FillColor').value);
+    } else {
+        options.fillPattern = fillPatterns[selectedFillPatternIdx];
+    }
 
+    return options;
+}
 
+function getPolygonPropertyValue(propertyName, value) {
+    if (removeDefaults && defaultPolygonOptions[propertyName] === value) {
+        return undefined;
+    }
+    return value;
+}
 
+function getSelectValue(id) {
+    var elm = document.getElementById(id);
+    return elm.options[elm.selectedIndex].value;
+}
 
+function openPolyTab(elm, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    elm.className += " active";
+}
 
+function createFillPatternOptions() {
+    var html = [];
 
+    for (var i = 0; i < fillPatterns.length; i++) {
+        map.imageSprite.add(fillPatterns[i], '../Common/images/fill-patterns/' + fillPatterns[i] + '.png');
 
+        html.push('<a class="pattern-selector" href="javascript:void(0);" onclick="fillPatternSelected(this, ', i, ');" style="background-image:url(\'../Common/images/fill-patterns/', fillPatterns[i], '.png\')" title="', fillPatterns[i], '"></a>');
+    }
 
+    document.getElementById('fillPatternDropdown').innerHTML = html.join('');
+}
 
+function fillPatternSelected(elm, idx) {
+    selectedFillPatternIdx = idx;            
+    document.getElementById('fillPatternBtn').style.backgroundImage = elm.style.backgroundImage;
+    
+    toggleFillPatternDropdown();
+    updatePolygonLayer();
+}
 
-
+function toggleFillPatternDropdown() {
+    document.getElementById("fillPatternDropdown").classList.toggle("show");
+}
 
 
 /*********************************************
@@ -157,3 +291,45 @@ function openLineTab(elm, tabName) {
  * Jquery Onclick events
  *    
 *********************************************/
+// Layer Design Selections
+$('[name="layerDesignSelections"]').change(function() {
+    if ($('[name="layerDesignSelections"]').val() === "LineString") {
+        // Show the layer design options
+        $('.lineDesignOptions').css({
+            display: "block"
+        });
+        $('.polygonDesignOptions').css({
+            display: "none"
+        });
+        $('.pointDesignOptions').css({
+            display: "none"
+        });
+        $("lineBaseOptionsTab").addClass('active')
+    }
+    if($('[name="layerDesignSelections"]').val() === "PolygonLayer"){
+        $('.polygonDesignOptions').css({
+            display: "block"
+        });
+        $('.lineDesignOptions').css({
+            display: "none"
+        });
+        $('.pointDesignOptions').css({
+            display: "none"
+        });
+        $("polyStyleOptionsTab").addClass('active')
+
+    }
+    if($('[name="layerDesignSelections"]').val() === "Point"){
+        $('.pointDesignOptions').css({
+            display: "block"
+        });
+        $('.polygonDesignOptions').css({
+            display: "none"
+        });
+        $('.lineDesignOptions').css({
+            display: "none"
+        });
+        $("pointBaseOptionsTab").addClass('active')
+
+    }
+})
