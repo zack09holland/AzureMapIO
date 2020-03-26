@@ -1,18 +1,21 @@
-/*********************************************
+/*******************************************************************************************************************************************************************
  * 
  *  Variables
  *    
-*********************************************/
+*******************************************************************************************************************************************************************/
 var choroplethLayer, extrudedPolygonLayer;
 var defaultColor = '';
 var colorScale = [];
 
 
-/*********************************************
+/*******************************************************************************************************************************************************************
  * 
- * addChoropleth
+ *  Simple Choropleth
+ *
+ *  - addChoropleth()
+ *      - Creates a simple choropleth example layer
  *    
-*********************************************/
+*******************************************************************************************************************************************************************/
 function addChoropleth() {
 
     choroplethLayer;
@@ -85,11 +88,15 @@ function addChoropleth() {
 
 }
 
-/*********************************************
+
+/*******************************************************************************************************************************************************************
  * 
- * addExtrudedChoropleth
+ *  Extruded Choropleth
+ * 
+ *  - addExtrudedChoropleth()
+ *      - Creates an extruded choropleth example layer
  *    
-*********************************************/
+*******************************************************************************************************************************************************************/
 function addExtrudedChoropleth() {
 
     defaultColor = '#00ff80';
@@ -145,11 +152,28 @@ function addExtrudedChoropleth() {
     });
 }
 
-/*********************************************
+
+
+/*******************************************************************************************************************************************************************
  * 
- * createLegend
+ *  Legends
+ * 
+ *  - createLegend()
+ *      - Creates the legend for the simple and extruded example layers
+ * 
+ *  - addAnimatedChoropleth()
+ *      - Creates the legend for the animated choropleth example layer
+ * 
+ *  - createLegendScaleBar()
+ *      - Creates a color scale bar for the animated choropleth
+ * 
+ *  - togglePlayPause()
+ *      - Allows the animated choropleth to be updated with new colors associated with new data
+ * 
+ *  - FrameAnimationTimer()
+ *      - Updates the displayed year the animated choropleth is showing data for
  *    
-*********************************************/
+*******************************************************************************************************************************************************************/
 function createLegend(id) {
     var html = ['<div id="' + id + 'Item">'];
 
@@ -165,12 +189,6 @@ function createLegend(id) {
     document.getElementById(id).innerHTML += html.join('');
 }
 
-
-/*********************************************
- * 
- * addAnimatedChoropleth
- *    
-*********************************************/
 var isPaused = true;
 var timer;
 
@@ -314,12 +332,6 @@ function addAnimatedChoropleth() {
         });
 }
 
-
-/*********************************************
- * 
- * createLegendScaleBar
- *    
-*********************************************/
 function createLegendScaleBar() {
     var canvas = document.getElementById('animatedLegendCanvas');
     var ctx = canvas.getContext('2d');
@@ -362,9 +374,7 @@ function FrameAnimationTimer(renderFrameCallback, numFrames, duration, loop) {
                 _timerId = setInterval(function () {
                     if (!_isPaused) {
                         var progress = (frameIdx * delay) / duration;
-
                         renderFrameCallback(progress, frameIdx);
-
                         if (progress >= 1) {
                             if (loop) {
                                 frameIdx = 0;
@@ -372,7 +382,6 @@ function FrameAnimationTimer(renderFrameCallback, numFrames, duration, loop) {
                                 reset();
                             }
                         }
-
                         frameIdx++;
                     }
                 }, delay);
@@ -401,11 +410,11 @@ function FrameAnimationTimer(renderFrameCallback, numFrames, duration, loop) {
 
 
 
-/*********************************************
+/*******************************************************************************************************************************************************************
  * 
  * JQUERY ONCLICK EVENTS
  *    
-*********************************************/
+*******************************************************************************************************************************************************************/
 // choroplethItems
 // When the entire block is closed. Remove all of those layers and close the child tabs
 $("#choroplethItems").click(function () {

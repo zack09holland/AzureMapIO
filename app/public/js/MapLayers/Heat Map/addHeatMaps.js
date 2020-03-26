@@ -1,8 +1,8 @@
-/**********************************************
+/*******************************************************************************************************************************************************************
  * 
  * Variables
  * 
-*********************************************/
+*******************************************************************************************************************************************************************/
 var magWeight = [
     'interpolate',
     ['exponential', 2], //Using an exponential interpolation since earthquake magnitudes are on an exponential scale.
@@ -177,11 +177,34 @@ var heatGradients = [
 ];
 var removeDefaults, selectedGradientIdx = 0;
 var heatMapLayer, defaultOptions;
-/*********************************************
+/**********************************************************************************************************************
  * 
- * heatMapOptions
+ *  Heat Map w/ Options Example Layer
+ *      
+ *  - heatMapOptions()
+ *      - Creates the data for a heat map layer
  * 
-*********************************************/
+ *  - updateHeatMapLayer()
+ *      - Gets the design options and updates the heat map layer
+ * 
+ *  - getHeatMapInputOptions()
+ *      - Get the settings from the designer 
+ * 
+ *  - getHMPropertyValue()
+ *      - Gets the property value of the elements 
+ *  
+ *  - HMOptionsOpenTab()
+ *      - Opens the tab within the bubble layer options window   
+ * 
+ *  - createGradientOptions()
+ *      - Creates gradient color options
+ * 
+ *  - gradientSelected()
+ *      - Returns selected gradient color    
+ * 
+ *  - toggleGradientDropdown()
+ *      - Toggles the drop down showing all the available gradient color choices
+**********************************************************************************************************************/
 function heatMapOptions() {
     //CreateGradientOptions
     createGradientOptions();
@@ -236,10 +259,6 @@ function getHMPropertyValue(propertyName, value) {
     return value;
 }
 
-function getSelectValue(id) {
-    var elm = document.getElementById(id);
-    return elm.heatMapOptions[elm.selectedIndex].value;
-}
 
 function HMOptionsOpenTab(elm, tabName) {
     var i, tabcontent, tablinks;
@@ -309,11 +328,15 @@ function toggleGradientDropdown() {
 
 
 
-/*********************************************
+/*******************************************************************************************************************************************************************
  * 
- * clusteredHeatMap
+ *  Clustered Heat Map Example Layer
+ *      
+ *  - clusteredHeatMap()
+ *      - Creates the data for a heat map layer
  * 
-*********************************************/
+ * 
+*******************************************************************************************************************************************************************/
 
 function clusteredHeatMap() {
     //Create a data source and add it to the map.
@@ -354,11 +377,15 @@ function clusteredHeatMap() {
 
 
 
-/*********************************************
+/*******************************************************************************************************************************************************************
  * 
- * consistentHeatMap
+ *  Consistent Heat Map Example Layer
+ *      
+ *  - consistentHeatMap()
+ *      - Creates the data for a heat map layer
  * 
-*********************************************/
+ * 
+*******************************************************************************************************************************************************************/
 function consistentHeatMap() {
     //Create a data source and add it to the map.
     consistentHMDatasource = new atlas.source.DataSource();
@@ -388,11 +415,16 @@ function consistentHeatMap() {
     // });
 };
 
-/*********************************************
+/*******************************************************************************************************************************************************************
  * 
- * weightedHeatMap
+ *  Weighted Heat Map Example Layer
+ *      
+ *  - weightedHeatMap()
+ *      - Creates the data for a heat map layer
  * 
-*********************************************/
+ * 
+*******************************************************************************************************************************************************************/
+
 function weightedHeatMap() {
     //Create a data source and add it to the map.
     weightedHMDatasource = new atlas.source.DataSource();
@@ -440,11 +472,11 @@ function weightedHeatMap() {
 
 
 
-/*********************************************
+/*******************************************************************************************************************************************************************
  * 
  * JQUERY ONCLICK EVENTS
  *    
-*********************************************/
+*******************************************************************************************************************************************************************/
 
 // heatMapItems
 // When the entire block is closed. Remove all of those layers and close the child tabs

@@ -2,8 +2,7 @@
 var map, previewMap;
 var MyLayers = {}; // Holds layers added to the map
 var MyFiles = {};  // Holds the file information for files added to the map
-/*****************************************************
- * 
+/*************************************************************************************
  *  GetMap
  * 
  *  - Initializes the main mapping interface and when
@@ -12,7 +11,7 @@ var MyFiles = {};  // Holds the file information for files added to the map
  *      - drawingTools
  *      - mapSearch() 
  *    
-*****************************************************/
+****************************************************************************************/
 function GetMap() {
     //Initialize a map instance.
     map = new atlas.Map('myMap', {

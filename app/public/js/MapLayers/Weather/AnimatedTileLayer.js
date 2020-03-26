@@ -1,6 +1,10 @@
-/**
- * Provides a layer which can smoothly animate through an array of tile layers.
- */
+/**********************************************************************************************************************
+ * 
+ *  Animated Weather 
+ * 
+ *  Provides a layer which can smoothly animate through an array of tile layers.
+ * 
+ **********************************************************************************************************************/
 class AnimatedTileLayerManager {
     /**
      * Provides a layer which can smoothly animate through an array of tile layers.

@@ -1,3 +1,17 @@
+/******************************************************************************************************************************
+ * 
+ *  Weather Example Layers 
+ * 
+ *  - addWeather()
+ *      - Creates the title layer and calls updateTileLayer to determine which weather to laod
+ * 
+ *  - updateTileLayer()
+ *      - Creates the weather tile layer 
+ * 
+ *  - animateWeather() NOT IMPLEMENTED
+ *      - Will allow weather tile layers to become animated over a certain time period
+ *    
+******************************************************************************************************************************/
 var tileLayer, animationManager;
 
 //Weather tile url from Iowa Environmental Mesonet (IEM): http://mesonet.agron.iastate.edu/ogc/
@@ -90,8 +104,12 @@ function animateWeather() {
     };
 }
 
-// JQUERY ONCLICK EVENTS
 
+/**********************************************************************************************************************
+ * 
+ * Jquery Onclick events
+ *    
+**********************************************************************************************************************/
 // weatherMapItems
 // When the entire block is closed. Remove all of those layers and close the child tabs
 $("#weatherMapItems").click(function () {

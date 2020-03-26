@@ -1,8 +1,11 @@
-/*****************************************************
+/******************************************************************************************************************************
  * 
- *  mapSearch 
+ *  Map Search
+ * 
+ *  - mapSearch()
+ *      - Allows the user to input an address and using jquery autocomplete provide suggestions in a drop down 
  *    
-*****************************************************/
+******************************************************************************************************************************/
 
 //Note that the typeahead parameter is set to true.
 var geocodeServiceUrlTemplate = 'https://atlas.microsoft.com/search/{searchType}/json?typeahead=true&subscription-key={subscription-key}&api-version=1&query={query}&language={language}&lon={lon}&lat={lat}&countrySet={countrySet}&view=Auto';

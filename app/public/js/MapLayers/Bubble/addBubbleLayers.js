@@ -1,8 +1,8 @@
-/*********************************************
+/**********************************************************************************************************************
  * 
  * Variables
  *    
-*********************************************/
+**********************************************************************************************************************/
 var bubbleLayer, defaultOptions, testDataSize = 100,
     removeDefaults;
 var popup;
@@ -16,11 +16,34 @@ var earthquakeFeed = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/
 //Colors for each EntityType property in point data: [Gas Station, Grocery Store, Restaurant, School]
 var entityTypes = ['Gas Station', 'Grocery Store', 'Restaurant', 'School'];
 
-/*********************************************
+
+/**********************************************************************************************************************
  * 
- * addbubbleLayer w/ Options
+ *  Simple Bubble Layer w/ options Example
+ *      
+ *  - addbubbleLayer()
+ *      - Creates the data for a bubble layer
+ *      - Allows for manipulation of the layer design   
+ * 
+ *  - updateBubbleLayer()
+ *      - Gets the design options and updates the bubble layer
+ * 
+ *  - getBubbleInputOptions()
+ *      - Get the settings from the designer 
+ * 
+ *  - getPropertyValue()
+ *      - Gets the property value of the elements 
+ *
+ *  - generateRandomPoints()
+ *      - Creates random points for the example layer 
+ * 
+ *  - getSelectValue()
+ *      - Gets the selected value from the drop downs
+ *  
+ *  - openTab()
+ *      - Opens the tab within the bubble layer options window   
  *    
-*********************************************/
+**********************************************************************************************************************/
 function addbubbleLayer() {
     //Create a data source and add it to the map.
     var datasource = new atlas.source.DataSource();
@@ -106,11 +129,17 @@ function openTab(elm, tabName) {
 }
 
 
-/*********************************************
+/**********************************************************************************************************************
  * 
- * addClusterBubbleLayer
+ * Cluster Buddle Layer Example
+ * 
+ *  - addClusterBubbleLayer()
+ *      - Creates the data to show a cluster bubble layer
+ * 
+ *  - clusterClicked()
+ *      - Function to determine if a point cluster has been clicked on
  *    
-*********************************************/
+**********************************************************************************************************************/
 function addClusterBubbleLayer() {
     //Create a reusable popup.
     popup = new atlas.Popup();
@@ -200,6 +229,19 @@ function clusterClicked(e) {
     }
 }
 
+
+
+/**********************************************************************************************************************
+ * 
+ *  Point Cluster Buddle Layer Example 
+ * 
+ *  - addPointClusterBubbleLayer()
+ *      - Creates the data to show a point cluster bubble layer
+ * 
+ *  - pointClusterClicked()
+ *      - Function to determine if a point cluster has been clicked on
+ *    
+**********************************************************************************************************************/
 function addPointClusterBubbleLayer() {
     //Create a data source and add it to the map.
     datasource = new atlas.source.DataSource(null, {
@@ -306,11 +348,11 @@ function pointClusterClicked(e) {
 
 
 
-/*********************************************
+/***************************************************************************************************************************************************************************
  * 
  * JQUERY ONCLICK EVENTS
  *    
-*********************************************/
+***************************************************************************************************************************************************************************/
 // bubbleItems
 // When the entire block is closed. Remove all of those layers and close the child tabs
 $("#bubbleItems").click(function () {

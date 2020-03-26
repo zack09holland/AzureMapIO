@@ -1,8 +1,11 @@
-/*********************************************
+/**********************************************************************************************************************
  * 
- * drawingTools
+ *  Drawing Controls
+ * 
+ *  - drawingTools()
+ *      - Loads the toolbar to allow the user to draw shapes on the map
  *    
-*********************************************/
+**********************************************************************************************************************/
 function drawingTools(){
     //Create an instance of the drawing manager and display the drawing toolbar.
     drawingManager = new atlas.drawing.DrawingManager(map, {

@@ -73,25 +73,10 @@
 
 
             <!-- Button trigger modal -->
-            <button class="dropdown-item btn" data-toggle="modal" data-target="#exampleModal" onclick="createPreviewMap()">
+            <!-- <button class="dropdown-item btn" data-toggle="modal" data-target="#shpModal" onclick="createPreviewMap()">
               Add File(s)
-            </button>
+            </button> -->
           </div>
-         
-
-          <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button class="dropdown-item btn btn-sm" type="button" disabled>Drawing Tools</button>
-
-            <input class="dropdown-item btn btn-sm" type="button" id="addFileBtn" value="Add File(s)">
-              <form id="filesfrm" action="/upload" method="post" onsubmit="return submitFilesForm(this);"
-                style="display: none;">
-                <input type="file" name="filesfld" id="filesfld" onchange="submitFilesForm(this.form);"
-                  multiple />
-                <label for="filesfld" id="fileslbl" ondragover="stopDefault(event);"
-                  ondragenter="stopDefault(event);" ondragleave="stopDefault(event);"
-                  ondrop="stopDefault(event);addFilesAndSubmit(event);"></label>
-              </form>
-            </div> -->
         </div>
       </div>
   </div>
@@ -632,6 +617,7 @@
                   <li>
                     <input class="treeviewChBx" type="checkbox" id="geospatialItems" />
                     <label for="geospatialItems">Geospatial Files</label>
+
                     <ul>
                       <!-- Simple Spatial Data -->
                       <li>
@@ -721,26 +707,48 @@
               </div>
             </div>
           </div>
-<!-- EXTRA MAP STUFF -->
+<!-- Personal Layers -->
           <div class="card bmcard">
             <div class="card-header bmcard-header" id="headingFour">
               <div class="bmpanel panel-default">
                 <div class="panel-heading bmpanel-heading">
                   <h5 class="panel-title" data-toggle="collapse" data-target="#collapseFour">
+                    Personal Layers                  
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">  
+              <!-- Add File Button -->
+              <div id="dropdownMenuButton" class="">
+                <button class="btn btn-secondary btn-sm" type="button" data-toggle="modal" data-target="#uberModal"
+                onclick="createPreviewMap()">
+                  Add File/Layer
+                </button>
+              </div>
+            </div>
+          </div>
+<!-- EXTRA MAP STUFF -->
+            <div class="card bmcard">
+              <div class="card-header bmcard-header" id="headingFive">
+                <div class="bmpanel panel-default">
+                  <div class="panel-heading bmpanel-heading">
+                  <h5 class="panel-title" data-toggle="collapse" data-target="#collapseFive">
                     Extras                  
                   </h5>
                 </div>
               </div>
             </div>
-            <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
-              <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+            <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+              
                 <div class="panel-body">
                   Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
                 </div>
-              </div>
+              
             </div>
           </div>
         </div>
+        <!-- Azure Maps Logo -->
         <div class="azureMapsLogo" id="">
           <img id="" src="./images/azure_maps_logo.png" alt="Azure Maps Logo">
         </div>
@@ -762,14 +770,14 @@
   being nested with the button it is associated with
 
 --------------------------------------------------------->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <div class="modal fade" id="uberModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
       aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
           <!-- Modal Header -->
           <div class="modal-header">
             <h4 class="modal-title" id="myModalLabel">
-              File Layer Options
+              Add File/Layer
             </h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">
@@ -781,19 +789,16 @@
           <!-- Modal Body -->
           <div class="modal-body">
             <div class="">
-              <p class="addFileDesc">You can add SHP files large and small as either zip or all the files in a single selection. 
-                Also supports reading KML, KMZ, GPX, GeoRSS, GML, GeoJSON, CSV (with spatial columns). 
-              </p>
-              <p class="addFileDesc text-center">
+              <p class="addFileDesc">You can add SHP files large and small as either zip or all the files in a single selection. As well 
+                KML, KMZ, GPX, GeoRSS, GML, GeoJSON, and CSV (with spatial columns). OGC files are also supported. Design options will only
+                be applied to its corresponding layer type.
                 <strong>
                   To allow proper customization
                   to your file, limit your selection to one file name.
-                </strong>
-              </p> 
-              <p class="addFileDesc">  
-                Files will be displayed in the preview map with options to customize the layer. Once you are reading to add the file to the map
-                click save changes. 
+                </strong> 
+                Files will be displayed in the preview map with options to customize the layer. Click save changes to add it to the main map. 
               </p>
+              <p class="addFileDesc">*When editing polygon layers, use the line layer options to change the edges of the polygon shapes.</p>
             </div>
             <!-- File Type Selection -->
             <div class="text-center">
@@ -801,23 +806,15 @@
               <div class="col-12">
                  <!-- Select File -->
                 <input class="btn btn-sm btn-secondary" type="button" id="addFileBtn" value="Select File(s)">
-                <form id="filesfrm" action="/upload" method="post" onsubmit="return submitFilesForm(this);"
+                <form class="filesfrm" action="/upload" method="post" onsubmit="return submitFilesForm(this);"
                   style="display: none;">
-                  <input type="file" name="filesfld" id="filesfld" onchange="submitFilesForm(this.form);"
+                  <input type="file" name="filesfld" class="filesfld" onchange="submitFilesForm(this.form);"
                     multiple />
-                  <label for="filesfld" id="fileslbl" ondragover="stopDefault(event);"
+                  <label for="filesfld" class="fileslbl" ondragover="stopDefault(event);"
                     ondragenter="stopDefault(event);" ondragleave="stopDefault(event);"
                     ondrop="stopDefault(event);addFilesAndSubmit(event);"></label>
                 </form>
               </div>
-            </div>
-           
-            <!-- Filename -->
-            <div class="form-group">
-              <label>
-                File name
-              </label>
-              <input type="name" placeholder="Filename to be added to map..." class="form-control" style="width: 350px;">
             </div>
 
             <!-- Layer Selection For Designs -->
@@ -826,18 +823,24 @@
                 Select Layer Design Options
               </label>
               <div class="input-group">
-                <select name="layerDesignSelections" data-placeholder="Select a grade..." class="form-control chosen-select" style="width:350px;"
+                <select name="layerDesignSelections" data-placeholder="Select a layer type..." class="form-control chosen-select" style="width:350px;"
                   tabindex="2">
                   <option value="">
                   </option>
-                  <option value="LineString">
-                    Line
-                  </option>
-                  <option value="PolygonLayer">
+                  <option value="Polygon">
                     Polygon
+                  </option>
+                  <option value="Line">
+                    Line
                   </option>
                   <option value="Point">
                     Point
+                  </option>
+                  <option value="Simple">
+                    Simple
+                  </option>
+                  <option value="OGC">
+                    OGC
                   </option>
                   
                 </select>
@@ -849,12 +852,99 @@
                 <fieldset class="sidePanel">
                   <div class="layerDesignBox">
 
+                    <!-- Polygon Design Options -->
+                    <div class="polygonDesignOptions" style="display: none;">
+                      <div class="tab">
+                        <button id="polyStyleOptionsTab" class="tablinks active"
+                          onclick="openPolyTab(this, 'polyStyleOptions')">Polygon Options</button>
+                        <button id="polyCodeTab" class="tablinks" onclick="openPolyTab(this, 'polyCode')">Code</button>
+                      </div>
+
+                      <div id="polyStyleOptions" class="tabcontent" style="display:block;">
+                        <table>
+                          <tr title="The color to fill the polygons with.">
+                            <td><input id="fillColorBtn" name="fillGroup" type="radio" onclick="updatePolygonLayer()"
+                                checked="checked" /> Fill Color:</td>
+                            <td>
+                              <input type="color" value="#1A73AA" id="FillColor" onchange="updatePolygonLayer()" />
+                              <input type="checkbox" id="FillColorTransparent"
+                                onclick="updatePolygonLayer()" />Transparent
+                            </td>
+                          </tr>
+                          <tr title="The color gradient expression to colorize the heat map.">
+                            <td><input name="fillGroup" type="radio" onclick="updatePolygonLayer()" />Fill Pattern:
+                            </td>
+                            <td>
+                              <div class="dropdown">
+                                <button id="fillPatternBtn" onclick="toggleFillPatternDropdown()"
+                                  class="dropbtn"></button>
+                                <div id="fillPatternDropdown" class="dropdown-content">
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr
+                            title="A number between 0 and 1 that indicates the opacity at which the fill will be drawn.">
+                            <td>Fill Opacity:</td>
+                            <td>
+                              <form oninput="o.value=FillOpacity.value">
+                                <input type="range" id="polyFillOpacity" value="0.5" min="0" max="1" step="0.1"
+                                  oninput="updatePolygonLayer()" onchange="updatePolygonLayer()" />
+                                <output name="o" for="polyFillOpacity">0.5</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr title="An integer specifying the minimum zoom level to render the layer at.">
+                            <td>Min Zoom:</td>
+                            <td>
+                              <form oninput="minz.value=MinZoom.value">
+                                <input type="range" id="polyMinZoom" value="0" min="0" max="24" step="1"
+                                  oninput="updatePolygonLayer()" onchange="updatePolygonLayer()" />
+                                <output name="minz" for="polyMinZoom">0</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr title="An integer specifying the maximum zoom level to render the layer at.">
+                            <td>Min Zoom:</td>
+                            <td>
+                              <form oninput="maxz.value=MaxZoom.value">
+                                <input type="range" id="polyMaxZoom" value="24" min="0" max="24" step="1"
+                                  oninput="updatePolygonLayer()" onchange="updatePolygonLayer()" />
+                                <output name="maxz" for="polyMaxZoom">24</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr title="Specifies if the layer is visible or not.">
+                            <td>Visible:</td>
+                            <td><input id="polyVisible" type="checkbox" onclick="updatePolygonLayer()"
+                                checked="checked" /></td>
+                          </tr>
+                        </table>
+
+                        <p>
+                          In addition to the options in this tool, the PolygonLayer also has options for;
+                          <ul>
+                            <li>sourceLayer - used with VectorTileSource.</li>
+                            <li>filter - used to filter data in layer.</li>
+                          </ul>
+                        </p>
+                      </div>
+                      <div id="polyCode" class="tabcontent">
+                        <textarea id="polyDesignCodeOutput"></textarea><br /><br />
+                        <input id="RemoveDefaults" type="checkbox" onclick="updatePolygonLayer()" checked="checked" />
+                        Remove defaults
+                        <button class="copyBtn" data-clipboard-target="#polyDesignCodeOutput">Copy to clipboard</button>
+                      </div>
+                    </div>
+
                     <!-- Line Design Options -->
                     <div class="lineDesignOptions" style="display: none;">
                       <div class="tab">
-                        <button id="lineBaseOptionsTab" class="tablinks active" onclick="openLineTab(this, 'lineBaseOptions')">Base
+                        <button id="lineBaseOptionsTab" class="tablinks active"
+                          onclick="openLineTab(this, 'lineBaseOptions')">Base
                           Options</button>
-                        <button id="lineLayerOptionsTab" class="tablinks" onclick="openLineTab(this, 'lineLayerOptions')">Line
+                        <button id="lineLayerOptionsTab" class="tablinks"
+                          onclick="openLineTab(this, 'lineLayerOptions')">Line
                           Options</button>
                         <button id="lineCodeTab" class="tablinks" onclick="openLineTab(this, 'lineCode')">Code</button>
                       </div>
@@ -903,9 +993,15 @@
                             <td>Line Cap:</td>
                             <td>
                               <select id="lineCap" onchange="updateLineLayer()">
-                                <option title="A cap with a squared-off end which is drawn to the exact endpoint of the line." value="butt">butt</option>
-                                <option title="A cap with a rounded end which is drawn beyond the endpoint of the line at a radius of one-half of the lines width and centered on the endpoint of the line." value="round" selected="selected">round</option>
-                                <option title="A cap with a squared-off end which is drawn beyond the endpoint of the line at a distance of one-half of the line width." value="square">square</option>
+                                <option
+                                  title="A cap with a squared-off end which is drawn to the exact endpoint of the line."
+                                  value="butt">butt</option>
+                                <option
+                                  title="A cap with a rounded end which is drawn beyond the endpoint of the line at a radius of one-half of the lines width and centered on the endpoint of the line."
+                                  value="round" selected="selected">round</option>
+                                <option
+                                  title="A cap with a squared-off end which is drawn beyond the endpoint of the line at a distance of one-half of the line width."
+                                  value="square">square</option>
                               </select>
                             </td>
                           </tr>
@@ -913,9 +1009,15 @@
                             <td>Line Join:</td>
                             <td>
                               <select id="lineJoin" onchange="updateLineLayer()">
-                                <option title="A join with a squared-off end drawn beyond the endpoint of the line at a distance of one-half of the lines width" value="bevel">bevel</option>
-                                <option title="A join with a rounded end which is drawn beyond the endpoint of the line at a radius of one-half of the lines width and centered on the endpoint of the line." value="round" selected="selected">round</option>
-                                <option title="A join with a sharp, angled corner which is drawn with the outer sides beyond the endpoint of the path until they meet." value="mitter">miter</option>
+                                <option
+                                  title="A join with a squared-off end drawn beyond the endpoint of the line at a distance of one-half of the lines width"
+                                  value="bevel">bevel</option>
+                                <option
+                                  title="A join with a rounded end which is drawn beyond the endpoint of the line at a radius of one-half of the lines width and centered on the endpoint of the line."
+                                  value="round" selected="selected">round</option>
+                                <option
+                                  title="A join with a sharp, angled corner which is drawn with the outer sides beyond the endpoint of the path until they meet."
+                                  value="mitter">miter</option>
                               </select>
                             </td>
                           </tr>
@@ -924,7 +1026,7 @@
                             <td><input type="color" id="lineStrokeColor" value="#1E90FF" onchange="updateLineLayer()" />
                             </td>
                           </tr>
-                         
+
                           <tr
                             title="A number between 0 and 1 that indicates the opacity at which the line will be drawn.">
                             <td>Stroke Opacity</td>
@@ -936,33 +1038,34 @@
                               </form>
                             </td>
                           </tr>
-                          <tr title="Specifies the lengths of the alternating dashes and gaps that form the dash pattern.">
+                          <tr
+                            title="Specifies the lengths of the alternating dashes and gaps that form the dash pattern.">
                             <td>Stroke Dash</td>
-                              <td>
-                                <input type="text" id="lineStrokeDashArray" onkeyup="updateLineLayer()" />
-                              </td>
+                            <td>
+                              <input type="text" id="lineStrokeDashArray" onkeyup="updateLineLayer()" />
+                            </td>
                           </tr>
                           <tr title="The width of the line in pixels."">
                             <td>Stroke Width</td>
                             <td>
-                              <form oninput="strokeWidth.value=StrokeWidth.value">
-                                <input type="range" id="lineStrokeWidth" value="2" min="0" max="10" step="1"
-                                  oninput="updateLineLayer()" onchange="updateLineLayer()" />
-                                <output name="strokeWidth" for="lineStrokeWidth">2</output>
-                              </form>
+                              <form oninput=" strokeWidth.value=StrokeWidth.value">
+                            <input type="range" id="lineStrokeWidth" value="2" min="0" max="10" step="1"
+                              oninput="updateLineLayer()" onchange="updateLineLayer()" />
+                            <output name="strokeWidth" for="lineStrokeWidth">2</output>
+                            </form>
                             </td>
                           </tr>
-                          <tr
-                            title="The amount of blur to apply to the line in pixels. Default 0.">
+                          <tr title="The amount of blur to apply to the line in pixels. Default 0.">
                             <td>Blur</td>
                             <td>
                               <form oninput="b.value=Blur.value">
-                                  <input type="range" id="lineBlur" value="0" min="0" max="25" step="1" oninput="updateLineLayer()" onchange="updateLineLayer()" />
-                                  <output name="b" for="lineBlur">0</output>
+                                <input type="range" id="lineBlur" value="0" min="0" max="25" step="1"
+                                  oninput="updateLineLayer()" onchange="updateLineLayer()" />
+                                <output name="b" for="lineBlur">0</output>
                               </form>
                             </td>
                             <td>
-                               
+
                             </td>
                           </tr>
                           <tr title="Specifies the orientation of the line when map is pitched.">
@@ -978,108 +1081,24 @@
                       </div>
 
                       <div id="lineCode" class="tabcontent">
-                        <textarea id="designCodeOutput"></textarea><br /><br />
+                        <textarea id="lineDesignCodeOutput"></textarea><br /><br />
                         <input id="lineRemoveDefaults" type="checkbox" onclick="updateLineLayer()" checked="checked" />
                         Remove defaults
-                        <button class="copyBtn" data-clipboard-target="#designCodeOutput">Copy to clipboard</button>
+                        <button class="copyBtn" data-clipboard-target="#lineDesignCodeOutput">Copy to clipboard</button>
                       </div>
                     </div>
 
-                    <!-- Polygon Design Options -->
-                    <div class="polygonDesignOptions" style="display: none;">
-                        <div class="tab">
-                          <button id="polyStyleOptionsTab" class="tablinks active" onclick="openPolyTab(this, 'polyStyleOptions')">Polygon Options</button>
-                          <button id="polyCodeTab" class="tablinks" onclick="openPolyTab(this, 'polyCode')">Code</button>
-                        </div>
-
-                        <div id="polyStyleOptions" class="tabcontent" style="display:block;">
-                          <table>
-                            <tr title="The color to fill the polygons with.">
-                              <td><input id="fillColorBtn" name="fillGroup" type="radio" onclick="updatePolygonLayer()"
-                                  checked="checked" /> Fill Color:</td>
-                              <td>
-                                <input type="color" value="#1A73AA" id="FillColor" onchange="updatePolygonLayer()" />
-                                <input type="checkbox" id="FillColorTransparent"
-                                  onclick="updatePolygonLayer()" />Transparent
-                              </td>
-                            </tr>
-                            <tr title="The color gradient expression to colorize the heat map.">
-                              <td><input name="fillGroup" type="radio" onclick="updatePolygonLayer()" />Fill Pattern:
-                              </td>
-                              <td>
-                                <div class="dropdown">
-                                  <button id="fillPatternBtn" onclick="toggleFillPatternDropdown()"
-                                    class="dropbtn"></button>
-                                  <div id="fillPatternDropdown" class="dropdown-content">
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr
-                              title="A number between 0 and 1 that indicates the opacity at which the fill will be drawn.">
-                              <td>Fill Opacity:</td>
-                              <td>
-                                <form oninput="o.value=FillOpacity.value">
-                                  <input type="range" id="polyFillOpacity" value="0.5" min="0" max="1" step="0.1"
-                                    oninput="updatePolygonLayer()" onchange="updatePolygonLayer()" />
-                                  <output name="o" for="polyFillOpacity">0.5</output>
-                                </form>
-                              </td>
-                            </tr>
-                            <tr title="An integer specifying the minimum zoom level to render the layer at.">
-                              <td>Min Zoom:</td>
-                              <td>
-                                <form oninput="minz.value=MinZoom.value">
-                                  <input type="range" id="polyMinZoom" value="0" min="0" max="24" step="1"
-                                    oninput="updatePolygonLayer()" onchange="updatePolygonLayer()" />
-                                  <output name="minz" for="polyMinZoom">0</output>
-                                </form>
-                              </td>
-                            </tr>
-                            <tr title="An integer specifying the maximum zoom level to render the layer at.">
-                              <td>Min Zoom:</td>
-                              <td>
-                                <form oninput="maxz.value=MaxZoom.value">
-                                  <input type="range" id="polyMaxZoom" value="24" min="0" max="24" step="1"
-                                    oninput="updatePolygonLayer()" onchange="updatePolygonLayer()" />
-                                  <output name="maxz" for="polyMaxZoom">24</output>
-                                </form>
-                              </td>
-                            </tr>
-                            <tr title="Specifies if the layer is visible or not.">
-                              <td>Visible:</td>
-                              <td><input id="polyVisible" type="checkbox" onclick="updatePolygonLayer()"
-                                  checked="checked" /></td>
-                            </tr>
-                          </table>
-
-                          <p>
-                            In addition to the options in this tool, the PolygonLayer also has options for;
-                            <ul>
-                              <li>sourceLayer - used with VectorTileSource.</li>
-                              <li>filter - used to filter data in layer.</li>
-                            </ul>
-                          </p>
-                        </div>
-                        <div id="polyCode" class="tabcontent">
-                          <textarea id="polyCodeOutput"></textarea><br /><br />
-                          <input id="RemoveDefaults" type="checkbox" onclick="updatePolygonLayer()" checked="checked" />
-                          Remove defaults
-                          <button class="copyBtn" data-clipboard-target="#polyCodeOutput">Copy to clipboard</button>
-                        </div>
-                        </div>
-
-                        <!-- Point and Multipoint Options -->
-                        <div class="pointDesignOptions" style="display: none;">
-                          <div class="tab">
-                            <button id="pointBaseOptionsTab" class="tablinks active"
-                              onclick="openPointTab(this, 'pointBaseOptions')">Base
-                              Options</button>
-                            <button id="pointLayerOptionsTab" class="tablinks"
-                              onclick="openPointTab(this, 'pointLayerOptions')">Point
-                              Options</button>
-                            <button id="pointCodeTab" class="tablinks"
-                              onclick="openPointTab(this, 'pointCode')">Code</button>
+                    <!-- Point and Multipoint Options -->
+                    <div class="pointDesignOptions" style="display: none;">
+                      <div class="tab">
+                        <button id="pointBaseOptionsTab" class="tablinks active"
+                          onclick="openPointTab(this, 'pointBaseOptions')">Base
+                          Options</button>
+                        <button id="pointLayerOptionsTab" class="tablinks"
+                          onclick="openPointTab(this, 'pointLayerOptions')">Point
+                          Options</button>
+                        <button id="pointCodeTab" class="tablinks"
+                          onclick="openPointTab(this, 'pointCode')">Code</button>
                       </div>
 
                       <div id="pointBaseOptions" class="tabcontent" style="display:block;">
@@ -1106,7 +1125,8 @@
                           </tr>
                           <tr title="Specifies if the layer is visible or not.">
                             <td>Visible:</td>
-                            <td><input id="pointVisible" type="checkbox" onclick="updatePointLayer()" checked="checked" />
+                            <td><input id="pointVisible" type="checkbox" onclick="updatePointLayer()"
+                                checked="checked" />
                             </td>
                           </tr>
                         </table>
@@ -1124,7 +1144,8 @@
                         <table>
                           <tr title="The color to fill the circle symbol with.">
                             <td>Color:</td>
-                            <td><input type="color" id="pointColor" value="#1A73AA" onchange="updatePointLayer()" /></td>
+                            <td><input type="color" id="pointColor" value="#1A73AA" onchange="updatePointLayer()" />
+                            </td>
                           </tr>
                           <tr
                             title="A number between 0 and 1 that indicates the opacity at which the circles will be drawn.">
@@ -1139,7 +1160,8 @@
                           </tr>
                           <tr title="The color of the circles' outlines.">
                             <td>Stroke Color:</td>
-                            <td><input type="color" id="pointStrokeColor" value="#FFFFFF" onchange="updatePointLayer()" />
+                            <td><input type="color" id="pointStrokeColor" value="#FFFFFF"
+                                onchange="updatePointLayer()" />
                             </td>
                           </tr>
                           <tr title="The radius of the circle in pixels.">
@@ -1197,22 +1219,247 @@
                       </div>
 
                       <div id="pointCode" class="tabcontent">
-                        <textarea id="designCodeOutput"></textarea><br /><br />
-                        <input id="pointRemoveDefaults" type="checkbox" onclick="updatePointLayer()" checked="checked" />
+                        <textarea id="pointDesignCodeOutput"></textarea><br /><br />
+                        <input id="pointRemoveDefaults" type="checkbox" onclick="updatePointLayer()"
+                          checked="checked" />
                         Remove defaults
-                        <button class="copyBtn" data-clipboard-target="#designCodeOutput">Copy to clipboard</button>
+                        <button class="copyBtn" data-clipboard-target="#pointDesignCodeOutput">Copy to
+                          clipboard</button>
+                      </div>
+                    </div>
+
+                    <!-- Simple Layer Options -->
+                    <div class="simpleDesignOptions" style="display: none;">
+                      <div class="tab">
+                        <button id="simpleStyleOptionsTab" class="tablinks active" onclick="openSimpleTab(this, 'simpleDataLayerOptions')">Layer
+                          Options</button>
+                        <button class="tablinks" onclick="openSimpleTab(this, 'simpleCode')">Code</button>
+                      </div>
+
+                      <div id="simpleDataLayerOptions" class="tabcontent" style="display:block;">
+                        <table>
+                          <tr
+                            title="Specifies if polygons that have a height property should be rendered as extruded polygons. Default: true">
+                            <td>Allow extrusions:</td>
+                            <td><input id="allowExtrusions" type="checkbox" onclick="updateSimpleLayer()" checked="checked" />
+                            </td>
+                          </tr>
+                          <tr title="Specifies if popups should appear when shapes are clicked. Default: true">
+                            <td>Enable popups:</td>
+                            <td><input id="enablePopups" type="checkbox" onclick="updateSimpleLayer()" checked="checked" />
+                            </td>
+                          </tr>
+                          <tr
+                            title="If a point feature has a title or name property, this option specifies if it should be displayed on the map under the marker. Default: false">
+                            <td>Show point titles:</td>
+                            <td><input id="showPointTitles" type="checkbox" onclick="updateSimpleLayer()" /></td>
+                          </tr>
+                          <tr title="Specifies if the layer is visible or not.">
+                            <td>Visible:</td>
+                            <td><input id="simpleVisible" type="checkbox" onclick="updateSimpleLayer()" checked="checked" /></td>
+                          </tr>
+                        </table>
+
+                        <p>
+                          In addition to the options in this tool, the simple data layer also has options for;
+                          <ul>
+                            <li>popupTemplate - used to customize the layout of content in the popups.</li>
+                          </ul>
+                          Note that the simple data layer uses style information stored in the properties of individual
+                          features to customize how each feature is rendered. The getLayer() function can be used to
+                          override this behaviour in the sub-layers.
+                        </p>
+                      </div>
+
+                      <div id="simpleCode" class="tabcontent">
+                        <textarea id="simpleCodeOutput"></textarea><br /><br />
+                        <input id="RemoveDefaults" type="checkbox" onclick="updateSimpleLayer()" checked="checked" /> Remove
+                        defaults
+                        <button class="copyBtn" data-clipboard-target="#simpleCodeOutput">Copy to clipboard</button>
+                      </div>
+                    </div>
+
+                    <!-- OGC Layer Options -->
+                    <div class="OGCDesignOptions" style="display: none;">
+
+                      <div class="tab">
+                        <button id="OGCStyleOptionsTab" class="tablinks active" onclick="openOGCTab(this, 'OGCStyleOptions')">Base
+                          Options</button>
+                        <button class="tablinks" onclick="openOGCTab(this, 'OGCMediaOptions')">Media
+                          Options</button>
+                        <button class="tablinks" onclick="openOGCTab(this, 'OGCLayerOptions')">Layer
+                          options</button>
+                        <button class="tablinks" onclick="openOGCTab(this, 'OGCCode')">Code</button>
+                      </div>
+
+                      <div id="OGCStyleOptions" class="tabcontent" style="display:block;">
+                        <table>
+                          <tr title="An integer specifying the minimum zoom level to render the layer at.">
+                            <td>Min Zoom:</td>
+                            <td>
+                              <form oninput="minz.value=MinZoom.value">
+                                <input type="range" id="OGCMinZoom" value="0" min="0" max="24" step="1"
+                                  oninput="updateOGCLayer()" onchange="updateOGCLayer()" />
+                                <output name="minz" for="OGCMinZoom">0</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr title="An integer specifying the maximum zoom level to render the layer at.">
+                            <td>Max Zoom:</td>
+                            <td>
+                              <form oninput="maxz.value=MaxZoom.value">
+                                <input type="range" id="OGCMaxZoom" value="24" min="0" max="24" step="1"
+                                  oninput="updateOGCLayer()" onchange="updateOGCLayer()" />
+                                <output name="maxz" for="OGCMaxZoom">24</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr title="Specifies if the layer is visible or not.">
+                            <td>Visible:</td>
+                            <td><input id="OGCVisible" type="checkbox" onclick="updateOGCLayer()" checked="checked" />
+                            </td>
+                          </tr>
+                        </table>
+
+                        <p>
+                          In addition to the options in this tool, the OGC map layer also has options for;
+                          <ul>
+                            <li>activeLayers - Specifies the sublayers in the service to render.</li>
+                            <li>dimensions - Custom dimensions to add to tile requests.</li>
+                            <li>proxyService - URL to a CORs enabled proxy service.</li>
+                            <li>service - Specify if service is WMS or WMTS. Auto detected by default.</li>
+                            <li>styles - The styles of the active layers.</li>
+                            <li>version - The service version to use in requests. Auto detected by default.</li>
+                          </ul>
+                        </p>
+                      </div>
+
+                      <div id="OGCMediaOptions" class="tabcontent">
+                        <table>
+                          <tr title="The duration in milliseconds of a fade transition when a new tile is added. ">
+                            <td>Fade Duration</td>
+                            <td>
+                              <form oninput="fadeDuration.value=FadeDuration.value">
+                                <input type="range" id="FadeDuration" value="300" min="0" max="1000" step="100"
+                                  oninput="updateOGCLayer()" onchange="updateOGCLayer()" />
+                                <output name="fadeDuration" for="FadeDuration">300</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr
+                            title="A number between 0 and 1 that indicates the opacity at which the overlay will be drawn.">
+                            <td>Opacity</td>
+                            <td>
+                              <form oninput="opacity.value=Opacity.value">
+                                <input type="range" id="OGCOpacity" value="1" min="0" max="1" step="0.1"
+                                  oninput="updateOGCLayer()" onchange="updateOGCLayer()" />
+                                <output name="opacity" for="OGCOpacity">1</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr
+                            title="A number between -1 and 1 that increases or decreases the contrast of the overlay.">
+                            <td>Contrast</td>
+                            <td>
+                              <form oninput="contrast.value=Contrast.value">
+                                <input type="range" id="Contrast" value="0" min="-1" max="1" step="0.1"
+                                  oninput="updateOGCLayer()" onchange="updateOGCLayer()" />
+                                <output name="contrast" for="Contrast">0</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr title="Rotates hues around the color wheel. A number in degrees.">
+                            <td>Hue Rotation</td>
+                            <td>
+                              <form oninput="hueRotation.value=HueRotation.value">
+                                <input type="range" id="HueRotation" value="0" min="0" max="360" step="1"
+                                  oninput="updateOGCLayer()" onchange="updateOGCLayer()" />
+                                <output name="hueRotation" for="HueRotation">0</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr
+                            title="A number between 0 and 1 that increases or decreases the maximum brightness of the overlay.">
+                            <td>Max Brightness</td>
+                            <td>
+                              <form oninput="maxBrightness.value=MaxBrightness.value">
+                                <input type="range" id="MaxBrightness" value="1" min="0" max="1" step="0.1"
+                                  oninput="updateOGCLayer()" onchange="updateOGCLayer()" />
+                                <output name="maxBrightness" for="MaxBrightness">1</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr
+                            title="A number between 0 and 1 that increases or decreases the minimum brightness of the overlay.">
+                            <td>Min Brightness</td>
+                            <td>
+                              <form oninput="minBrightness.value=MinBrightness.value">
+                                <input type="range" id="MinBrightness" value="0" min="0" max="1" step="0.1"
+                                  oninput="updateOGCLayer()" onchange="updateOGCLayer()" />
+                                <output name="minBrightness" for="MinBrightness">0</output>
+                              </form>
+                            </td>
+                          </tr>
+                          <tr
+                            title="A number between -1 and 1 that increases or decreases the saturation of the overlay.">
+                            <td>Saturation</td>
+                            <td>
+                              <form oninput="saturation.value=Saturation.value">
+                                <input type="range" id="OGCSaturation" value="0" min="-1" max="1" step="0.1"
+                                  oninput="updateOGCLayer()" onchange="updateOGCLayer()" />
+                                <output name="saturation" for="OGCSaturation">0</output>
+                              </form>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+
+                      <div id="OGCLayerOptions" class="tabcontent">
+                        <table>
+                          <tr title="The URL that points to the service.">
+                            <td>Url:</td>
+                            <td>
+                              <!-- <input type="text" id="url"
+                                value="https://tpwd.texas.gov/arcgis/rest/services/Vegetation_Mapping/Texas_Ecological_Mapping_Systems_Data/mapserver/WMTS/1.0.0/WMTSCapabilities.xml" /> -->
+                            </td>
+                          </tr>
+                          <tr
+                            title="Indicates if the map should set the map view to the bounding box of the layer. Not persistent.">
+                            <td>Bring into view:</td>
+                            <td><input id="bringIntoView" type="checkbox" /></td>
+                          </tr>
+                          <tr
+                            title="Indicates if errors related to accessing the service should be logged to the console.">
+                            <td>Debug:</td>
+                            <td><input id="debug" type="checkbox" /></td>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td><input type="button" value="Update layer options" onclick="updateOGCLayer();" /></td>
+                          </tr>
+                        </table>
+                      </div>
+
+                      <div id="OGCCode" class="tabcontent">
+                        <textarea id="OGCCodeOutput"></textarea><br /><br />
+                        <input id="RemoveDefaults" type="checkbox" onclick="updateOGCLayer()" checked="checked" />
+                        Remove defaults
+                        <button class="copyBtn" data-clipboard-target="#OGCCodeOutput">Copy to clipboard</button>
                       </div>
                     </div>
 
                   </div>
 
-                  </fieldset>
-                  </div>
-                  <div id="previewMap">
-                  </div>
-                  <img id="previewLoadingIcon" src="./images/loadingIcon.gif" title="Loading" style="display:none;" />
+                </fieldset>
 
-                  </div>
+              </div>
+
+              <div id="previewMap">
+              </div>
+
+              <img id="previewLoadingIcon" src="./images/loadingIcon.gif" title="Loading" style="display:none;" />
+
+            </div>
           </div>
 
           <!-- Modal Footer -->

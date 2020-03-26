@@ -1,4 +1,4 @@
-/*****************************************************
+/******************************************************************************************************************************
  * 
  * createPreviewMap 
  * 
@@ -13,8 +13,10 @@
  *              Once when viewing them in the preview map and again
  *              when adding them to the main map
  *    
-*****************************************************/
-var defaultPolygonOptions, defaultLineOptions, defaultPointOptions;
+******************************************************************************************************************************/
+var defaultPolygonOptions, defaultLineOptions, 
+    defaultPointOptions, defaultSimpleOptions, 
+    defaultOGCOptions;
 
 function createPreviewMap(){
      //Initialize a map instance.
@@ -51,19 +53,33 @@ function createPreviewMap(){
             //Used to configure design options for Point layers.
             new atlas.layer.BubbleLayer(previewMapDatasource, null, {
                 filter: ['any', ['==', ['geometry-type'], 'Point'], ['==', ['geometry-type'], 'MultiPoint']] 
-            })
+            }),
+            //Used to configure design options for Simple Layers
+            new atlas.layer.SimpleDataLayer(previewMapDatasource, null, {}),
+            //Used to configure design options for OGC Layers
+            new atlas.layer.OgcMapLayer(previewMapDatasource, null, {}),
         ];
         // Add layers to preview map
         previewMap.layers.add(previewlayers, 'labels');
+        previewMap.imageSprite.add("app\public\images\icons\ranger_station.png")
+        previewMap.imageSprite.add("app\public\images\icons\placemark_circle.png")
+        previewMap.imageSprite.add("app\public\images\icons\campground.png")
         // Get the options and set them as the default options for those layers
         defaultPolygonOptions = previewlayers[0].getOptions();
         defaultLineOptions = previewlayers[1].getOptions();
         defaultPointOptions = previewlayers[2].getOptions();
+        defaultSimpleOptions = previewlayers[3].getOptions();
+        defaultOGCOptions = previewlayers[4].getOptions();
 
         // Call functions to update the layers
-        updatePointLayer();
-        updateLineLayer();
         updatePolygonLayer();
+        updateLineLayer();
+        updatePointLayer();
+        updateSimpleLayer();
+        // updateOGCLayer();
+
+        // console.log(previewlayers)
+
         // Add the layers with the options set during the updating processing 
         // to the global MyLayers object so they can be added to the main map
         MyLayers.newLayers = previewlayers
@@ -71,7 +87,7 @@ function createPreviewMap(){
 }
 
 
-/*****************************************************
+/******************************************************************************************************************************
  * 
  * Load Shapefiles
  * 
@@ -82,7 +98,7 @@ function createPreviewMap(){
  *  featureClicked()
  *  - Function is used to determine if a feature of the
  *    data has beem clicked to initiate the popup 
-*****************************************************/
+******************************************************************************************************************************/
 function loadShapeFile(ds,mapInput,url) {
     var wfunc = function (base, cb) {
         importScripts('data/scripts/shp.min.js');
@@ -157,9 +173,9 @@ function featureClicked(e) {
     }
 }
 
-/*********************************************
+/**************************************************************************************************************************************************
  * 
- * addFileLayer
+ * addSimpleFileLayer
  *
  * -Used to add basic spatial files
  *  -function supports reading:
@@ -171,27 +187,35 @@ function featureClicked(e) {
  *      - GeoJSON
  *      - CSV (with spatial columns).
  *     
-*********************************************/
-function addFileLayer(fileName) {
-    //Create a data source and add it to the map.
-    datasource = new atlas.source.DataSource();
-    map.sources.add(datasource);
-
-    //Add a simple data layer for rendering the data.
-    filelayer = new atlas.layer.SimpleDataLayer(datasource);
-    map.layers.add(filelayer);
-    console.log(filelayer)
+**************************************************************************************************************************************************/
+function addSimpleFileLayer(ds,mapinput,fileName) {
+    // Check to see which map were loading the files into
+    if(mapinput === previewMap){
+        document.getElementById('previewLoadingIcon').style.display = '';
+    }else{
+        document.getElementById('mainLoadingIcon').style.display = '';
+    }
     //Read an XML file from a URL or pass in a raw XML string.
     atlas.io.read(fileName).then(r => {
+
         if (r) {
+            if(mapinput === previewMap){
+                document.getElementById('previewLoadingIcon').style.display = 'none';
+            }else{
+                document.getElementById('mainLoadingIcon').style.display = 'none';
+            }  
             //Add the feature data to the data source.
-            datasource.add(r);
+            // ds.add(r);
+            //Update the features in the data source.
+            ds.setShapes(r);
             //If bounding box information is known for data, set the map view to it.
             if (r.bbox) {
-                map.setCamera({
+                mapinput.setCamera({
                     bounds: r.bbox,
                     padding: 50
                 });
+                // Check to see which map were loading the files into
+
             }
         }
         // NOTE: KML/KMZ can contain ground overlays which are returned in the "groundOverlay" property of the data set.
@@ -201,7 +225,7 @@ function addFileLayer(fileName) {
     });
 }
 
-/*****************************************************
+/******************************************************************************************************************************
  * 
  *  Add and Upload Files Functions
  * 
@@ -211,7 +235,7 @@ function addFileLayer(fileName) {
  *    to access the file 
  *    
  *    
-*****************************************************/
+******************************************************************************************************************************/
 var fileNameURL;
 var JSONFile
 function stopDefault(event) {
@@ -221,8 +245,8 @@ function stopDefault(event) {
 
 function addFilesAndSubmit(event) {
     var files = event.target.files || event.dataTransfer.files;
-    document.getElementById("filesfld").files = files;
-    submitFilesForm(document.getElementById("filesfrm"));
+    document.getElementsByClassName("filesfld").files = files;
+    submitFilesForm(document.getElementsByClassName("filesfrm"));
 }
 
 function submitFilesForm(form) {
@@ -271,8 +295,10 @@ function submitFilesForm(form) {
                     else if(fileExtension === 'zip'){
                         loadShapeFile(previewMapDatasource,previewMap,fileNameURL)
                     }
-                    else{
-    
+                    else if(fileExtension === 'kml' || fileExtension === 'xml'){
+                        console.log(fileNameURL)
+                        console.log(fileName)
+                        addSimpleFileLayer(previewMapDatasource,previewMap,fileNameURL)
                     }    
                 } catch (error) {
                     console.log(error)
@@ -289,7 +315,7 @@ function submitFilesForm(form) {
     return false;
 }
 
-/***************************************************
+/****************************************************************************************************************************
  * 
  * createLayers
  * 
@@ -299,39 +325,63 @@ function submitFilesForm(form) {
  *   and setting the options of the preview layers
  *   to the newly added layers
  *    
-/***************************************************/
+/****************************************************************************************************************************/
 function createLayers(){
     map.events.add('ready', function () {
         //Create a data source and add it to the map.
         var newLayerDatasource = new atlas.source.DataSource();
         map.sources.add(newLayerDatasource);
-        
+
+        //Create an fill pattern image from one of the built-in templates and use it with a polygon layer.
+        // map.imageSprite.createFromTemplate('myFillPattern', 'dots', 'red', 'transparent').then(function () {}
+
+
         // Create new layers with a new datasource associated with the main map
         newlyAddedLayers = [
             new atlas.layer.PolygonLayer(newLayerDatasource, null, {}),
             new atlas.layer.LineLayer(newLayerDatasource, null, {}),
-            new atlas.layer.BubbleLayer(newLayerDatasource, null, {})
+            new atlas.layer.BubbleLayer(newLayerDatasource, null, {}),
+            new atlas.layer.SimpleDataLayer(newLayerDatasource, null, {}),
+            new atlas.layer.OgcMapLayer(newLayerDatasource, null, {})
         ];
         
         // Get the options from the newlayers object
         polygonOptions = MyLayers.newLayers[0].options
         lineOptions = MyLayers.newLayers[1].options
         pointOptions = MyLayers.newLayers[2].options
+        simpleOptions = MyLayers.newLayers[3]._options
+        OGCOptions = MyLayers.newLayers[4].options
+
+        // console.log("MyLayers: ",MyLayers.newLayers)
+        // console.log("polygonOptions : ", polygonOptions)
+        // console.log("lineOptions : ", lineOptions)
+        // console.log("pointOptions : ", pointOptions)
+        // console.log("simpleOptions : ", simpleOptions)
+        // console.log("OGCOptions : ", OGCOptions)
 
         // Set the options for all the newlyAddedLayers
         newlyAddedLayers[0].setOptions(polygonOptions);
         newlyAddedLayers[1].setOptions(lineOptions);
         newlyAddedLayers[2].setOptions(pointOptions);
+        newlyAddedLayers[3].setOptions(simpleOptions);
+        newlyAddedLayers[4].setOptions(OGCOptions);
 
         // Set the datasource of the added layers to the new
         // datasource so it can be added to the main map
         newlyAddedLayers[0].options.source = newLayerDatasource
         newlyAddedLayers[1].options.source = newLayerDatasource
         newlyAddedLayers[2].options.source = newLayerDatasource
+        newlyAddedLayers[3]._datasource = newLayerDatasource
+        newlyAddedLayers[4].options.source = newLayerDatasource
+        // console.log(newlyAddedLayers)
 
         // Add them to the map and reload the shapefile function
         map.layers.add(newlyAddedLayers, 'labels');
         
+        map.imageSprite.add("app\public\images\icons\ranger_station.png")
+        map.imageSprite.add("app\public\images\icons\placemark_circle.png")
+        map.imageSprite.add("app\public\images\icons\campground.png")
+
         //Add a click event to the layers to show a popup of what the user clicked on.
         map.events.add('click', newlyAddedLayers, featureClicked);
 
@@ -343,23 +393,26 @@ function createLayers(){
         else if (MyFiles.newFileExt === 'shp' || MyFiles.newFileExt === 'prj' || MyFiles.newFileExt === 'dbf' || MyFiles.newFileExt === 'cpg' ){
             loadShapeFile(newLayerDatasource,map,MyFiles.newFileName)
         }       
+        else if(fileExtension === 'kml' || fileExtension === 'xml'){
+            addSimpleFileLayer(newLayerDatasource,map,MyFiles.newFileURL)
+        }    
     })
 }
 
 
 
 
-/*********************************************
+/**********************************************************************************************************************
  * 
  * Jquery Onclick events
  *    
-*********************************************/
+**********************************************************************************************************************/
 // Create the layers when they click save changes
 $("#saveFileBtn").click(function () { 
     createLayers()    
 });
 // Add the files and initiate the upload process
-var fileupload = $("#filesfld");
+var fileupload = $(".filesfld");
 $("#addFileBtn").click(function () {
     fileupload.click();
     // fileupload.change(function () {

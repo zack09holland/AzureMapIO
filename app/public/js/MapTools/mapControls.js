@@ -1,3 +1,15 @@
+/**********************************************************************************************************************
+ * 
+ *  Map Control Options
+ * 
+ *  -mapControls()
+ *      - Creates a toolbar that allows the user to:
+ *          - Zoom map
+ *          - Change compass direction
+ *          - Change pitch of the map
+ *          - Change base map layer 
+ * 
+ **********************************************************************************************************************/
 function mapControls(){
     //Map control functionality.
     map.controls.add([
