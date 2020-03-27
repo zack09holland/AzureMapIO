@@ -198,13 +198,16 @@ function featureClicked(e) {
 // var proxyServiceUrl = '/data/CorsEnabledProxyService.ashx?url=';
 
 function addSimpleFileLayer(ds,mapinput,url,isAbsolute) {
-    var proxyServiceUrl = window.location.origin + '/Common/CorsEnabledProxyService.ashx?url=';
+    // var proxyServiceUrl = "https://cors-anywhere.herokuapp.com/";
+    // var proxyServiceUrl = proxyurl + window.location.origin + url;
+    // console.log(proxyServiceUrl)
+
     var imageLayers = [], imageIcons = [];
 
-    if (!isAbsolute) {
-        // url = window.location.origin + url;
-        console.log(url)
-    }
+    // if (!isAbsolute) {
+    //     url = proxyServiceUrl + window.location.origin + url;
+    //     console.log(url)
+    // }
     ds.clear();
 
     // Check to see which map were loading the files into

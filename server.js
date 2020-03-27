@@ -6,6 +6,8 @@ var express = require('express'),
     path = require('path'),
     app = express();
 const upload = require("express-fileupload");
+var cors = require('cors')
+app.use(cors()) // Use this after the variable declaration
 
 // ==============================================================================
 // EXPRESS CONFIGURATION
@@ -27,10 +29,10 @@ app.use(upload());
 // Express Middleware for serving static files
 app.use(express.static(path.join(__dirname, 'app/public/')));
 
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-    next();
-  });
+// app.use(function (req, res, next) {
+//     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+//     next();
+//   });
 // HTTP POST
 // upload image files to server
 app.post("/upload", function(request, response) {
