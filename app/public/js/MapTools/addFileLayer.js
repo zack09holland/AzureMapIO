@@ -175,54 +175,139 @@ function featureClicked(e) {
 
 /**************************************************************************************************************************************************
  * 
- * addSimpleFileLayer
+ * Add and Process Simple Spatial Files 
  *
- * -Used to add basic spatial files
- *  -function supports reading:
- *      - KML 
- *      - KMZ 
- *      - GPX
- *      - GeoRSS
- *      - GML
- *      - GeoJSON
- *      - CSV (with spatial columns).
+ *  - addSimpleFileLayer(ds,mapinput,fileName)
+ *      - Parameters:
+ *          - ds : datasource associated with the specific map
+ *          - mapinput : map to load files to
+ *              > previewMap
+ *              > map
+ *          - fileName : File path to add in
+ * 
+ *      - Used to add basic spatial files, function supports reading:
+ *          - KML 
+ *          - KMZ 
+ *          - GPX
+ *          - GeoRSS
+ *          - GML
+ *          - GeoJSON
+ *          - CSV (with spatial columns).
  *     
 **************************************************************************************************************************************************/
-function addSimpleFileLayer(ds,mapinput,fileName) {
+// var proxyServiceUrl = '/data/CorsEnabledProxyService.ashx?url=';
+
+function addSimpleFileLayer(ds,mapinput,url,isAbsolute) {
+    var proxyServiceUrl = window.location.origin + '/Common/CorsEnabledProxyService.ashx?url=';
+    var imageLayers = [], imageIcons = [];
+
+    if (!isAbsolute) {
+        // url = window.location.origin + url;
+        console.log(url)
+    }
+    ds.clear();
+
     // Check to see which map were loading the files into
     if(mapinput === previewMap){
         document.getElementById('previewLoadingIcon').style.display = '';
     }else{
         document.getElementById('mainLoadingIcon').style.display = '';
     }
-    //Read an XML file from a URL or pass in a raw XML string.
-    atlas.io.read(fileName).then(r => {
 
+    //Remove any previously loaded icon images.
+    if (imageIcons.length > 0) {
+        for (var i = 0; i < imageIcons.length; i++) {
+            mapinput.imageSprite.remove(imageIcons[i]);
+        }
+
+        imageIcons = [];
+    }
+
+    //Remove any previously loaded ground overlays.
+    if (imageLayers.length > 0) {
+        mapinput.layers.remove(imageLayers);
+        imageLayers = [];
+    }
+    console.log(url)
+    atlas.io.read(url, {
+        //Proxy service for accessing cross domain assets that may not have CORs enabled.
+        // proxyService: proxyServiceUrl
+    }).then(async r => {
+        console.log(r)
         if (r) {
+
+            //Check to see if there are any icons in the data set that need to be loaded into the map resources.
+            if (r.icons) {
+                //For each icon image, create a promise to add it to the map, then run the promises in parrallel.
+                var imagePromises = [];
+
+                //The keys are the names of each icon image.
+                imageIcons = Object.keys(r.icons);
+
+                if (imageIcons.length !== 0) {
+                    imageIcons.forEach(function (key) {
+                        imagePromises.push(mapinput.imageSprite.add(key, r.icons[key]));
+                    });
+
+                    await Promise.all(imagePromises);
+                }
+            }
+
+            //Load all features.
+            if (r.features && r.features.length > 0) {
+                ds.add(r.features);
+            }
+
+            //Load all ground overlays.
+            if (r.groundOverlays && r.groundOverlays.length > 0) {
+                mapinput.layers.add(r.groundOverlays);
+
+                imageLayers = r.groundOverlays;
+            }
+
+            //If bounding box information is known for data, set the map view to it.
+            if (r.bbox) {
+                mapinput.setCamera({ bounds: r.bbox, padding: 50 });
+            }
+
+            // Check to see which map were loading the files into
             if(mapinput === previewMap){
                 document.getElementById('previewLoadingIcon').style.display = 'none';
             }else{
                 document.getElementById('mainLoadingIcon').style.display = 'none';
-            }  
-            //Add the feature data to the data source.
-            // ds.add(r);
-            //Update the features in the data source.
-            ds.setShapes(r);
-            //If bounding box information is known for data, set the map view to it.
-            if (r.bbox) {
-                mapinput.setCamera({
-                    bounds: r.bbox,
-                    padding: 50
-                });
-                // Check to see which map were loading the files into
-
             }
+
         }
+    });
+
+    //Read an XML file from a URL or pass in a raw XML string.
+    // atlas.io.read(fileName).then(r => {
+        // if (r) {
+        //     if(mapinput === previewMap){
+        //         document.getElementById('previewLoadingIcon').style.display = 'none';
+        //     }else{
+        //         document.getElementById('mainLoadingIcon').style.display = 'none';
+        //     }  
+        //     //Add the feature data to the data source.
+        //     // ds.add(r);
+        //     //Update the features in the data source.
+        //     ds.setShapes(r);
+        //     //If bounding box information is known for data, set the map view to it.
+        //     if (r.bbox) {
+        //         mapinput.setCamera({
+        //             bounds: r.bbox,
+        //             padding: 50
+        //         });
+        //         // Check to see which map were loading the files into
+
+        //     }
+        // }
         // NOTE: KML/KMZ can contain ground overlays which are returned in the "groundOverlay" property of the data set.
         //       Additionally, any images parsed for use as custom icons when rendering points are in the "icons" property of 
         //       the data set and should be added to the maps resource before adding the data to the data source.
         //       See the "Load KML onto map" sample for more complete example for KML/KMZ data sets.
-    });
+    // });
+    
 }
 
 /******************************************************************************************************************************
@@ -274,7 +359,7 @@ function submitFilesForm(form) {
 
                 // Added files are moved via the web server to 'app/public/data/File Uploads'
                 // Create a file name URL to pass into other functions to load the data
-                fileNameURL = '/data/File Uploads' + JSONFile[0]
+                fileNameURL = '/data/fileUploads' + JSONFile[0]
                 console.log(fileNameURL)
 
                 // Get and set the file information to the MyFiles object
@@ -377,10 +462,6 @@ function createLayers(){
 
         // Add them to the map and reload the shapefile function
         map.layers.add(newlyAddedLayers, 'labels');
-        
-        map.imageSprite.add("app\public\images\icons\ranger_station.png")
-        map.imageSprite.add("app\public\images\icons\placemark_circle.png")
-        map.imageSprite.add("app\public\images\icons\campground.png")
 
         //Add a click event to the layers to show a popup of what the user clicked on.
         map.events.add('click', newlyAddedLayers, featureClicked);

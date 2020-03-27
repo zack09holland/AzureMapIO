@@ -27,11 +27,16 @@ app.use(upload());
 // Express Middleware for serving static files
 app.use(express.static(path.join(__dirname, 'app/public/')));
 
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    next();
+  });
 // HTTP POST
 // upload image files to server
 app.post("/upload", function(request, response) {
-  var addedFiles = new Array();
-  if(request.files) {
+    
+    var addedFiles = new Array();
+    if(request.files) {
       var arr;
       if(Array.isArray(request.files.filesfld)) {
           arr = request.files.filesfld;
@@ -54,7 +59,7 @@ app.post("/upload", function(request, response) {
           addedFiles[i] = "/" + file.name;
           console.log(addedFiles)
           MyFiles = addedFiles
-          file.mv("app/public/data/File Uploads" + addedFiles[i], function (err) {
+          file.mv("app/public/data/fileUploads" + addedFiles[i], function (err) {
               if(err) {
                   console.log(err);
               }
