@@ -44,6 +44,7 @@ function updatePolygonLayer() {
 
     //Update all the options in the polygon layer.
     previewlayers[0].setOptions(options);
+    // previewSimpleSpatialLayer[0].setOptions(options);
 
 
     document.getElementById('polyDesignCodeOutput').value = JSON.stringify(options, null, '\t').replace(/\"([^(\")"]+)\":/g, "$1:");
@@ -72,9 +73,9 @@ function getPolygonInputOptions() {
 }
 
 function getPolygonPropertyValue(propertyName, value) {
-    if (removeDefaults && defaultPolygonOptions[propertyName] === value) {
-        return undefined;
-    }
+    // if (removeDefaults && defaultPolygonOptions[propertyName] === value) {
+    //     return undefined;
+    // }
     return value;
 }
 
@@ -147,6 +148,7 @@ function updateLineLayer() {
 
     //Update all the options in the bubble layer.
     previewlayers[1].setOptions(options);
+    // previewSimpleSpatialLayer[1].setOptions(options);
 
     document.getElementById('lineDesignCodeOutput').value = JSON.stringify(options, null, '\t').replace(/\"([^(\")"]+)\":/g, "$1:");
 }
@@ -183,9 +185,9 @@ function getLineInputOptions() {
 }
 
 function getLinePropertyValue(propertyName, value) {
-    if (removeDefaults && defaultLineOptions[propertyName] === value) {
-        return undefined;
-    }
+    // if (removeDefaults && defaultLineOptions[propertyName] === value) {
+    //     return undefined;
+    // }
     return value;
 }
 
@@ -253,9 +255,9 @@ function getPointInputOptions() {
 }
 
 function getPointPropertyValue(propertyName, value) {
-    if (removeDefaults && defaultPointOptions[propertyName] === value) {
-        return undefined;
-    }
+    // if (removeDefaults && defaultPointOptions[propertyName] === value) {
+    //     return undefined;
+    // }
     return value;
 }
 
@@ -316,9 +318,9 @@ function getSimpleInputOptions() {
 }
 
 function getSimplePropertyValue(propertyName, value) {
-    if (removeDefaults && defaultSimpleOptions[propertyName] === value) {
-        return undefined;
-    }
+    // if (removeDefaults && defaultSimpleOptions[propertyName] === value) {
+    //     return undefined;
+    // }
     return value;
 }
 
@@ -362,7 +364,7 @@ function updateOGCLayer() {
     //Update the options on the layer.
     previewlayers[4].setOptions(options);
 
-    document.getElementById('OGCCodeOutput').value = JSON.stringify(options, null, '\t').replace(/\"([^(\")"]+)\":/g, "$1:");
+    document.getElementById('OGCDesignCodeOutput').value = JSON.stringify(options, null, '\t').replace(/\"([^(\")"]+)\":/g, "$1:");
 }
 
 function getOGCLayerOptions() {
@@ -388,9 +390,9 @@ function getOGCLayerOptions() {
 }
 
 function getOGCPropertyValue(propertyName, value) {
-    if (removeDefaults && defaultOGCOptions[propertyName] === value) {
-        return undefined;
-    }
+    // if (removeDefaults && defaultOGCOptions[propertyName] === value) {
+    //     return undefined;
+    // }
 
     return value;
 }

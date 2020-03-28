@@ -18,10 +18,11 @@ function GetMap() {
         center: [-94.6, 39.1],
         zoom: 3,
         view: 'Auto',
+        style: 'grayscale_light',
 
         authOptions: {
             authType: 'subscriptionKey',
-            subscriptionKey: 'TfUWvWqVnTGKGMcIvxr5coNt7eiWrKxh6wJe0keVZSs'
+            subscriptionKey: 'fxg6dMtNQQ3zqgzk_loQeMxznejQj5swKZF9Vcj5rQ0'
         }
     });
     

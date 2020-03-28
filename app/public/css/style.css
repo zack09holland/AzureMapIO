@@ -55,8 +55,7 @@ Top Bar
 Brent's Bootstrap Tweaks
     
  **********************************************************************************************************************/
-
-.bmcard {
+ .bmcard {
     border: 0 !important;
     border-radius: 1 !important;
     background-color: #fafafa !important;
@@ -78,6 +77,10 @@ Brent's Bootstrap Tweaks
 .bmpanel {
     background-color: #fff;
     border: 1px solid #ddd;
+}
+
+.bmbutton {
+    margin-bottom: 8px !important;
 }
 
 /**********************************************************************************************************************
@@ -206,8 +209,20 @@ Leftbox
     content: "+";
 }
 
+/* OGC Layer Examples */
+#layerPicker {
+    width: 200px;
+    height: 200px;
+    overflow-y: auto;
+}
 
-
+.content {
+    padding: 0 18px;
+    display: none;
+}
+#servicesDD{
+    width: 50%;
+}
 /* Choropleth Legend */
 #legend {
     position: relative;

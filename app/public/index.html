@@ -60,25 +60,6 @@
     <div class="" id="headerDiv">
       <img id="headerLogo" src="./images/headerLogo.png" alt="Guy Carpenter">
     </div>
-
-      <!-- Dropdown for map options -->
-      <div class="topbarDropdownBtn" id="addFileDropdown">
-        <div id="dropdownMenuButton" class="dropdown ">
-          <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenu2"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Map Data Options
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button class="dropdown-item btn btn-sm" type="button" disabled>Drawing Tools</button>
-
-
-            <!-- Button trigger modal -->
-            <!-- <button class="dropdown-item btn" data-toggle="modal" data-target="#shpModal" onclick="createPreviewMap()">
-              Add File(s)
-            </button> -->
-          </div>
-        </div>
-      </div>
   </div>
    
   <div style="text-align: left;"><div id="progress"></div></div>
@@ -114,7 +95,7 @@
               <div class="bmpanel panel-default">
                 <div class="panel-heading bmpanel-heading">
                   <h5 class="panel-title" data-toggle="collapse" data-target="#collapseTwo">
-                    Thematic                  
+                    Data Layers                  
                   </h5>
                 </div>
               </div>
@@ -127,12 +108,24 @@
 <!-- Choropleth Layer Selection -->
                   <li>
                     <input class="treeviewChBx" type="checkbox" id="choroplethItems" />
-                    <label class="bmlabel" for="choroplethItems">Choropleth</label>
+                    <label class="bmlabel" for="choroplethItems">Thematic</label>
                     <ul>
                       <!-- Choropleth Info -->
+                      <!-- State Data -->
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="simpleChoropleth" />
-                        <label class="bmlabel" for="simpleChoropleth">Simple</label>
+                        <label class="bmlabel" for="simpleChoropleth">State</label>
+                        <div class="choroplethInfo" style="display: none;">
+                          <div id="legend">
+                            <p>However over the states to get a popup with more information</p>
+                            <p>Population Density (people/mi<sup>2</sup>)</p>
+                          </div>
+                        </div>
+                      </li>
+                      <!-- County Data -->
+                      <li>
+                        <input class="treeviewChBx" type="checkbox" id="simpleChoropleth" />
+                        <label class="bmlabel" for="simpleChoropleth">State</label>
                         <div class="choroplethInfo" style="display: none;">
                           <div id="legend">
                             <p>However over the states to get a popup with more information</p>
@@ -617,18 +610,12 @@
                   <li>
                     <input class="treeviewChBx" type="checkbox" id="geospatialItems" />
                     <label for="geospatialItems">Geospatial Files</label>
-
                     <ul>
                       <!-- Simple Spatial Data -->
                       <li>
-
                         <input class="treeviewChBx" type="checkbox" id="simpleSpatial" />
                         <label for="simpleSpatial">Simple Spatial Data</label>
-                        <div class="simpleSpatialInfo" style="display: none;">                          
-                          <p>
-                            To add a file click the addFile button in the top right corner
-                          </p>
-                         
+                        <div class="simpleSpatialInfo" style="display: none;">                         
                           <p>
                             Here is a list of all the properties within a SpatialDataSet object.
                           </p>
@@ -641,6 +628,31 @@
                               <li><strong>icons</strong> - A set of icon URL's. Key = icon name, Value = URL.</li>
                               <li><strong>type</strong> - The GeoJSON type; "FeatureCollection".</li>
                           </ul>
+                        </div>
+                      </li>
+                      <!-- OGC Spatial Data -->
+                      <li>
+                        <input class="treeviewChBx" type="checkbox" id="ogcLayer" />
+                        <label for="ogcLayer">OGC Layer Data</label>
+                        <div class="ogcLayerInfo" style="display: none;">                         
+                          <p>
+                            Here is a list of all the properties within a SpatialDataSet object.
+                          </p>
+                          OGC Service:<br />
+
+                          <select id="servicesDD" onchange="loadSelectInput()"></select><br /><br />
+
+                          
+                          Service URL: <input type="text" id="inputTbx" /><input type="button" value="Load"
+                            onclick="loadUserInput()" /><br /><br />
+
+                          <input id="useProxyService" type="checkbox" /> Use Proxy Service<br /><br />
+
+                          <input id="bringIntoView" type="checkbox" checked="checked" /> Bring into view<br /><br />
+
+                          <b>Sublayers</b><br /><br />
+
+                          <div id="layerPicker"></div>
                         </div>
                       </li>
                       <!-- SHP Files -->
@@ -1503,6 +1515,7 @@
 <script type="text/javascript" src="js/MapTools/addFileLayer.js"></script>
 <script type="text/javascript" src="js/MapTools/layerDesignOptions.js"></script>
 <!-- Spatial Map JS -->
-
+<!-- <script type="text/javascript" src="js/MapSpatial/addGeospatialExamples.js"></script> -->
+<script type="text/javascript" src="js/MapSpatial/OGCFileExplorer.js"></script>
 
 </html>

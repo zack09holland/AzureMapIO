@@ -5,9 +5,12 @@
 var express = require('express'),
     path = require('path'),
     app = express();
+    
+// var cors=require('./cors');
+// app.use(cors.permission)
+
 const upload = require("express-fileupload");
-var cors = require('cors')
-app.use(cors()) // Use this after the variable declaration
+
 
 // ==============================================================================
 // EXPRESS CONFIGURATION
@@ -33,6 +36,7 @@ app.use(express.static(path.join(__dirname, 'app/public/')));
 //     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
 //     next();
 //   });
+
 // HTTP POST
 // upload image files to server
 app.post("/upload", function(request, response) {
@@ -50,14 +54,6 @@ app.post("/upload", function(request, response) {
       for(var i = 0; i < arr.length; i++) {
           var file = arr[i];
           console.log(file)
-          // if(file.mimetype.substring(0,5).toLowerCase() == "application/octec-stream") {
-          //   addedFiles[i] = "/" + file.name;
-          //     file.mv("app/public/data" + addedFiles[i], function (err) {
-          //         if(err) {
-          //             console.log(err);
-          //         }
-          //     });
-          // }
           addedFiles[i] = "/" + file.name;
           console.log(addedFiles)
           MyFiles = addedFiles

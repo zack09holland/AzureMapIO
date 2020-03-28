@@ -17,6 +17,8 @@
 var defaultPolygonOptions, defaultLineOptions, 
     defaultPointOptions, defaultSimpleOptions, 
     defaultOGCOptions;
+//Create a popup
+var popup = new atlas.Popup();
 
 function createPreviewMap(){
      //Initialize a map instance.
@@ -33,15 +35,14 @@ function createPreviewMap(){
             subscriptionKey: 'TfUWvWqVnTGKGMcIvxr5coNt7eiWrKxh6wJe0keVZSs'
         }
     });
+    
     previewMap.events.add('ready', function () {
         //Create a data source and add it to the map.
         previewMapDatasource = new atlas.source.DataSource();
         previewMap.sources.add(previewMapDatasource);
 
-        //Create a popup
-        popup = new atlas.Popup();
-
         previewlayers = [
+            new atlas.layer.SimpleDataLayer(previewMapDatasource, null, {}),
             //Used to configure design options for Polygon layers.
             new atlas.layer.PolygonLayer(previewMapDatasource, null, {
                 filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']]	
@@ -55,22 +56,20 @@ function createPreviewMap(){
                 filter: ['any', ['==', ['geometry-type'], 'Point'], ['==', ['geometry-type'], 'MultiPoint']] 
             }),
             //Used to configure design options for Simple Layers
-            new atlas.layer.SimpleDataLayer(previewMapDatasource, null, {}),
+            // new atlas.layer.SimpleDataLayer(previewMapDatasource, null, {}),
             //Used to configure design options for OGC Layers
-            new atlas.layer.OgcMapLayer(previewMapDatasource, null, {}),
+            // new atlas.layer.OgcMapLayer(previewMapDatasource, null, {}),
         ];
+        // simpleSpatialLayer = new atlas.layer.SimpleDataLayer(previewMapDatasource, null, {});
+        // ogcDataLayer = new atlas.layer.OgcMapLayer(previewMapDatasource, null, {});
         // Add layers to preview map
-        previewMap.layers.add(previewlayers, 'labels');
-        previewMap.imageSprite.add("app\public\images\icons\ranger_station.png")
-        previewMap.imageSprite.add("app\public\images\icons\placemark_circle.png")
-        previewMap.imageSprite.add("app\public\images\icons\campground.png")
+        previewMap.layers.add(previewlayers);
+
         // Get the options and set them as the default options for those layers
         defaultPolygonOptions = previewlayers[0].getOptions();
         defaultLineOptions = previewlayers[1].getOptions();
         defaultPointOptions = previewlayers[2].getOptions();
         defaultSimpleOptions = previewlayers[3].getOptions();
-        defaultOGCOptions = previewlayers[4].getOptions();
-
         // Call functions to update the layers
         updatePolygonLayer();
         updateLineLayer();
@@ -82,7 +81,8 @@ function createPreviewMap(){
 
         // Add the layers with the options set during the updating processing 
         // to the global MyLayers object so they can be added to the main map
-        MyLayers.newLayers = previewlayers
+        MyLayers.newLayers = previewlayers;
+        // MyLayers.simpleSpatialLayer = simpleSpatialLayer;
     })
 }
 
@@ -106,7 +106,7 @@ function loadShapeFile(ds,mapInput,url) {
     };
     shpWorker = cw({ data: wfunc }, 2);
 
-    popup.close();
+    // popup.close();
     // Check to see which map were loading the files into
     if(mapInput === previewMap){
         document.getElementById('previewLoadingIcon').style.display = '';
@@ -195,19 +195,15 @@ function featureClicked(e) {
  *          - CSV (with spatial columns).
  *     
 **************************************************************************************************************************************************/
-// var proxyServiceUrl = '/data/CorsEnabledProxyService.ashx?url=';
+var proxyServiceUrl = window.location.origin + '/Common/CorsEnabledProxyService.ashx?url=';
 
 function addSimpleFileLayer(ds,mapinput,url,isAbsolute) {
-    // var proxyServiceUrl = "https://cors-anywhere.herokuapp.com/";
-    // var proxyServiceUrl = proxyurl + window.location.origin + url;
-    // console.log(proxyServiceUrl)
-
     var imageLayers = [], imageIcons = [];
 
-    // if (!isAbsolute) {
-    //     url = proxyServiceUrl + window.location.origin + url;
-    //     console.log(url)
-    // }
+    if (!isAbsolute) {
+        url = window.location.origin + url;
+        console.log(url)
+    }
     ds.clear();
 
     // Check to see which map were loading the files into
@@ -222,7 +218,6 @@ function addSimpleFileLayer(ds,mapinput,url,isAbsolute) {
         for (var i = 0; i < imageIcons.length; i++) {
             mapinput.imageSprite.remove(imageIcons[i]);
         }
-
         imageIcons = [];
     }
 
@@ -238,79 +233,40 @@ function addSimpleFileLayer(ds,mapinput,url,isAbsolute) {
     }).then(async r => {
         console.log(r)
         if (r) {
-
             //Check to see if there are any icons in the data set that need to be loaded into the map resources.
             if (r.icons) {
                 //For each icon image, create a promise to add it to the map, then run the promises in parrallel.
                 var imagePromises = [];
-
                 //The keys are the names of each icon image.
                 imageIcons = Object.keys(r.icons);
-
                 if (imageIcons.length !== 0) {
                     imageIcons.forEach(function (key) {
                         imagePromises.push(mapinput.imageSprite.add(key, r.icons[key]));
                     });
-
                     await Promise.all(imagePromises);
                 }
             }
-
             //Load all features.
             if (r.features && r.features.length > 0) {
                 ds.add(r.features);
             }
-
             //Load all ground overlays.
             if (r.groundOverlays && r.groundOverlays.length > 0) {
                 mapinput.layers.add(r.groundOverlays);
-
                 imageLayers = r.groundOverlays;
             }
-
             //If bounding box information is known for data, set the map view to it.
             if (r.bbox) {
                 mapinput.setCamera({ bounds: r.bbox, padding: 50 });
             }
-
             // Check to see which map were loading the files into
             if(mapinput === previewMap){
                 document.getElementById('previewLoadingIcon').style.display = 'none';
             }else{
                 document.getElementById('mainLoadingIcon').style.display = 'none';
             }
-
         }
     });
-
-    //Read an XML file from a URL or pass in a raw XML string.
-    // atlas.io.read(fileName).then(r => {
-        // if (r) {
-        //     if(mapinput === previewMap){
-        //         document.getElementById('previewLoadingIcon').style.display = 'none';
-        //     }else{
-        //         document.getElementById('mainLoadingIcon').style.display = 'none';
-        //     }  
-        //     //Add the feature data to the data source.
-        //     // ds.add(r);
-        //     //Update the features in the data source.
-        //     ds.setShapes(r);
-        //     //If bounding box information is known for data, set the map view to it.
-        //     if (r.bbox) {
-        //         mapinput.setCamera({
-        //             bounds: r.bbox,
-        //             padding: 50
-        //         });
-        //         // Check to see which map were loading the files into
-
-        //     }
-        // }
-        // NOTE: KML/KMZ can contain ground overlays which are returned in the "groundOverlay" property of the data set.
-        //       Additionally, any images parsed for use as custom icons when rendering points are in the "icons" property of 
-        //       the data set and should be added to the maps resource before adding the data to the data source.
-        //       See the "Load KML onto map" sample for more complete example for KML/KMZ data sets.
-    // });
-    
 }
 
 /******************************************************************************************************************************
@@ -355,7 +311,7 @@ function submitFilesForm(form) {
         if (x.readyState == 4) {
             progress.innerText = progress.style.width = "";
             // form.filesfld.value = "";
-            // console.log(x)
+            console.log(x)
             if (x.status == 200) {
                 JSONFile = JSON.parse(x.responseText);
                 console.log(JSONFile[0])
@@ -383,9 +339,7 @@ function submitFilesForm(form) {
                     else if(fileExtension === 'zip'){
                         loadShapeFile(previewMapDatasource,previewMap,fileNameURL)
                     }
-                    else if(fileExtension === 'kml' || fileExtension === 'xml'){
-                        console.log(fileNameURL)
-                        console.log(fileName)
+                    else if(fileExtension === 'kml' || fileExtension === 'xml' || fileExtension === 'json' || fileExtension === 'csv' ){
                         addSimpleFileLayer(previewMapDatasource,previewMap,fileNameURL)
                     }    
                 } catch (error) {
@@ -420,47 +374,41 @@ function createLayers(){
         var newLayerDatasource = new atlas.source.DataSource();
         map.sources.add(newLayerDatasource);
 
-        //Create an fill pattern image from one of the built-in templates and use it with a polygon layer.
-        // map.imageSprite.createFromTemplate('myFillPattern', 'dots', 'red', 'transparent').then(function () {}
-
 
         // Create new layers with a new datasource associated with the main map
         newlyAddedLayers = [
             new atlas.layer.PolygonLayer(newLayerDatasource, null, {}),
             new atlas.layer.LineLayer(newLayerDatasource, null, {}),
             new atlas.layer.BubbleLayer(newLayerDatasource, null, {}),
-            new atlas.layer.SimpleDataLayer(newLayerDatasource, null, {}),
-            new atlas.layer.OgcMapLayer(newLayerDatasource, null, {})
+            // new atlas.layer.SimpleDataLayer(newLayerDatasource, null, {}),
+            // new atlas.layer.OgcMapLayer(newLayerDatasource, null, {})
         ];
-        
         // Get the options from the newlayers object
         polygonOptions = MyLayers.newLayers[0].options
         lineOptions = MyLayers.newLayers[1].options
         pointOptions = MyLayers.newLayers[2].options
-        simpleOptions = MyLayers.newLayers[3]._options
-        OGCOptions = MyLayers.newLayers[4].options
+        // simpleOptions = MyLayers.newLayers[3]._options
+        // simpleOptions = MyLayers.simpleSpatialLayer._options
+        // OGCOptions = MyLayers.newLayers[4].options
 
         // console.log("MyLayers: ",MyLayers.newLayers)
         // console.log("polygonOptions : ", polygonOptions)
         // console.log("lineOptions : ", lineOptions)
         // console.log("pointOptions : ", pointOptions)
-        // console.log("simpleOptions : ", simpleOptions)
-        // console.log("OGCOptions : ", OGCOptions)
 
         // Set the options for all the newlyAddedLayers
         newlyAddedLayers[0].setOptions(polygonOptions);
         newlyAddedLayers[1].setOptions(lineOptions);
         newlyAddedLayers[2].setOptions(pointOptions);
-        newlyAddedLayers[3].setOptions(simpleOptions);
-        newlyAddedLayers[4].setOptions(OGCOptions);
 
         // Set the datasource of the added layers to the new
         // datasource so it can be added to the main map
         newlyAddedLayers[0].options.source = newLayerDatasource
         newlyAddedLayers[1].options.source = newLayerDatasource
         newlyAddedLayers[2].options.source = newLayerDatasource
-        newlyAddedLayers[3]._datasource = newLayerDatasource
-        newlyAddedLayers[4].options.source = newLayerDatasource
+        
+        // newlyAddedLayers[3]._datasource = newLayerDatasource
+        // newlyAddedLayers[4].options.source = newLayerDatasource
         // console.log(newlyAddedLayers)
 
         // Add them to the map and reload the shapefile function
@@ -468,6 +416,7 @@ function createLayers(){
 
         //Add a click event to the layers to show a popup of what the user clicked on.
         map.events.add('click', newlyAddedLayers, featureClicked);
+    
 
         // Check the file type of the new layer, files are loaded in differently
         // based on their extension type
@@ -477,7 +426,7 @@ function createLayers(){
         else if (MyFiles.newFileExt === 'shp' || MyFiles.newFileExt === 'prj' || MyFiles.newFileExt === 'dbf' || MyFiles.newFileExt === 'cpg' ){
             loadShapeFile(newLayerDatasource,map,MyFiles.newFileName)
         }       
-        else if(fileExtension === 'kml' || fileExtension === 'xml'){
+        else if(fileExtension === 'kml' || fileExtension === 'xml' || fileExtension === 'json' || fileExtension === 'csv' ){
             addSimpleFileLayer(newLayerDatasource,map,MyFiles.newFileURL)
         }    
     })
