@@ -42,7 +42,6 @@ function createPreviewMap(){
         previewMap.sources.add(previewMapDatasource);
 
         previewlayers = [
-            new atlas.layer.SimpleDataLayer(previewMapDatasource, null, {}),
             //Used to configure design options for Polygon layers.
             new atlas.layer.PolygonLayer(previewMapDatasource, null, {
                 filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']]	
@@ -69,12 +68,12 @@ function createPreviewMap(){
         defaultPolygonOptions = previewlayers[0].getOptions();
         defaultLineOptions = previewlayers[1].getOptions();
         defaultPointOptions = previewlayers[2].getOptions();
-        defaultSimpleOptions = previewlayers[3].getOptions();
+
         // Call functions to update the layers
         updatePolygonLayer();
         updateLineLayer();
         updatePointLayer();
-        updateSimpleLayer();
+        // updateSimpleLayer();
         // updateOGCLayer();
 
         // console.log(previewlayers)
