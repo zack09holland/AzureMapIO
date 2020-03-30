@@ -454,18 +454,6 @@ $("#addFileBtn").click(function () {
     // })
 });
 
-// simpleSpatial
-$("#simpleSpatial").click(function () {
-    if ($(this).is(":checked")) {
-        $('.simpleSpatialInfo').css({
-            display: "block"
-        });
-        
-    } else {
-        $('.simpleSpatialInfo').css({
-            display: "none"
-        });
-    }
-});
+
 
 

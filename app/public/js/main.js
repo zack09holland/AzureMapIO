@@ -22,7 +22,7 @@ function GetMap() {
 
         authOptions: {
             authType: 'subscriptionKey',
-            subscriptionKey: 'fxg6dMtNQQ3zqgzk_loQeMxznejQj5swKZF9Vcj5rQ0'
+            subscriptionKey: process.env.KEY
         }
     });
     
@@ -32,5 +32,6 @@ function GetMap() {
         mapControls()
         drawingTools();
         mapSearch();
+
     });
 }

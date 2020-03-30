@@ -122,68 +122,24 @@
                           </div>
                         </div>
                       </li>
-                      <!-- County Data -->
+                      <!-- Thematic by County -->
                       <li>
-                        <input class="treeviewChBx" type="checkbox" id="simpleChoropleth" />
-                        <label class="bmlabel" for="simpleChoropleth">State</label>
-                        <div class="choroplethInfo" style="display: none;">
-                          <div id="legend">
-                            <p>However over the states to get a popup with more information</p>
-                            <p>Population Density (people/mi<sup>2</sup>)</p>
-                          </div>
+                        <input class="treeviewChBx" type="checkbox" id="countyChoropleth" />
+                        <label class="bmlabel" for="countyChoropleth">County</label>
+                        <div class="countyChoroplethInfo" style="display: none;">
+                            <div class="countyLegend">
+                              <br>
+                              <p>
+                                This sample shows the estimated % population change between 2000 and 2010 of each US county relative
+                                to the 2000 census population data. This sample uses two data files; a GeoJSON file that contains the US county boundary data, and a CSV file that contains the population
+                                data. This sample cross references the population data and adds it as properties of the county boundary.
+                              </p>
+                              <br />
+                            </div>                            
+                          
                         </div>
-                      </li>
-                      <!-- Extruded Choropleth Info -->
-                      <li>
-                        <input class="treeviewChBx" type="checkbox" id="extrudedChoropleth" />
-                        <label class="bmlabel" for="extrudedChoropleth">Extruded</label>
-                        <div class="extrudedChoroplethInfo" style="display: none;">
-                          <div id="extrudedLegend">
-                            <p>Population Density (people/mi<sup>2</sup>)</p>
-                          </div>
-                        </div>
-                      </li>
-                      <!-- Animated Choropleth Info -->
-                      <li>
-                        <input class="treeviewChBx" type="checkbox" id="animatedChoropleth" />
-                        <label class="bmlabel" for="animatedChoropleth">Animated</label>
-                        <div class="animatedChoroplethInfo" style="display: none;">
-                          <div class="animatedLegend">
-                            <br>
-                            <p>
-                              This sample shows the estimated % population change between 2000 and 2010 of each US county relative
-                              to the 2000 census population data. This sample uses two data files; a GeoJSON file that contains the US county boundary data, and a CSV file that contains the population
-                              data. This sample cross references the population data and adds it as properties of the county boundary.
-                            </p>
-                            <hr>
-                            <p>
-                              Population Change Estimates 2000 - 2010
-                            </p>
-                            <canvas id="animatedLegendCanvas"></canvas>
-                            
-                            <div id="animatedlegend-row" class="row">
-                              <div class="">
-                                <p>-30%</p>
-                              </div>
-                              <div class="col-10">
-                                <p class="animatedlegend-mid">0%</p>
-                              </div>
-                              <div class="animatedlegend-max">
-                                <p>30%</p>
-                              </div>
-                            </div>
-                            <br />
-                            <div id="animatedlegend-row" class="row">
-                              <div class="col-6">
-                                <input id="playPauseBtn" type="button" value="Play/Pause" disabled="disabled" onclick="togglePlayPause()" />
-                              </div>
-                              <div class="col-6">
-                                <p class="animatedlegend-label"><strong>2000</strong></p>
-                              </div>
-                            </div>
-                        </div>
-                        </div>
-                      </li>
+                      </li>                 
+
                     </ul>
                   </li>
 <!-- Heat Map Layer Selection -->
@@ -191,10 +147,10 @@
                     <input class="treeviewChBx" type="checkbox" id="heatMapItems" />
                     <label class="bmlabel" for="heatMapItems">Heat Map</label>
                     <ul>
+                    <!-- Default Heat Map Info -->
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="runHMOptions" />
-                        <label class="bmlabel" for="runHMOptions">Options</label>
-                        <!-- Clustered Heat Map Info -->
+                        <label class="bmlabel" for="runHMOptions">Default</label>
                         <div class="hmOptions" style="display: none;">
                           <div id="layerInfo">
                               <p>
@@ -305,13 +261,12 @@
                               </div>
                           </div>
                         </div>
-                      </li>
-                      <li>
+                      </li>                      
+                      <!-- Clustered Heat Map Info -->
+                      <!-- <li>
                         <input class="treeviewChBx" type="checkbox" id="runClusteredHM" />
                         <label class="bmlabel" for="runClusteredHM">Clustered</label>
-                        <!-- Clustered Heat Map Info -->
                         <div class="clusteredHM" style="display: none;">
-                          <!-- <hr> -->
                           <div id="layerInfo">
                             <p>When the cluster radius is small, the heat map will look nearly identical
                               to a heat map using the unclustered data points but will perform much better.
@@ -320,14 +275,13 @@
                             </p>
                           </div>
                         </div>
-                      </li>
-
-                      <li>
+                      </li> -->
+                      
+                      <!-- Consistent Heat Map Info -->                      
+                      <!-- <li>
                         <input class="treeviewChBx" type="checkbox" id="runConsistentHM" />
                         <label class="bmlabel" for="runConsistentHM">Consistent</label>
-                        <!-- Consistent Heat Map Info -->
                         <div class="consistentHM" style="display: none;">
-                          <!-- <hr> -->
                           <div id="layerInfo">
                             <p> In this sample, the heat map will scale consistently between zoom levels 10 and 22.
                               Each zoom level of the map has twice as many pixels vertically and horizontally as the
@@ -338,14 +292,13 @@
                             </p>
                           </div>
                         </div>
-                      </li>
+                      </li> -->
 
-                      <li>
+                      <!-- Weighted Heat Map Info -->
+                      <!-- <li>
                         <input class="treeviewChBx" type="checkbox" id="runWeightedHM" />
                         <label class="bmlabel" for="runWeightedHM">Weighted</label>
-                        <!-- Weighted Heat Map Info -->
                         <div class="weightedHM" style="display: none;">
-                          <!-- <hr> -->
                           <div id="layerInfo">
                             <p> This sample shows how to create a heat map which defines the intensity of each data
                               point based on a property.
@@ -355,62 +308,38 @@
                             </p>
                           </div>
                         </div>
-                      </li>
+                      </li> -->
                     </ul>
                   </li>
-<!-- Weather Layer Selection -->
+<!-- Clustered Selection -->
                   <li>
-                    <input class="treeviewChBx" type="checkbox" id="weatherMapItems" />
-                    <label class="bmlabel" for="weatherMapItems">Weather Maps</label>
+                    <input class="treeviewChBx" type="checkbox" id="clusteredItems" />
+                    <label class="bmlabel" for="clusteredItems">Clustered</label>
                     <ul>
+                      <!-- Point Clusters in Bubble Layer -->
                       <li>
-                        <input class="treeviewChBx" type="checkbox" id="runWeather" />
-                        <label class="bmlabel" for="runWeather">Static Weather</label>
-                        <!-- Weather Info -->
-                        <div class="weatherMap" style="display: none;">
-                          <!-- <hr> -->
-                          <div id="layerInfo">
-                            Select weather overlay:
-                            <select id="layerSelector" onchange="updateTileLayer()">
-                              <option value="microsoft.weather.radar.main" selected="selected">Radar</option>
-                              <option value="microsoft.weather.infrared.main">Infrared</option>
-                            </select>
-                            <p>
-                              This sample shows how to add weather radar and infrared overlays to the map as a tile
-                              layer.
-                            </p>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <input class="treeviewChBx" type="checkbox" id="animatedWeatherMap" />
-                        <label class="bmlabel" for="animatedWeatherMap">Animated Weather</label>
-                        <!-- Animated Weather Info -->
-                        <div class="animatedWeatherMapInfo" style="display: none;">
-                          <!-- <hr> -->
-                          <div id="layerInfo">
-                            <div id="messagePanel"></div>
-                            <input type="button" value="Pause" onclick="animationManager.pause();" />
-                            <input type="button" value="Play" onclick="animationManager.play();" />
-                            <input type="button" value="Stop" onclick="animationManager.stop();" />
+                        <input class="treeviewChBx" type="checkbox" id="pointClusterBubble" />
+                        <label class="bmlabel" for="pointClusterBubble">Sized by Data</label>
+                        <div class="pointClusterBubbleInfo" style="display: none;">
+                          <p>
+                            This sample shows how to enable point based clustering on a data source and render them
+                            differently from individual
+                            points on the map. Clustered points have four properties;
+                          </p>
 
-                            <p> This sample shows how to animate an sequence of tile layers smoothly.
-                              This example uses the AnimatedTileLayer to animate through an array of tile layers.
-                              For this sample weather radar tiles from the <a
-                                href="https://www.mesonet.agron.iastate.edu/ogc/">Iowa Environmental Mesonet of Iowa
-                                State University</a>
-                              over the USA are animated for the last 50 minutes in 5 minute increments.
-                            </p>
-                          </div>
+                          <ul class="pointClusterBubbleInfo">
+                            <li><strong>cluster</strong> - A boolean value indicating that it is a cluster.</li>
+                            <li><strong>cluster_id</strong> - A unique id for the cluster which can be used with the
+                              DataSource
+                              <i>getClusterExpansionZoom</i>, <i>getClusterChildren</i>, and <i>getClusterLeaves</i>
+                              functions.</li>
+                            <li><strong>point_count</strong> - The number of points the cluster contains.</li>
+                            <li><strong>point_count_abbreviated</strong> - A string that abbreviates the point_count
+                              value if it is long. (i.e. 4,000 becomes 4K)</li>
+                          </ul>
                         </div>
                       </li>
-                    </ul>
-                  </li>
-<!-- Bubble Layer Selection -->
-                  <li>
-                    <input class="treeviewChBx" type="checkbox" id="bubbleItems" />
-                    <label class="bmlabel" for="bubbleItems">Bubble</label>
-                    <ul>
+
                       <!-- Bubble Layer Info -->
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="bubbleOptions" />
@@ -549,7 +478,51 @@
                           </div>
                         </div>
                       </li>
-                      <!-- Cluster Aggregates in Bubble Layer -->
+                    </ul>
+                  </li>
+
+<!-- Weather Layer Selection -->
+                  <li>
+                    <input class="treeviewChBx" type="checkbox" id="weatherMapItems" />
+                    <label class="bmlabel" for="weatherMapItems">Weather Maps</label>
+                    <ul>
+                      <!-- Radar Weather -->
+                      <li>
+                        <input class="treeviewChBx" type="checkbox" id="runRadarWeather" />
+                        <label class="bmlabel" for="runRadarWeather">Radar Weather</label>
+                        <!-- Weather Info -->
+                        <div class="radarWeatherMap" style="display: none;">
+                          <div id="layerInfo">
+                            <p>
+                              This sample shows how to add weather radar overlays to the map as a tile
+                              layer.
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                      <!-- Infared Weather -->
+                      <li>
+                        <input class="treeviewChBx" type="checkbox" id="runInfaredWeather" />
+                        <label class="bmlabel" for="runInfaredWeather">Infared Weather</label>
+                        <!-- Weather Info -->
+                        <div class="infaredWeatherMap" style="display: none;">
+                          <div id="layerInfo">
+                            <p>
+                              This sample shows how to add weather infrared overlays to the map as a tile
+                              layer.
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+
+                    </ul>
+                  </li>
+<!-- Bubble Layer Selection -->
+                  <!-- <li>
+                    <input class="treeviewChBx" type="checkbox" id="bubbleItems" />
+                    <label class="bmlabel" for="bubbleItems">Bubble</label>
+                    <ul>
+
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="clusterBubbles" />
                         <label class="bmlabel" for="clusterBubbles">Cluster Aggregates </label>
@@ -561,31 +534,10 @@
                           </p>
                         </div>
                       </li>
-                      <!-- Point Clusters in Bubble Layer -->
-                      <li>
-                        <input class="treeviewChBx" type="checkbox" id="pointClusterBubble" />
-                        <label class="bmlabel" for="pointClusterBubble">Point Clusters in Bubble Layer</label>
-                        <div class="pointClusterBubbleInfo" style="display: none;">
-                          <p>
-                            This sample shows how to enable point based clustering on a data source and render them
-                            differently from individual
-                            points on the map. Clustered points have four properties;
-                          </p>
 
-                          <ul class="pointClusterBubbleInfo">
-                            <li><strong>cluster</strong> - A boolean value indicating that it is a cluster.</li>
-                            <li><strong>cluster_id</strong> - A unique id for the cluster which can be used with the
-                              DataSource
-                              <i>getClusterExpansionZoom</i>, <i>getClusterChildren</i>, and <i>getClusterLeaves</i>
-                              functions.</li>
-                            <li><strong>point_count</strong> - The number of points the cluster contains.</li>
-                            <li><strong>point_count_abbreviated</strong> - A string that abbreviates the point_count
-                              value if it is long. (i.e. 4,000 becomes 4K)</li>
-                          </ul>
-                        </div>
-                      </li>
                     </ul>
-                  </li>
+                  </li> -->
+                
                 </ul>
                 <!-- End Layer Selections -->
               </div>
@@ -615,7 +567,8 @@
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="simpleSpatial" />
                         <label for="simpleSpatial">Simple Spatial Data</label>
-                        <div class="simpleSpatialInfo" style="display: none;">                         
+                        <div class="simpleSpatialInfo" style="display: none;">
+                          <p>The atlas.io.read function supports reading KML, KMZ, GPX, GeoRSS, GML, GeoJSON, CSV (with spatial columns)</p>                        
                           <p>
                             Here is a list of all the properties within a SpatialDataSet object.
                           </p>
@@ -646,13 +599,13 @@
                           Service URL: <input type="text" id="inputTbx" /><input type="button" value="Load"
                             onclick="loadUserInput()" /><br /><br />
 
-                          <input id="useProxyService" type="checkbox" /> Use Proxy Service<br /><br />
+                          <!-- <input id="useProxyService" type="checkbox" /> Use Proxy Service<br /><br /> -->
 
                           <input id="bringIntoView" type="checkbox" checked="checked" /> Bring into view<br /><br />
 
-                          <b>Sublayers</b><br /><br />
+                          <!-- <b>Sublayers</b><br /><br />
 
-                          <div id="layerPicker"></div>
+                          <div id="layerPicker"></div> -->
                         </div>
                       </li>
                       <!-- SHP Files -->
@@ -663,52 +616,34 @@
 
                         </div>
                         <ul>
-                          <!-- City SHP File  -->
+                          <!-- Small SHP Example - Chicago Bike Racks SHP File  -->
                           <li>
-                            <input class="treeviewChBx" type="checkbox" id="citiesSHP" />
-                            <label for="citiesSHP">Cities</label>
-                            <div class="citiesSHPInfo" style="display: none;">                          
-                            
+                            <input class="treeviewChBx" type="checkbox" id="smallSHP" />
+                            <label for="smallSHP">Small SHP File (322KB) </label>
+                            <div class="smallSHPInfo" style="display: none;">                          
+                                <p>
+                                  Chicago Bike Racks
+                                </p>
                             </div>
                           </li>
-                          <!-- Bike Racks SHP File  -->
+                          <!-- Medium SHP Example - German Postal Codes (17MB) SHP File  -->
                           <li>
-                            <input class="treeviewChBx" type="checkbox" id="chicagoBikeRacksSHP" />
-                            <label for="chicagoBikeRacksSHP">Chicago Bike Racks </label>
-                            <div class="chicagoBikeRacksSHPInfo" style="display: none;">                          
-                            
+                            <input class="treeviewChBx" type="checkbox" id="medSHP" />
+                            <label for="medSHP">Medium SHP File (17MB) </label>
+                            <div class="medSHPInfo" style="display: none;">                          
+                              <p>
+                                German Postal Codes
+                              </p>                            
                             </div>
-                          </li>
-                          <!-- US Interstates SHP File  -->
+                          </li>                      
+                          <!-- Large SHP Example - US Electrical Transmission lines  (140MB) SHP File  -->
                           <li>
-                            <input class="treeviewChBx" type="checkbox" id="usInterstatesSHP" />
-                            <label for="usInterstatesSHP">US Interstates</label>
-                            <div class="usInterstatesSHPInfo" style="display: none;">                          
-                            
-                            </div>
-                          </li>
-                          <!-- Greater London UK Regions SHP File  -->
-                          <li>
-                            <input class="treeviewChBx" type="checkbox" id="londonUKRegionsSHP" />
-                            <label for="londonUKRegionsSHP">Greater London UK Regions</label>
-                            <div class="londonUKRegionsSHPInfo" style="display: none;">                          
-                            
-                            </div>
-                          </li>
-                          <!-- Polish Administrative Divisions SHP File  -->
-                          <li>
-                            <input class="treeviewChBx" type="checkbox" id="polishAdminDivisionSHP" />
-                            <label for="polishAdminDivisionSHP">Polish Administrative Divisions</label>
-                            <div class="polishAdminDivisionSHPInfo" style="display: none;">                          
-                            
-                            </div>
-                          </li>
-                          <!-- German Postal Codes (17MB) SHP File  -->
-                          <li>
-                            <input class="treeviewChBx" type="checkbox" id="germanPostalCodesSHP" />
-                            <label for="germanPostalCodesSHP">German Postal Codes (17MB)</label>
-                            <div class="germanPostalCodesSHPInfo" style="display: none;">                          
-                            
+                            <input class="treeviewChBx" type="checkbox" id="largeSHP" />
+                            <label for="largeSHP">Large SHP File (140MB) </label>
+                            <div class="largeSHPInfo" style="display: none;">                          
+                              <p>
+                                US Electrical Transmission lines
+                              </p>                            
                             </div>
                           </li>
                         </ul>
@@ -753,9 +688,84 @@
             </div>
             <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
               
-                <div class="panel-body">
-                  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                </div>
+              <div class="treeview">      
+                <ul>
+                  <!-- Extruded Choropleth Info -->
+                  <li>
+                    <input class="treeviewChBx" type="checkbox" id="extrudedChoropleth" />
+                    <label class="bmlabel" for="extrudedChoropleth">3D Thematic</label>
+                    <div class="extrudedChoroplethInfo" style="display: none;">
+                      <div id="extrudedLegend">
+                        <p>Population Density (people/mi<sup>2</sup>)</p>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- Animated Choropleth Info -->
+                  <li>
+                    <input class="treeviewChBx" type="checkbox" id="animatedChoropleth" />
+                    <label class="bmlabel" for="animatedChoropleth">Animated Thematic</label>
+                    <div class="animatedChoroplethInfo" style="display: none;">
+                      <div class="animatedLegend">
+                        <br>
+                        <p>
+                          This sample shows the estimated % population change between 2000 and 2010 of each US county relative
+                          to the 2000 census population data. This sample uses two data files; a GeoJSON file that contains the US county boundary data, and a CSV file that contains the population
+                          data. This sample cross references the population data and adds it as properties of the county boundary.
+                        </p>
+                        <hr>
+                        <p>
+                          Population Change Estimates 2000 - 2010
+                        </p>
+                        <canvas id="animatedLegendCanvas"></canvas>
+                        
+                        <div id="animatedlegend-row" class="row">
+                          <div class="">
+                            <p>-30%</p>
+                          </div>
+                          <div class="col-10">
+                            <p class="animatedlegend-mid">0%</p>
+                          </div>
+                          <div class="animatedlegend-max">
+                            <p>30%</p>
+                          </div>
+                        </div>
+                        <br />
+                        <div id="animatedlegend-row" class="row">
+                          <div class="col-6">
+                            <input id="playPauseBtn" type="button" value="Play/Pause" disabled="disabled" onclick="togglePlayPause()" />
+                          </div>
+                          <div class="col-6">
+                            <p class="animatedlegend-label"><strong>2000</strong></p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- Animated Weather -->
+                  <li>
+                    <input class="treeviewChBx" type="checkbox" id="animatedWeatherMap" />
+                    <label class="bmlabel" for="animatedWeatherMap">Animated Weather</label>
+                    <!-- Animated Weather Info -->
+                    <div class="animatedWeatherMapInfo" style="display: none;">
+                      <!-- <hr> -->
+                      <div id="layerInfo">
+                        <div id="messagePanel"></div>
+                        <input type="button" value="Pause" onclick="animationManager.pause();" />
+                        <input type="button" value="Play" onclick="animationManager.play();" />
+                        <input type="button" value="Stop" onclick="animationManager.stop();" />
+
+                        <p> This sample shows how to animate an sequence of tile layers smoothly.
+                          This example uses the AnimatedTileLayer to animate through an array of tile layers.
+                          For this sample weather radar tiles from the <a
+                            href="https://www.mesonet.agron.iastate.edu/ogc/">Iowa Environmental Mesonet of Iowa
+                            State University</a>
+                          over the USA are animated for the last 50 minutes in 5 minute increments.
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
               
             </div>
           </div>
@@ -1515,7 +1525,7 @@
 <script type="text/javascript" src="js/MapTools/addFileLayer.js"></script>
 <script type="text/javascript" src="js/MapTools/layerDesignOptions.js"></script>
 <!-- Spatial Map JS -->
-<!-- <script type="text/javascript" src="js/MapSpatial/addGeospatialExamples.js"></script> -->
+<script type="text/javascript" src="js/MapSpatial/addGeospatialExamples.js"></script>
 <script type="text/javascript" src="js/MapSpatial/OGCFileExplorer.js"></script>
 
 </html>

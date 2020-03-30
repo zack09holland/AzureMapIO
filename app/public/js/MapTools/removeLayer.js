@@ -7,10 +7,6 @@
  *    
 **********************************************************************************************************************/
 function removeLayer(input) {
-    // console.log(map.layers.layers)
-    // console.log(MyLayers.polygonLayer.id)
+    // console.log(input)
     map.layers.remove(input.id)
-    // map.setStyle({
-    //     style: 'light'
-    // })
 }

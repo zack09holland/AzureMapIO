@@ -152,8 +152,6 @@ function addExtrudedChoropleth() {
     });
 }
 
-
-
 /*******************************************************************************************************************************************************************
  * 
  *  Legends
@@ -161,18 +159,6 @@ function addExtrudedChoropleth() {
  *  - createLegend()
  *      - Creates the legend for the simple and extruded example layers
  * 
- *  - addAnimatedChoropleth()
- *      - Creates the legend for the animated choropleth example layer
- * 
- *  - createLegendScaleBar()
- *      - Creates a color scale bar for the animated choropleth
- * 
- *  - togglePlayPause()
- *      - Allows the animated choropleth to be updated with new colors associated with new data
- * 
- *  - FrameAnimationTimer()
- *      - Updates the displayed year the animated choropleth is showing data for
- *    
 *******************************************************************************************************************************************************************/
 function createLegend(id) {
     var html = ['<div id="' + id + 'Item">'];
@@ -189,6 +175,191 @@ function createLegend(id) {
     document.getElementById(id).innerHTML += html.join('');
 }
 
+/*******************************************************************************************************************************************************************
+ * 
+ *  County Choropleth
+ * 
+ *  - addCountyChoropleth()
+ *      - Creates an extruded choropleth example layer
+ *
+ *  - createCountyLegendScaleBar()
+ *      - Create a legend for the county choropleth
+*******************************************************************************************************************************************************************/
+function addCountyChoropleth() {
+    var popup, maxScale = 30,
+        colorExpressions = [];
+    //Create a popup but leave it closed so we can update it and display it later.
+    popup = new atlas.Popup({
+        position: [0, 0]
+    });
+
+    //Create a data source and add it to the map.
+    countyPolygonDatasource = new atlas.source.DataSource();
+    map.sources.add(countyPolygonDatasource);
+
+    //Create an array of expressions to define the fill color based on 
+    for (var i = 0; i <= 10; i++) {
+        colorExpressions.push([
+            'interpolate',
+            ['linear'],
+            ['get', 'PopChange' + i],
+            -maxScale, 'rgb(255,0,255)', // Magenta
+            -maxScale / 2, 'rgb(0,0,255)', // Blue
+            0, 'rgb(0,255,0)', // Green
+            maxScale / 2, 'rgb(255,255,0)', // Yellow
+            maxScale, 'rgb(255,0,0)' // Red
+        ]);
+    }
+
+    //Create a layer to render the polygon data.
+    var countyPolygonLayer = new atlas.layer.PolygonLayer(countyPolygonDatasource, null, {
+        fillColor: colorExpressions[0]
+    });
+    map.layers.add(countyPolygonLayer, 'labels');
+    MyLayers.countyPolygonLayer = countyPolygonLayer;
+
+    //Add a mouse move event to the polygon layer to show a popup with information.
+    map.events.add('mousemove', countyPolygonLayer, function (e) {
+        if (e.shapes && e.shapes.length > 0) {
+            var properties = e.shapes[0].getProperties();
+
+            var html = ['<div style="padding:10px"><b>', properties.CountyName, '</b><br />', properties.StateName, '<br />% Pop Change:<br/><table><tr><td>Year</td><td>% Change</td></tr>'];
+
+            for (var i = 0; i <= 10; i++) {
+                var year = 2000 + i;
+                html.push('<tr><td>', year, '</td><td>', properties['PopChange' + i], '%</td></tr>');
+            }
+
+            html.push('</table></div>');
+
+            //Update the content of the popup.
+            popup.setOptions({
+                content: html.join(''),
+                position: e.position
+            });
+
+            //Open the popup.
+            popup.open(map);
+        }
+    });
+
+    //Add a mouse leave event to the polygon layer to hide the popup.
+    map.events.add('mouseleave', countyPolygonLayer, function (e) {
+        popup.close();
+    });
+
+    //TODO: Update to use spatial io module.
+
+    //Download population estimates for US counties.
+    fetch('data/geojson/US_County_2010_Population.csv')
+        .then(response => response.text())
+        .then(function (text) {
+            //Parse the CSV file data into a JSON object.
+            //For faster cross referencing, create an object that indexes the state and county ids.
+            var populationInfo = [];
+
+            //Split the lines of the file.
+            var lines = text.split('\n');
+            var row, stateId, countyId, censusPop, obj, j;
+
+            //Skip the header row and then parse each row into an object.
+            for (var i = 1; i < lines.length; i++) {
+                row = lines[i].split(',');
+
+                stateId = row[0];
+                countyId = row[1];
+
+                if (!populationInfo[stateId]) {
+                    populationInfo[stateId] = {};
+                }
+
+                //Get the 2000 population value.
+                censusPop = parseFloat(row[4]);
+
+                //Create an object to parse the CSV row into.
+                obj = {
+                    CountyName: row[3],
+                    StateName: row[2],
+                    CensusPop2000: censusPop
+                };
+
+                //Calculate the population % difference from 2000 census, and round to 1 decimal place.
+                for (j = 5; j < row.length; j++) {
+                    obj['PopChange' + (j - 5)] = Math.round((parseFloat(row[j]) / censusPop - 1) * 100 * 10) / 10;
+                }
+
+                populationInfo[stateId][countyId] = obj;
+            }
+
+            //Download the county boundary GeoJSON data.
+            fetch('data/geojson/US_County_Boundaries.json')
+                .then(function (response) {
+                    return response.json();
+                }).then(function (response) {
+                    var features = response.features;
+
+                    //Loop through each feature and cross reference the population data information.
+                    for (var i = 0; i < features.length; i++) {
+                        var prop = features[i].properties;
+
+                        if (populationInfo[prop['STATE']] && populationInfo[prop['STATE']][prop['COUNTY']]) {
+                            features[i].properties = Object.assign(prop, populationInfo[prop['STATE']][prop['COUNTY']]);
+                        }
+                    }
+
+                    //Add the feature data to the data source.
+                    countyPolygonDatasource.add(features);
+
+                    //Create an animation loop. 
+                    // timer = new FrameAnimationTimer(function (progress, frameIdx) {
+                    //     //Update the fill color expression for the current frame.
+                    //     polygonLayer.setOptions({
+                    //         fillColor: colorExpressions[frameIdx]
+                    //     });
+
+                    //     //Update the year in the legend.
+                    //     document.getElementsByClassName('legend-label')[0].innerText = (2000 + frameIdx) + '';
+                    // }, colorExpressions.length, 10000, true);
+
+                    // document.getElementById('playPauseBtn').disabled = '';
+                });
+        });
+}
+
+// function createCountyLegendScaleBar() {
+//     var canvas = document.getElementById('countyLegendCanvas');
+//     var ctx = canvas.getContext('2d');
+
+//     //Create a linear gradient for the legend.
+//     var grd = ctx.createLinearGradient(0, 0, 256, 0);
+//     grd.addColorStop(0, 'rgb(255,0,255)'); // Magenta
+//     grd.addColorStop(0.25, 'rgb(0,0,255)'); // Blue
+//     grd.addColorStop(0.5, 'rgb(0,255,0)'); // Green
+//     grd.addColorStop(0.75, 'rgb(255,255,0)'); // Yellow
+//     grd.addColorStop(1, 'rgb(255,0,0)'); // Red
+
+//     ctx.fillStyle = grd;
+//     ctx.fillRect(0, 0, canvas.width, canvas.height);
+// }
+
+
+/*******************************************************************************************************************************************************************
+ * 
+ *  Animated Choropleth
+ * 
+ *
+ *  - addAnimatedChoropleth()
+ *      - Creates the legend for the animated choropleth example layer
+ * 
+ *  - createLegendScaleBar()
+ *      - Creates a color scale bar for the animated choropleth
+ * 
+ *  - togglePlayPause()
+ *      - Allows the animated choropleth to be updated with new colors associated with new data
+ * 
+ *  - FrameAnimationTimer()
+ *      - Updates the displayed year the animated choropleth is showing data for
+*******************************************************************************************************************************************************************/
 var isPaused = true;
 var timer;
 
@@ -421,29 +592,35 @@ $("#choroplethItems").click(function () {
     if ($(this).is(":checked")) {
 
     } else {
-        try {
+        // try {
             $("#simpleChoropleth").prop('checked', false);
             $('.choroplethInfo').css({
                 display: "none"
             });
             $("#legendItem").remove();
             removeLayer(MyLayers.choroplethLayer)
-
-            $("#extrudedChoropleth").prop('checked', false);
-            $('.extrudedChoroplethInfo').css({
+            
+            $("#countyChoropleth").prop('checked', false);
+            $('.countyChoroplethInfo').css({
                 display: "none"
             });
-            $("#extrudedLegendItem").remove();
-            removeLayer(MyLayers.extrudedChoroplethLayer)
+            removeLayer(MyLayers.countyPolygonLayer)
 
-            $("#animatedChoropleth").prop('checked', false);
-            $('.animatedChoroplethInfo').css({
-                display: "none"
-            });
-            removeLayer(MyLayers.animatedChoroplethLayer)
-        } catch (err) {
+            // $("#extrudedChoropleth").prop('checked', false);
+            // $('.extrudedChoroplethInfo').css({
+            //     display: "none"
+            // });
+            // $("#extrudedLegendItem").remove();
+            // removeLayer(MyLayers.extrudedChoroplethLayer)
 
-        }
+            // $("#animatedChoropleth").prop('checked', false);
+            // $('.animatedChoroplethInfo').css({
+            //     display: "none"
+            // });
+            // removeLayer(MyLayers.animatedChoroplethLayer)
+        // } catch (err) {
+        //     console.log(err)
+        // }
     }
 });
 
@@ -481,7 +658,7 @@ $("#extrudedChoropleth").click(function () {
     }
 });
 
-// simpleChoropleth
+// animatedChoropleth
 $("#animatedChoropleth").click(function () {
     if ($(this).is(":checked")) {
         $('.animatedChoroplethInfo').css({
@@ -494,6 +671,21 @@ $("#animatedChoropleth").click(function () {
             display: "none"
         });
         removeLayer(MyLayers.animatedChoroplethLayer)
+    }
+});
+// countyChoropleth
+$("#countyChoropleth").click(function () {
+    if ($(this).is(":checked")) {
+        $('.countyChoroplethInfo').css({
+            display: "block"
+        });
+        addCountyChoropleth();
+        // createCountyLegendScaleBar();
+    } else {
+        $('.countyChoroplethInfo').css({
+            display: "none"
+        });
+        removeLayer(MyLayers.countyPolygonLayer)
     }
 });
 

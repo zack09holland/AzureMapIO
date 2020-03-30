@@ -23,23 +23,17 @@ var timestamps = ['900913-m50m', '900913-m45m', '900913-m40m', '900913-m35m', '9
 var displayMessages = [];
 var weatherTileUrl = 'https://atlas.microsoft.com/map/tile?subscription-key={subscription-key}&api-version=2.0&tilesetId={layerName}&zoom={z}&x={x}&y={y}';
 
-
-function addWeather() {
+/**********************************************************************************************************************
+ * 
+ *  Radar Weather Layer
+ *  
+ *  - addRadarWeather()
+ *      - Adds a layer with weather data pulled from microsoft
+ *    
+**********************************************************************************************************************/
+function addRadarWeather() {
     //Initialize the weather tile layer.
-    updateTileLayer();
-    // Set camera to view map layer
-    // map.setCamera({
-    //     center: [-99.47, 40.75],
-    //     zoom: 3,
-    //     view: 'Auto'
-    // });
-    // map.setStyle({
-    //     style: 'grayscale_dark'
-    // })
-}
-
-function updateTileLayer() {
-    var layerName = document.getElementById("layerSelector").value;
+    var layerName = "microsoft.weather.radar.main";
     var tileUrl = weatherTileUrl.replace('{subscription-key}', atlas.getSubscriptionKey()).replace('{layerName}', layerName);
     if (!tileLayer) {
         //Create a tile layer and add it to the map below the label layer.
@@ -56,11 +50,46 @@ function updateTileLayer() {
     }
     console.log(tileLayer)
     map.layers.add(tileLayer, 'labels');
-    MyLayers.weatherLayer = tileLayer;
+    MyLayers.radarWeatherLayer = tileLayer;
+}
+/**********************************************************************************************************************
+ * 
+ *  Infared Weather Layer
+ *  
+ *  - addInfaredWeather()
+ *      - Adds a layer with weather data pulled from microsoft
+ *    
+**********************************************************************************************************************/
+function addInfaredWeather() {
+    //Initialize the weather tile layer.
+    var layerName = "microsoft.weather.infrared.main";
+    var tileUrl = weatherTileUrl.replace('{subscription-key}', atlas.getSubscriptionKey()).replace('{layerName}', layerName);
+    if (!tileLayer) {
+        //Create a tile layer and add it to the map below the label layer.
+        tileLayer = new atlas.layer.TileLayer({
+            tileUrl: tileUrl,
+            opacity: 0.9,
+            tileSize: 256
+        });
 
+    } else {
+        tileLayer.setOptions({
+            tileUrl: tileUrl
+        });
+    }
+    console.log(tileLayer)
+    map.layers.add(tileLayer, 'labels');
+    MyLayers.infraredWeatherLayer = tileLayer;
 }
 
-
+/**********************************************************************************************************************
+ * 
+ *  Animated Weather Layer
+ *  
+ *  - animateWeather()
+ *      - Adds a layer with weather data pulled from microsoft
+ *    
+**********************************************************************************************************************/
 function animateWeather() {
     var tileLayers = [];
     // Set camera to view map layer
@@ -117,27 +146,47 @@ $("#weatherMapItems").click(function () {
     
     } else {
         try {
-            $("#runWeather").prop('checked', false);
-            $('.weatherMap').css({
+            $("#runRadarWeather").prop('checked', false);
+            $('.radarWeatherMap').css({
                 display: "none"
             });
-            removeLayer(MyLayers.weatherLayer)
+            removeLayer(MyLayers.radarWeatherLayer)
+
+            $("#runInfaredWeather").prop('checked', false);
+            $('.infaredWeatherMap').css({
+                display: "none"
+            });
+            removeLayer(MyLayers.infraredWeatherLayer)
         } catch (err) {
 
         }
     }
 });
-// runWeather 
-$('#runWeather').click(function () {
+// runRadarWeather 
+$('#runRadarWeather').click(function () {
     if ($(this).is(":checked")) {
-        $('.weatherMap').css({
+        $('.radarWeatherMap').css({
             display: "block"
         });
-        addWeather();
+        addRadarWeather();
     } else {
-        $('.weatherMap').css({
+        $('.radarWeatherMap').css({
             display: "none"
         });
-        removeLayer(MyLayers.weatherLayer)
+        removeLayer(MyLayers.radarWeatherLayer)
+    }
+});
+// runInfaredWeather 
+$('#runInfaredWeather').click(function () {
+    if ($(this).is(":checked")) {
+        $('.infaredWeatherMap').css({
+            display: "block"
+        });
+        addInfaredWeather();
+    } else {
+        $('.infaredWeatherMap').css({
+            display: "none"
+        });
+        removeLayer(MyLayers.infraredWeatherLayer)
     }
 });

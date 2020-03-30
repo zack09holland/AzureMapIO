@@ -62,7 +62,6 @@ var services = [
     //Create an OGC layer.
     ogclayer = new atlas.layer.OgcMapLayer({
         url: url,
-        proxyService: (document.getElementById('useProxyService').checked) ? proxyServiceUrl : null,
         bringIntoView: document.getElementById('bringIntoView').checked,
         debug: true
     });
@@ -197,7 +196,7 @@ function buildLayerList() {
     }
 
     //Update the layer picker.
-    document.getElementById('layerPicker').innerHTML = html.join('');
+    // document.getElementById('layerPicker').innerHTML = html.join('');
 
     //Loop through and make each collapsible item clickable.
     var coll = document.getElementsByClassName("collapsible");
