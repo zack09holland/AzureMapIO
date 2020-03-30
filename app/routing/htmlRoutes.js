@@ -4,13 +4,16 @@
 // ===============================================================================
 var path = require("path");
 // var cors=require('../../cors');
-    
+const dotenv = require('dotenv');
+dotenv.config();    
 // ===============================================================================
 // ROUTING
 // ===============================================================================
-
+module.exports = {
+  masterKey: process.env.API_KEY,
+};
 module.exports = function(app) {
-
+  
   // HTML GET Requests
   // Below code handles when users "visit" a page.
   // In each of the below cases the user is shown an HTML page of content
@@ -25,7 +28,7 @@ module.exports = function(app) {
   //   next();
   // });
   app.get('/', function(req, res) {
-
+    console.log(res)
     res.render('index.html');
 });
 

@@ -5,12 +5,13 @@
 var express = require('express'),
     path = require('path'),
     app = express();
-    
+require('dotenv').config()
+   
 // var cors=require('./cors');
 // app.use(cors.permission)
 
 const upload = require("express-fileupload");
-
+// console.log(process.env.API_KEY)
 
 // ==============================================================================
 // EXPRESS CONFIGURATION
@@ -67,6 +68,7 @@ app.post("/upload", function(request, response) {
   // give the server a second to write the files
   setTimeout(function(){response.json(addedFiles);}, 1000);
 });
+
 
 // ================================================================================
 // ROUTER

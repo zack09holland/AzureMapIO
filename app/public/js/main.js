@@ -22,7 +22,7 @@ function GetMap() {
 
         authOptions: {
             authType: 'subscriptionKey',
-            subscriptionKey: process.env.KEY
+            subscriptionKey: 'fxg6dMtNQQ3zqgzk_loQeMxznejQj5swKZF9Vcj5rQ0'
         }
     });
     
