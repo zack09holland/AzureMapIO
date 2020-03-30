@@ -23,7 +23,21 @@ function GetMap() {
         authOptions: {
             authType: 'subscriptionKey',
             subscriptionKey: 'fxg6dMtNQQ3zqgzk_loQeMxznejQj5swKZF9Vcj5rQ0'
-        }
+        },
+        // Possible way to hide API key and use a token and clientID
+        ////URL to custom endpoint to fetch Access token.
+        // var url = 'https://adtokens.azurewebsites.net/api/HttpTrigger1?code=dv9Xz4tZQthdufbocOV9RLaaUhQoegXQJSeQQckm6DZyG/1ymppSoQ==';
+        // authOptions: {
+        //     authType: "anonymous",
+        //     clientId: "35267128-0f1e-41de-aa97-f7a7ec8c2dbd",
+        //     getToken: function(resolve, reject, map) {
+        //         fetch(url).then(function(response) {
+        //             return response.text();
+        //         }).then(function(token) {
+        //             resolve(token);
+        //         });
+        //     }
+        // }
     });
     
     // Wait until the map resources are ready.

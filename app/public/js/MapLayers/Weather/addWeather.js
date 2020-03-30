@@ -2,26 +2,17 @@
  * 
  *  Weather Example Layers 
  * 
- *  - addWeather()
- *      - Creates the title layer and calls updateTileLayer to determine which weather to laod
+ *  - addRadarWeather()
+ *      - Adds a layer with weather data pulled from microsoft
  * 
- *  - updateTileLayer()
- *      - Creates the weather tile layer 
+ *  - addInfaredWeather()
+ *      - Adds a layer with weather data pulled from microsoft
  * 
  *  - animateWeather() NOT IMPLEMENTED
  *      - Will allow weather tile layers to become animated over a certain time period
  *    
 ******************************************************************************************************************************/
-var tileLayer, animationManager;
 
-//Weather tile url from Iowa Environmental Mesonet (IEM): http://mesonet.agron.iastate.edu/ogc/
-var urlTemplate = 'https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-{timestamp}/{z}/{x}/{y}.png';
-
-//The time stamps values for the IEM service for the last 50 minutes broken up into 5 minute increments.
-var timestamps = ['900913-m50m', '900913-m45m', '900913-m40m', '900913-m35m', '900913-m30m', '900913-m25m', '900913-m20m', '900913-m15m', '900913-m10m', '900913-m05m', '900913'];
-
-var displayMessages = [];
-var weatherTileUrl = 'https://atlas.microsoft.com/map/tile?subscription-key={subscription-key}&api-version=2.0&tilesetId={layerName}&zoom={z}&x={x}&y={y}';
 
 /**********************************************************************************************************************
  * 
@@ -90,6 +81,17 @@ function addInfaredWeather() {
  *      - Adds a layer with weather data pulled from microsoft
  *    
 **********************************************************************************************************************/
+var tileLayer, animationManager;
+
+//Weather tile url from Iowa Environmental Mesonet (IEM): http://mesonet.agron.iastate.edu/ogc/
+var urlTemplate = 'https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-{timestamp}/{z}/{x}/{y}.png';
+
+//The time stamps values for the IEM service for the last 50 minutes broken up into 5 minute increments.
+var timestamps = ['900913-m50m', '900913-m45m', '900913-m40m', '900913-m35m', '900913-m30m', '900913-m25m', '900913-m20m', '900913-m15m', '900913-m10m', '900913-m05m', '900913'];
+
+var displayMessages = [];
+var weatherTileUrl = 'https://atlas.microsoft.com/map/tile?subscription-key={subscription-key}&api-version=2.0&tilesetId={layerName}&zoom={z}&x={x}&y={y}';
+
 function animateWeather() {
     var tileLayers = [];
     // Set camera to view map layer
@@ -188,5 +190,20 @@ $('#runInfaredWeather').click(function () {
             display: "none"
         });
         removeLayer(MyLayers.infraredWeatherLayer)
+    }
+});
+
+// animatedWeatherMap 
+$('#animatedWeatherMap').click(function () {
+    if ($(this).is(":checked")) {
+        $('.animatedWeatherMapInfo').css({
+            display: "block"
+        });
+        animateWeather();
+    } else {
+        $('.animatedWeatherMapInfo').css({
+            display: "none"
+        });
+        // removeLayer(MyLayers.infraredWeatherLayer)
     }
 });
