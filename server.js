@@ -2,6 +2,7 @@
 // DEPENDENCIES
 // Series of npm packages that we will use to give our server useful functionality
 // ==============================================================================
+
 var express = require('express'),
     path = require('path'),
     app = express();
@@ -11,7 +12,21 @@ require('dotenv').config()
 // app.use(cors.permission)
 
 const upload = require("express-fileupload");
-// console.log(process.env.API_KEY)
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.send(200);
+    }
+    else {
+      next();
+    }
+};
+
+    app.use(allowCrossDomain);
 
 // ==============================================================================
 // EXPRESS CONFIGURATION
