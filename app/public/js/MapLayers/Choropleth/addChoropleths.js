@@ -310,37 +310,9 @@ function addCountyChoropleth() {
                     //Add the feature data to the data source.
                     countyPolygonDatasource.add(features);
 
-                    //Create an animation loop. 
-                    // timer = new FrameAnimationTimer(function (progress, frameIdx) {
-                    //     //Update the fill color expression for the current frame.
-                    //     polygonLayer.setOptions({
-                    //         fillColor: colorExpressions[frameIdx]
-                    //     });
-
-                    //     //Update the year in the legend.
-                    //     document.getElementsByClassName('legend-label')[0].innerText = (2000 + frameIdx) + '';
-                    // }, colorExpressions.length, 10000, true);
-
-                    // document.getElementById('playPauseBtn').disabled = '';
                 });
         });
 }
-
-// function createCountyLegendScaleBar() {
-//     var canvas = document.getElementById('countyLegendCanvas');
-//     var ctx = canvas.getContext('2d');
-
-//     //Create a linear gradient for the legend.
-//     var grd = ctx.createLinearGradient(0, 0, 256, 0);
-//     grd.addColorStop(0, 'rgb(255,0,255)'); // Magenta
-//     grd.addColorStop(0.25, 'rgb(0,0,255)'); // Blue
-//     grd.addColorStop(0.5, 'rgb(0,255,0)'); // Green
-//     grd.addColorStop(0.75, 'rgb(255,255,0)'); // Yellow
-//     grd.addColorStop(1, 'rgb(255,0,0)'); // Red
-
-//     ctx.fillStyle = grd;
-//     ctx.fillRect(0, 0, canvas.width, canvas.height);
-// }
 
 
 /*******************************************************************************************************************************************************************

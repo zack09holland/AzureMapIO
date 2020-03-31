@@ -2,8 +2,23 @@
  * 
  *  OGC File Explorer Example
  *
- *  - addChoropleth()
- *      - Creates a simple choropleth example layer
+ *  - loadOGCLayer()
+ *      - Creates an OGC layer and loads the url specified in the WMTS selection
+ * 
+ *  - loadSelectInput()
+ *      - Handle user selection from the list of known OGC services.
+ * 
+ *  - loadUserInput()
+ *      - Handle user input for a user provided OGC service URL.
+ * 
+ *  - clear()
+ *      - Clear the map and reset the UI.
+ * 
+ *  - mapClick()
+ *      - Handle click events on the map.
+ 
+ *  - buildLayerList()
+ *      - Create a selection list of all the sub-layers in the layer.
  *    
 *******************************************************************************************************************************************************************/
 var currentCapabilities;
@@ -13,7 +28,6 @@ var proxyServiceUrl = window.location.origin + '/Common/CorsEnabledProxyService.
 //Sample WMTS and WMS services to let users test with.
 var services = [
     //WMTS services            
-    { name: 'Texas Vegetation (WMTS)', url: 'https://tpwd.texas.gov/arcgis/rest/services/Vegetation_Mapping/Texas_Ecological_Mapping_Systems_Data/mapserver/WMTS/1.0.0/WMTSCapabilities.xml' },
     { name: 'USGS Geologic maps (WMTS)', url: 'https://mrdata.usgs.gov/mapcache/wmts/' },            
     { name: 'USGS Shaded Relief Only (WMTS)', url: 'https://basemap.nationalmap.gov/arcgis/rest/services/USGSShadedReliefOnly/MapServer/WMTS/1.0.0/WMTSCapabilities.xml' },
     { name: 'Iowa City HYDROLOGY (WMTS)', url: 'https://maps.iowa-city.org/sslarcgis/rest/services/IowaCityHYDROLOGY/DFIRM/MapServer/WMTS/1.0.0/WMTSCapabilities.xml' },
@@ -62,7 +76,7 @@ var services = [
     //Create an OGC layer.
     ogclayer = new atlas.layer.OgcMapLayer({
         url: url,
-        proxyService: (document.getElementById('useProxyService').checked) ? proxyServiceUrl : null,
+        // proxyService: (document.getElementById('useProxyService').checked) ? proxyServiceUrl : null,
         bringIntoView: document.getElementById('bringIntoView').checked,
         debug: true
     });
@@ -84,7 +98,7 @@ var services = [
     };
 
     map.layers.add(ogclayer, 'transit');
-    MyLayers.ogcLayer = ogcLayer;
+    MyLayers.ogclayer = ogclayer;
 
 }
 
@@ -95,7 +109,8 @@ function loadSelectInput() {
 
     if (serviceIdx >= 0) {
         loadOGCLayer(services[serviceIdx].url);
-    } else {
+    }
+    else{
         clear();
     }
 }
@@ -108,6 +123,7 @@ function loadUserInput() {
 
     var url = document.getElementById('inputTbx').value;
 
+
     if (url) {
         loadOGCLayer(url);
     }
@@ -116,7 +132,7 @@ function loadUserInput() {
 //Clear the map and reset the UI.
 function clear() {
     currentCapabilities = null;
-    document.getElementById('layerPicker').innerHTML = '';
+    // document.getElementById('layerPicker').innerHTML = '';
 
     if (ogcLayer) {
         map.layers.remove(ogcLayer);
@@ -262,6 +278,6 @@ $("#ogcLayer").click(function () {
         $('.ogcLayerInfo').css({
             display: "none"
         });
-        removeLayer(MyLayers.ogcLayer)
+        removeLayer(MyLayers.ogclayer)
     }
 });

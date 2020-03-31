@@ -243,6 +243,21 @@ Leftbox
     margin-right: 8px;
     opacity: 0.7;
 }
+.legend {
+    position: relative;
+    top: 1px;
+    left: 5px;
+    font-family: Arial;
+    font-size: 12px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    padding: 5px;
+    line-height: 20px;
+}
+.legend .color-box{
+    width:10px;
+    height:10px;
+}
 
 /* Extruded Choropleth Legend */
 #extrudedLegend {
@@ -346,6 +361,30 @@ Leftbox
 
 #countylegend-row {
     background-color: white;
+}
+
+/* Swipe Map Legend */
+.swipemaplegend {
+    font-family: Arial;
+    font-size: 12px;
+    position: relative;
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+}
+.swipemaplegend i {
+    width: 12px;
+    height: 12px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+/* Download Button */
+#downloadButton {
+    float: none;
+    vertical-align: middle;
+    margin: 5px;
+    margin-left: 20px;
 }
 /**********************************************************************************************************************
 
@@ -485,7 +524,20 @@ Map
     height: 300px;
     overflow: hidden;
 }
-
+.swipeMapContainer {
+    position: relative;
+    width: calc(100% - 325px);
+    padding: 0 10px 10px 0 !important;
+    height: calc(100vh - 10px);
+}
+.map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-width:290px;
+    height: 100vh;
+}
 
 /**********************************************************************************************************************
 

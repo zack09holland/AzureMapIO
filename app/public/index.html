@@ -48,6 +48,7 @@
 
   <!-- Load in Shapefile-js library which converts Shapefiles into GeoJSON data. -->
   <script src="data/scripts/shp.min.js"></script>
+  <script src="data/scripts/FileSaver.js"></script>
 
   <!-- Load in Catiline.js library which makes it easier to work with web workers. -->
   <script src="data/scripts/catiline.min.js"></script>
@@ -561,7 +562,7 @@
                   <!-- Geospatial Layer Selection -->
                   <li>
                     <input class="treeviewChBx" type="checkbox" id="geospatialItems" />
-                    <label for="geospatialItems">Geospatial Files</label>
+                    <label class="bmlabel" for="geospatialItems">Geospatial Files</label>
                     <ul>
                       <!-- Simple Spatial Data -->
                       <li>
@@ -586,7 +587,7 @@
                       <!-- OGC Spatial Data -->
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="ogcLayer" />
-                        <label for="ogcLayer">OGC Layer Data</label>
+                        <label class="bmlabel" for="ogcLayer">OGC Layer Data</label>
                         <div class="ogcLayerInfo" style="display: none;">                         
                           <p>
                             Here is a list of all the properties within a SpatialDataSet object.
@@ -599,7 +600,7 @@
                           Service URL: <input type="text" id="inputTbx" /><input type="button" value="Load"
                             onclick="loadUserInput()" /><br /><br />
 
-                          <input id="useProxyService" type="checkbox" /> Use Proxy Service<br /><br />
+                          <!-- <input id="useProxyService" type="checkbox" /> Use Proxy Service<br /><br /> -->
 
                           <input id="bringIntoView" type="checkbox" checked="checked" /> Bring into view<br /><br />
 
@@ -611,7 +612,7 @@
                       <!-- SHP Files -->
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="shpFiles" />
-                        <label for="shpFiles">SHP Files</label>
+                        <label class="bmlabel" for="shpFiles">SHP Files</label>
                         <div class="shpFileInfo" style="display: none;">                          
 
                         </div>
@@ -629,7 +630,7 @@
                           <!-- Medium SHP Example - German Postal Codes (17MB) SHP File  -->
                           <li>
                             <input class="treeviewChBx" type="checkbox" id="medSHP" />
-                            <label for="medSHP">Medium SHP File (17MB) </label>
+                            <label class="bmlabel" for="medSHP">Medium SHP File (17MB) </label>
                             <div class="medSHPInfo" style="display: none;">                          
                               <p>
                                 German Postal Codes
@@ -639,7 +640,7 @@
                           <!-- Large SHP Example - US Electrical Transmission lines  (140MB) SHP File  -->
                           <li>
                             <input class="treeviewChBx" type="checkbox" id="largeSHP" />
-                            <label for="largeSHP">Large SHP File (140MB) </label>
+                            <label class="bmlabel" for="largeSHP">Large SHP File (140MB) </label>
                             <div class="largeSHPInfo" style="display: none;">                          
                               <p>
                                 US Electrical Transmission lines
@@ -732,7 +733,7 @@
                         <br />
                         <div id="animatedlegend-row" class="row">
                           <div class="col-6">
-                            <input id="playPauseBtn" type="button" value="Play/Pause" disabled="disabled" onclick="togglePlayPause()" />
+                            <input class="btn btn-secondary btn-sm" id="playPauseBtn" type="button" value="Play/Pause" disabled="disabled" onclick="togglePlayPause()" />
                           </div>
                           <div class="col-6">
                             <p class="animatedlegend-label"><strong>2000</strong></p>
@@ -764,6 +765,145 @@
                       </div>
                     </div>
                   </li>
+
+                  <!-- Swipe Between Maps -->
+                  <li>
+                    <input class="treeviewChBx" type="checkbox" id="swipeMap" />
+                    <label class="bmlabel" for="swipeMap">Swipe Between Maps</label>
+                    <!-- Swipe Between Maps Info -->
+                    <div class="swipeMapInfo" style="display: none;">
+                      <div id="layerInfo">
+                        <p> This sample shows how to swipe between two overlapping synchronized maps to view different data sets.</p>
+                        <div class="swipemaplegend" style="left: 15px;">
+                          <b>Unemployment rate</b>
+                          <table>
+                              <tr><td><i style="background:#800026" /></td><td>6%+</td></tr>
+                              <tr><td><i style="background:#E31A1C" /></td><td>5% - 5.99%</td></tr>
+                              <tr><td><i style="background:#FD8D3C" /></td><td>4% - 4.99%</td></tr>
+                              <tr><td><i style="background:#FED976" /></td><td>3% - 3.99%</td></tr>
+                              <tr><td><i style="background:#FFEDA0" /></td><td>0% - 2.99%</td></tr>
+                          </table>
+                        </div>
+                  
+                        <div class="swipemaplegend" style="left: 15px;">
+                            <b>Size of labor force</b>
+                            <table>
+                                <tr><td><i style="background:#48006a" /></td><td>100,000+</td></tr>
+                                <tr><td><i style="background:#dd3497" /></td><td>50,000 - 99,999</td></tr>
+                                <tr><td><i style="background:#fcc5c0" /></td><td>10,000 - 49,999</td></tr>
+                                <tr><td><i style="background:#fff7f3" /></td><td>0 - 9,999</td></tr>
+                            </table>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- Clustered Pie HTML Markers -->
+                  <li>
+                    <input class="treeviewChBx" type="checkbox" id="clusteredPieMarker" />
+                    <label class="bmlabel" for="clusteredPieMarker">Clustered Pie HTML Markers</label>
+                    <!-- Clustered Pie HTML Markers Info -->
+                    <div class="clusteredPieMarkerInfo" style="display: none;">
+                      <div id="layerInfo">
+                        <div class="legend">
+                          <p> This sample shows how to swipe between two overlapping synchronized maps to view different data sets.</p>
+                          <table>
+                              <tr>
+                                  <td><div class="color-box" style="background-color:#3366CC"></div></td>
+                                  <td>Gas Station</td>
+                              </tr>
+                              <tr>
+                                  <td><div class="color-box" style="background-color:#DC3912"></div></td>
+                                  <td>Grocery Store</td>
+                              </tr>
+                              <tr>
+                                  <td><div class="color-box" style="background-color:#FF9900"></div></td>
+                                  <td>Restaurant</td>
+                              </tr>
+                              <tr>
+                                  <td><div class="color-box" style="background-color:#109618"></div></td>
+                                  <td>School</td>
+                              </tr>
+                          </table>
+                      </div>                  
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- Download Map as Image -->
+                  <li>
+                    <input class="treeviewChBx" type="checkbox" id="downloadMapImg" />
+                    <label class="bmlabel" for="downloadMapImg">Download Map as Image</label>
+                    <div class="downloadMapImgInfo" style="display: none;">
+                      <div id="layerInfo">
+                        <input id="downloadButton" class="btn btn-secondary btn-sm" type="button" value="Download" onclick="downloadMapImage();" />
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- Map Style Options -->
+                  <li>
+                    <input class="treeviewChBx" type="checkbox" id="mapStyleOptions" />
+                    <label class="bmlabel" for="mapStyleOptions">Map Style Options</label>
+                    <div class="mapStyleOptionsInfo" style="display: none;">
+                      <div id="layerInfo">
+                        <div class="legend">
+                          <p>
+                            This sample shows how the different style options of the map affect rendering.
+                          </p>
+                              <table>
+                                  <!-- <tr title="If true the map will automatically resize whenever the window's size changes. Otherwise map.resize() must be called.">
+                                      <td>Auto resize:</td>
+                                      <td><input id="autoResize" type="checkbox" onclick="updateStyles()" checked="checked" /></td>
+                                  </tr> -->
+                                  <tr title="Specifies if multiple copies of the world should be rendered when zoomed out. ">
+                                      <td>Render world copies:</td>
+                                      <td><input id="renderWorldCopies" type="checkbox" onclick="updateStyles()" checked="checked" /></td>
+                                  </tr>
+                                  <tr title="Specifies if buildings will be rendered with their models. If false all buildings will be rendered as just their footprints.">
+                                      <td>Show building models:</td>
+                                      <td><input id="showBuildingModels" type="checkbox" onclick="updateStyles()" /></td>
+                                  </tr>
+                                  <!-- <tr title="Specifies if the feedback link should be displayed on the map or not.">
+                                      <td>Show feedback link:</td>
+                                      <td><input id="showFeedbackLink" type="checkbox" onclick="updateStyles()" checked="checked" /></td>
+                                  </tr>
+                                  <tr title="Specifies if the Microsoft logo should be hidden or not. If set to true a Microsoft copyright string will be added to the map.">
+                                      <td>Show logo:</td>
+                                      <td><input id="showLogo" type="checkbox" onclick="updateStyles()" checked="checked" /></td>
+                                  </tr> -->
+                                  <tr title="Specifies if the map should render an outline around each tile and the tile ID. These tile boundaries are useful for debugging. The uncompressed file size of the first vector source is drawn in the top left corner of each tile, next to the tile ID. ">
+                                      <td>Show tile boundaries:</td>
+                                      <td><input id="showTileBoundaries" type="checkbox" onclick="updateStyles()" /></td>
+                                  </tr>
+                              </table>
+                              <br>
+                              <p>
+                                  In addition to the options in this tool, the map also supports the following style options;
+                                  <ul>
+                                      <li>preserveDrawingBuffer - allows the map canvas to be exported as an image.</li>
+                                      <li>language - the language of the map.</li>
+                                      <li>view - the geopolical region view to align with.</li>
+                                  </ul>
+                              </p>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- Reverse Geocode -->
+                  <li>
+                    <input class="treeviewChBx" type="checkbox" id="reverseGeocode">
+                    <label class="bmlabel" for="reverseGeocode">Reverse Geocode</label>
+                    <div class="reverseGeocodeInfo" style="display: none;">
+                      <div id="layerInfo">
+                        <div class="legend">
+                          <p>Click on the map to get the address at those coordinates</p>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
                 </ul>
               </div>
               
@@ -782,6 +922,11 @@
         <img id="mainLoadingIcon" src="./images/loadingIcon.gif" title="Loading" style="display:none;" />
 
       </div>
+      <!-- Swipe Map Container -->
+      <div class="swipeMapContainer" style="display: none;">
+        <div id="primaryMap" class="map"></div>
+        <div id="secondaryMap" class="map"></div>
+    </div>
     </div>
 <!--------------------------------------------------------
 
@@ -1511,19 +1656,33 @@
 
 <!-- Main -->
 <script type="text/javascript" src="js/main.js"></script>
+
 <!-- Map Layer JS -->
 <script type="text/javascript" src="js/MapLayers/Choropleth/addChoropleths.js"></script>
 <script type="text/javascript" src="js/MapLayers/Heat Map/addHeatMaps.js"></script>
 <script type="text/javascript" src="js/MapLayers/Bubble/addBubbleLayers.js"></script>
 <script type="text/javascript" src="js/MapLayers/Weather/addWeather.js"></script>
 <script type="text/javascript" src="js/MapLayers/Weather/AnimatedTileLayer.js"></script>
+<script type="text/javascript" src="js/MapLayers/ClusteredPieCharts/addClusteredPieLayer.js"></script>
+<script type="text/javascript" src="js/MapLayers/ClusteredPieCharts/HtmlMarkerLayer.js"></script>
+<script type="text/javascript" src="js/MapLayers/ClusteredPieCharts/PieChartMarker.js"></script>
+
 <!-- Map Tools JS -->
 <script type="text/javascript" src="js/MapTools/drawingTools.js"></script>
 <script type="text/javascript" src="js/MapTools/mapControls.js"></script>
 <script type="text/javascript" src="js/MapTools/mapSearch.js"></script>
+<script type="text/javascript" src="js/MapTools/MapImageExporter/MapImageExporter.js"></script>
+<script type="text/javascript" src="js/MapTools/MapImageExporter/downloadMapImage.js"></script>
+<script type="text/javascript" src="js/MapTools/mapStyleOptions.js"></script>
+<script type="text/javascript" src="js/MapTools/reverseGeocode.js"></script>
+
 <script type="text/javascript" src="js/MapTools/removeLayer.js"></script>
 <script type="text/javascript" src="js/MapTools/addFileLayer.js"></script>
 <script type="text/javascript" src="js/MapTools/layerDesignOptions.js"></script>
+
+<script type="text/javascript" src="js/MapTools/SwipeMaps/swipeBtwnMaps.js"></script>
+<script type="text/javascript" src="js/MapTools/SwipeMaps/SwipeMapModule.js"></script>
+
 <!-- Spatial Map JS -->
 <script type="text/javascript" src="js/MapSpatial/addGeospatialExamples.js"></script>
 <script type="text/javascript" src="js/MapSpatial/OGCFileExplorer.js"></script>

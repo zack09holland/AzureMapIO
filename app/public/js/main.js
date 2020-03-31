@@ -1,7 +1,9 @@
 // Globally scoped variables
 var map, previewMap;
+var imageExporter;
 var MyLayers = {}; // Holds layers added to the map
 var MyFiles = {};  // Holds the file information for files added to the map
+
 /*************************************************************************************
  *  GetMap
  * 
@@ -15,6 +17,7 @@ var MyFiles = {};  // Holds the file information for files added to the map
 function GetMap() {
     //Initialize a map instance.
     map = new atlas.Map('myMap', {
+        preserveDrawingBuffer: true,
         center: [-94.6, 39.1],
         zoom: 3,
         view: 'Auto',
@@ -43,9 +46,13 @@ function GetMap() {
     // Wait until the map resources are ready.
     // (Other Map layer functions are controlled via onclick events)
     map.events.add('ready', function () {
-        mapControls()
+        imageExporter = new MapImageExporter(map);
+
+        mapStyleOptions();
+        mapControls();
         drawingTools();
         mapSearch();
 
     });
 }
+

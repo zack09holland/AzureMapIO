@@ -204,6 +204,6 @@ $('#animatedWeatherMap').click(function () {
         $('.animatedWeatherMapInfo').css({
             display: "none"
         });
-        // removeLayer(MyLayers.infraredWeatherLayer)
+        animationManager.stop()
     }
 });
