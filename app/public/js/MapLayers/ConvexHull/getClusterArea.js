@@ -20,7 +20,12 @@ function getClusterArea() {
         //Tell the data source to cluster point data.
         cluster: true
     });
-
+    map.setCamera({
+        center:        
+        [-94.6, 39.1],
+        zoom: 3,
+        view: 'Auto'
+    });
     //Create a data source for the convex hull polygon. Since this will be updated frequently it is more efficient to seperate this into its own data source.
     polygonDatasource = new atlas.source.DataSource();
 
