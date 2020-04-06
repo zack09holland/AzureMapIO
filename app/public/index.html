@@ -50,6 +50,9 @@
   <script src="data/scripts/shp.min.js"></script>
   <script src="data/scripts/FileSaver.js"></script>
 
+  <!-- Load turf.js a spatial math library. https://turfjs.org/ -->
+  <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+
   <!-- Load in Catiline.js library which makes it easier to work with web workers. -->
   <script src="data/scripts/catiline.min.js"></script>
 
@@ -567,7 +570,7 @@
                       <!-- Simple Spatial Data -->
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="simpleSpatial" />
-                        <label for="simpleSpatial">Simple Spatial Data</label>
+                        <label class="bmlabel" for="simpleSpatial">Simple Spatial Data</label>
                         <div class="simpleSpatialInfo" style="display: none;">
                           <p>The atlas.io.read function supports reading KML, KMZ, GPX, GeoRSS, GML, GeoJSON, CSV (with spatial columns)</p>                        
                           <p>
@@ -584,6 +587,41 @@
                           </ul>
                         </div>
                       </li>
+
+                      <!-- WFS service explorer -->
+                      <li>
+                        <input class="treeviewChBx" type="checkbox" id="WFCExplorer" />
+                        <label class="bmlabel" for="WFCExplorer">WFS service explorer</label>
+                        <div class="WFCExplorerInfo" style="display: none;">
+                          <div class="legend">
+                            <p>
+                              This is a simple tool for exploring WFS services on Azure Maps.
+                            </p>                    
+                            WFS Service:<br /><select id="servicesDD" onchange="loadSelectedInput()"></select><br />
+                                        
+                            Service URL: <input type="text" id="inputTbx" /><input type="button" value="Load" onclick="loadUserInput()" />
+                    
+                            <!-- <input id="useProxyService" type="checkbox" onclick="proxyOptionChanged()" /> Use Proxy Service -->
+                            <br />
+                            <b>Max features:</b>
+                            <select id="maxFeatures" onchange="processQuery()">
+                                <option value="100">100</option>
+                                <option value="250">250</option>
+                                <option value="500" selected="selected">500</option>
+                                <option value="1000">1000</option>
+                                <option value="5000">5000</option>
+                                <option value="Max">Max</option>
+                            </select>
+                            <br />
+                            <b>Property types:</b><br />
+                            <select id="typeNames" onchange="processQuery()"></select>
+                            <br />
+                            <b>Status: </b><p id="status"></p>
+                            
+                          </div>
+                        </div>
+                      </li>
+
                       <!-- OGC Spatial Data -->
                       <li>
                         <input class="treeviewChBx" type="checkbox" id="ogcLayer" />
@@ -674,6 +712,21 @@
                   Add File/Layer
                 </button>
               </div>
+              
+              <!-- Active Layers -->
+              <div class="treeview">      
+                <ul>
+                  <li>
+                    <input class="treeviewChBx" type="checkbox" id="activeLayers" />
+                    <label class="bmlabel" for="activeLayers">Active Personal Layers</label>
+                    <div class="activeLayersInfo" style="display: none;">
+                      <div id="layerInfo">
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              
             </div>
           </div>
 <!-- EXTRA MAP STUFF -->
@@ -837,6 +890,188 @@
                     <div class="downloadMapImgInfo" style="display: none;">
                       <div id="layerInfo">
                         <input id="downloadButton" class="btn btn-secondary btn-sm" type="button" value="Download" onclick="downloadMapImage();" />
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- Display cluster area with Convex Hull -->
+                  <li>
+                    <input class="treeviewChBx" type="checkbox" id="displayClusterArea" />
+                    <label class="bmlabel" for="displayClusterArea">Display cluster area with Convex Hull</label>
+                    <div class="displayClusterAreaInfo" style="display: none;">
+                      <div id="layerInfo">
+                        <div class="legend">
+                          This sample shows how to display the area of the points contained within a cluster by calculating a convex hull. 
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- Travel time analysis of multiple locations -->
+                  <li>
+                    <input class="treeviewChBx" type="checkbox" id="travelTimeAnalysis" />
+                    <label class="bmlabel" for="travelTimeAnalysis">Travel time analysis of multiple locations</label>
+                    <div class="travelTimeAnalysisInfo" style="display: none;">
+                      <div id="layerInfo">
+                        <div class="legend">
+                          <p>
+                            This sample shows how to add calculate travel times areas for multiple points
+                            This sample uses the Azure Maps Route Range service to calculate a 5 minute pedestrian (walking) travel time around police stations in Chicago, and then joins it with the location of bike racks.
+                            This analysis tells us how many bike racks are within a 5 minute walk of a police station in Chicago.
+                          </p>
+                          <div class="swipemaplegend">
+                          	<b>Number of Bike Racks</b>
+                          	<table>
+                          	    <tr><td><i style='background:#0868ac' /></td><td>5+</td></tr>
+                          	    <tr><td><i style='background:#43a2ca' /></td><td>4</td></tr>
+                          	    <tr><td><i style='background:#7bccc4' /></td><td>3</td></tr>
+                          	    <tr><td><i style='background:#bae4bc' /></td><td>2</td></tr>
+                          	    <tr><td><i style='background:#f0f9e8' /></td><td>1</td></tr>
+                          	</table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- Filter Data Along Route -->
+                  <li>
+                    <input class="treeviewChBx" type="checkbox" id="filterDataAlongRoute" />
+                    <label class="bmlabel" for="filterDataAlongRoute">Filter Data Along Route</label>
+                    <div class="filterDataAlongRouteInfo" style="display: none;">
+                      <div id="layerInfo">
+                        <div class="legend">
+                          <p>
+                            This sample shows how to take a route line and calculate a buffer around it and then filter
+                            a set of point data to find those that are within the buffer.
+                          </p>
+                          <table>
+                            <tr>
+                              <td>Points Within Buffer:</td>
+                              <td>
+                                <div id="bufferoutput"> </div>  
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Start: </td>
+                              <td><input type="text" id="startTbx" value="Seattle" /></td>
+                            </tr>
+                            <tr>
+                              <td>End: </td>
+                              <td><input type="text" id="endTbx" value="Redmond" /></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td><input type="button" value="Calculate Route" onclick="calculateRoute()" /></td>
+                            </tr>
+                            <tr>
+                              <td>Buffer: </td>
+                              <td>
+                                <form oninput="bd.value=bufferDistance.value">
+                                  <input type="range" id="bufferDistance" value="1" min="0.1" max="5" step="0.1"
+                                    onchange="filterData()" />
+                                  <output name="bd" for="bufferDistance">1</output>
+                                  <label> miles</label>
+                                </form>
+                              </td>
+                            </tr>
+                            
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- Census block group analysis -->
+                  <li>
+                    <input class="treeviewChBx" type="checkbox" id="censusBlockGroup" />
+                    <label class="bmlabel" for="censusBlockGroup">Census block group analysis</label>
+                    <div class="censusBlockGroupInfo" style="display: none;">
+                      <div id="layerInfo">
+                        <div class="legend">
+                          This sample loads census block group data for a state and then retrieves the intersection with an area drawn by the user and calculates an estimated population.
+                          Not only does it take into consideration the population of each census block group, but also the amount of overlap they have with the drawn area as well. <br /><br />
+                          US Census 2010 data used in this sample:
+                          <ul>
+                              <li><a href="https://www.census.gov/geographies/mapping-files/2013/geo/kml-cartographic-boundary-files.html" target="_blank">Block Group Cartographic Boundary Files</a></li>
+                              <li><a href="https://www.census.gov/geographies/reference-files/time-series/geo/centers-population.html" target="_blank">Centers of Population by Block Group</a></li>
+                          </ul>
+                          <br>
+                          State:
+                          <select id="stateFipCodes" onchange="stateChanged()">
+                              <option value=""></option>
+                              <option value="01">Alabama</option>
+                              <option value="02">Alaska</option>
+                              <option value="04">Arizona</option>
+                              <option value="05">Arkansas</option>
+                              <option value="06">California</option>
+                              <option value="08">Colorado</option>
+                              <option value="09">Connecticut</option>
+                              <option value="10">Delaware</option>
+                              <option value="11">District of Columbia</option>
+                              <option value="12">Florida</option>
+                              <option value="13">Georgia</option>
+                              <option value="15">Hawaii</option>
+                              <option value="16">Idaho</option>
+                              <option value="17">Illinois</option>
+                              <option value="18">Indiana</option>
+                              <option value="19">Iowa</option>
+                              <option value="20">Kansas</option>
+                              <option value="21">Kentucky</option>
+                              <option value="22">Louisiana</option>
+                              <option value="23">Maine</option>
+                              <option value="24">Maryland</option>
+                              <option value="25">Massachusetts</option>
+                              <option value="26">Michigan</option>
+                              <option value="27">Minnesota</option>
+                              <option value="28">Mississippi</option>
+                              <option value="29">Missouri</option>
+                              <option value="30">Montana</option>
+                              <option value="31">Nebraska</option>
+                              <option value="32">Nevada</option>
+                              <option value="33">New Hampshire</option>
+                              <option value="34">New Jersey</option>
+                              <option value="35">New Mexico</option>
+                              <option value="36">New York</option>
+                              <option value="37">North Carolina</option>
+                              <option value="38">North Dakota</option>
+                              <option value="39">Ohio</option>
+                              <option value="40">Oklahoma</option>
+                              <option value="41">Oregon</option>
+                              <option value="42">Pennsylvania</option>
+                              <option value="44">Rhode Island</option>
+                              <option value="45">South Carolina</option>
+                              <option value="46">South Dakota</option>
+                              <option value="47">Tennessee</option>
+                              <option value="48">Texas</option>
+                              <option value="49">Utah</option>
+                              <option value="50">Vermont</option>
+                              <option value="51">Virginia</option>
+                              <option value="53">Washington</option>
+                              <option value="54">West Virginia</option>
+                              <option value="55">Wisconsin</option>
+                              <option value="56">Wyoming</option>
+                          </select>
+                          <br /><br />
+                          <div id="aggregateStats"></div>
+                        </div>                                    
+                      </div>
+                    </div>
+                  </li>
+
+                  <!-- Select data in drawn polygon area -->
+                  <li>
+                    <input class="treeviewChBx" type="checkbox" id="selectDataDrawTool" />
+                    <label class="bmlabel" for="selectDataDrawTool">Select data in drawn polygon area</label>
+                    <div class="selectDataDrawToolInfo" style="display: none;">
+                      <div id="layerInfo">
+                        <div class="legend">
+                          <p>
+                            This sample uses the open source <a href="https://turfjs.org/" target="_blank">Turf.js</a> library to for some of the spatial calculation.
+                          </p>
+                          <div id="output"></div>  
+                          <div style="clear:both"></div>
+                        </div>
                       </div>
                     </div>
                   </li>
@@ -1666,6 +1901,10 @@
 <script type="text/javascript" src="js/MapLayers/ClusteredPieCharts/addClusteredPieLayer.js"></script>
 <script type="text/javascript" src="js/MapLayers/ClusteredPieCharts/HtmlMarkerLayer.js"></script>
 <script type="text/javascript" src="js/MapLayers/ClusteredPieCharts/PieChartMarker.js"></script>
+<script type="text/javascript" src="js/MapLayers/ConvexHull/getClusterArea.js"></script>
+<script type="text/javascript" src="js/MapLayers/TravelTimeAnalysis/getTravelTimeData.js"></script>
+<script type="text/javascript" src="js/MapLayers/FilterDataAlongRoute/getFilteredData.js"></script>
+<script type="text/javascript" src="js/MapLayers/CensusBlockGroup/getBlockGroupData.js"></script>
 
 <!-- Map Tools JS -->
 <script type="text/javascript" src="js/MapTools/drawingTools.js"></script>
@@ -1675,6 +1914,7 @@
 <script type="text/javascript" src="js/MapTools/MapImageExporter/downloadMapImage.js"></script>
 <script type="text/javascript" src="js/MapTools/mapStyleOptions.js"></script>
 <script type="text/javascript" src="js/MapTools/reverseGeocode.js"></script>
+<script type="text/javascript" src="js/MapTools/selectDataDrawing.js"></script>
 
 <script type="text/javascript" src="js/MapTools/removeLayer.js"></script>
 <script type="text/javascript" src="js/MapTools/addFileLayer.js"></script>
@@ -1686,5 +1926,6 @@
 <!-- Spatial Map JS -->
 <script type="text/javascript" src="js/MapSpatial/addGeospatialExamples.js"></script>
 <script type="text/javascript" src="js/MapSpatial/OGCFileExplorer.js"></script>
+<script type="text/javascript" src="js/MapSpatial/WFCFileExporer.js"></script>
 
 </html>

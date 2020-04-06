@@ -368,6 +368,7 @@ function submitFilesForm(form) {
  *    
 /****************************************************************************************************************************/
 function createLayers(){
+    console.log(map.layers.getLayers())
     map.events.add('ready', function () {
         //Create a data source and add it to the map.
         var newLayerDatasource = new atlas.source.DataSource();
@@ -412,6 +413,9 @@ function createLayers(){
 
         // Add them to the map and reload the shapefile function
         map.layers.add(newlyAddedLayers, 'labels');
+        ActiveLayers 
+        console.log(map.layers.getLayers())
+        console.log(newlyAddedLayers)
 
         //Add a click event to the layers to show a popup of what the user clicked on.
         map.events.add('click', newlyAddedLayers, featureClicked);

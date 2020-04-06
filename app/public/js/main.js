@@ -3,7 +3,7 @@ var map, previewMap;
 var imageExporter;
 var MyLayers = {}; // Holds layers added to the map
 var MyFiles = {};  // Holds the file information for files added to the map
-
+var ActiveLayers = {};
 /*************************************************************************************
  *  GetMap
  * 
@@ -50,7 +50,7 @@ function GetMap() {
 
         mapStyleOptions();
         mapControls();
-        drawingTools();
+        // drawingTools();
         mapSearch();
 
     });
