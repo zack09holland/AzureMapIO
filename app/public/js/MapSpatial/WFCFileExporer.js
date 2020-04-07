@@ -110,7 +110,7 @@ function loadClient(url) {
     });
 }
 
-function loadSelectedInput() {
+function loadWFCSelectedInput() {
     var serviceIdx = getSelectValue('wfcservicesDD');
 
     if (serviceIdx >= 0) {
@@ -122,10 +122,10 @@ function loadSelectedInput() {
     }
 }
 
-function loadUserInput() {
+function loadWFCUserInput() {
     document.getElementById('wfcservicesDD').selectedIndex = 0;
 
-    var url = document.getElementById('inputTbx').value;
+    var url = document.getElementById('wfcinputTbx').value;
 
     if (url) {
         loadClient(url);
