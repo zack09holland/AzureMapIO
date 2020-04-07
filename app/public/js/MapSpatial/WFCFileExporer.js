@@ -12,7 +12,7 @@ var client, currentServiceUrl;
 var proxyServiceUrl = window.location.origin + '/Common/CorsEnabledProxyService.ashx?url=';
 
 //Sample WFS services to let users test with.
-var services = [{
+var wfcservices = [{
         name: 'NOAA Climate outlook',
         url: 'https://idpgis.ncep.noaa.gov/arcgis/services/NWS_Climate_Outlooks/cpc_mthly_precip_outlk/MapServer/WFSServer?request=GetCapabilities&service=WFS'
     },
@@ -66,8 +66,8 @@ function wfcFileExplorer() {
     //Generate a selection list of some predefined WFS services.
     var html = ['<option value="-1"></option>'];
 
-    for (var i = 0; i < services.length; i++) {
-        html.push('<option value="', i, '">', services[i].name, '</option>');
+    for (var i = 0; i < wfcservices.length; i++) {
+        html.push('<option value="', i, '">', wfcservices[i].name, '</option>');
     }
 
     document.getElementById('wfcservicesDD').innerHTML = html.join('');
@@ -114,7 +114,7 @@ function loadWFCSelectedInput() {
     var serviceIdx = getSelectValue('wfcservicesDD');
 
     if (serviceIdx >= 0) {
-        currentServiceUrl = services[serviceIdx].url;
+        currentServiceUrl = wfcservices[serviceIdx].url;
         loadClient(currentServiceUrl);
     } else {
         currentServiceUrl = null;

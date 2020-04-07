@@ -106,6 +106,7 @@ var services = [
 function loadSelectInput() {
     var elm = document.getElementById('servicesDD');
     var serviceIdx = parseInt(elm.options[elm.selectedIndex].value);
+    console.log(services[serviceIdx].url)
 
     if (serviceIdx >= 0) {
         loadOGCLayer(services[serviceIdx].url);
