@@ -70,7 +70,7 @@ function wfcFileExplorer() {
         html.push('<option value="', i, '">', services[i].name, '</option>');
     }
 
-    document.getElementById('servicesDD').innerHTML = html.join('');
+    document.getElementById('wfcservicesDD').innerHTML = html.join('');
 }
 
 function loadClient(url) {
@@ -111,7 +111,7 @@ function loadClient(url) {
 }
 
 function loadSelectedInput() {
-    var serviceIdx = getSelectValue('servicesDD');
+    var serviceIdx = getSelectValue('wfcservicesDD');
 
     if (serviceIdx >= 0) {
         currentServiceUrl = services[serviceIdx].url;
@@ -123,7 +123,7 @@ function loadSelectedInput() {
 }
 
 function loadUserInput() {
-    document.getElementById('servicesDD').selectedIndex = 0;
+    document.getElementById('wfcservicesDD').selectedIndex = 0;
 
     var url = document.getElementById('inputTbx').value;
 
