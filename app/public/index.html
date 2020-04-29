@@ -712,13 +712,31 @@
                   Add File/Layer
                 </button>
               </div>
+
+              <div id="dropdownMenuButton" class="">
+                <!-- <button class="btn btn-secondary btn-sm" type="button" >
+                  Add Large File
+                </button> -->
+                <div class="col-12">
+                  <!-- Select File -->
+                 <input class="btn btn-sm btn-secondary" type="button" id="addLargeFileBtn" value="Add Large File">
+                 <form class="largefilesfrm" action="/upload" method="post" onsubmit="return submitLargeFilesForm(this);"
+                   style="display: none;">
+                   <input type="file" name="filesfld" class="largefilesfld" onchange="submitLargeFilesForm(this.form);"
+                     multiple />
+                   <label for="filesfld" class="fileslbl" ondragover="stopDefault(event);"
+                     ondragenter="stopDefault(event);" ondragleave="stopDefault(event);"
+                     ondrop="stopDefault(event);addLargeFilesAndSubmit(event);"></label>
+                 </form>
+               </div>
+              </div>
               
               <!-- Active Layers -->
               <div class="treeview">      
                 <ul>
                   <li>
                     <input class="treeviewChBx" type="checkbox" id="activeLayers" />
-                    <label class="bmlabel" for="activeLayers">Active Personal Layers</label>
+                    <!-- <label class="bmlabel" for="activeLayers">Active Personal Layers</label> -->
                     <div class="activeLayersInfo" style="display: none;">
                       <div id="layerInfo">
                       </div>

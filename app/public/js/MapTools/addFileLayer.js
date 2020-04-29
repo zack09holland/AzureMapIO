@@ -17,6 +17,7 @@
 var defaultPolygonOptions, defaultLineOptions, 
     defaultPointOptions, defaultSimpleOptions, 
     defaultOGCOptions;
+
 //Create a popup
 var popup = new atlas.Popup();
 
@@ -286,12 +287,81 @@ function stopDefault(event) {
     event.stopPropagation();
 }
 
+
+function addLargeFilesAndSubmit(event) {
+    var files = event.target.files || event.dataTransfer.files;
+    document.getElementsByClassName("largefilesfld").files = files;
+    submitLargeFilesForm(document.getElementsByClassName("largefilesfrm"));
+}
+
+function submitLargeFilesForm(form) {
+    var fd = new FormData();
+    for (var i = 0; i < form.filesfld.files.length; i++) {
+        var field = form.filesfld;
+        fd.append(field.name, field.files[i], field.files[i].name);
+    }
+    var progress = document.getElementById("progress");
+    var x = new XMLHttpRequest();
+    if (x.upload) {
+        x.upload.addEventListener("progress", function (event) {
+            var percentage = parseInt(event.loaded / event.total * 100);
+            progress.innerText = progress.style.width = percentage + "%";
+        });
+    }
+    x.onreadystatechange = function () {
+        if (x.readyState == 4) {
+            progress.innerText = progress.style.width = "";
+            // form.filesfld.value = "";
+            console.log(x)
+            if (x.status == 200) {
+                JSONFile = JSON.parse(x.responseText);
+                console.log(JSONFile[0])
+
+                // Added files are moved via the web server to 'app/public/data/File Uploads'
+                // Create a file name URL to pass into other functions to load the data
+                fileNameURL = '/data/fileUploads' + JSONFile[0]
+                console.log(fileNameURL)
+
+                // Get and set the file information to the MyFiles object
+                fileName = fileNameURL.split('.')[0]
+                fileExtension = fileNameURL.split('.')[1]
+                console.log(fileName)
+                console.log(fileExtension)
+                MyFiles.newFileURL = fileNameURL
+                MyFiles.newFileName = fileName
+                MyFiles.newFileExt = fileExtension
+
+                //Check the file extensions for the file being uploaded
+                try {
+                    if(fileExtension === 'shp' || fileExtension === 'prj' || fileExtension === 'dbf' || fileExtension === 'cpg'){
+                        console.log(fileName)
+                        loadShapeFile(largeFileDatasource,map,fileName)
+                    }
+                    else if(fileExtension === 'zip'){
+                        loadShapeFile(largeFileDatasource,map,fileNameURL)
+                    }
+                    else if(fileExtension === 'kml' || fileExtension === 'xml' || fileExtension === 'json' || fileExtension === 'csv' ){
+                        addSimpleFileLayer(largeFileDatasource,map,fileNameURL)
+                    }    
+                } catch (error) {
+                    console.log(error)
+
+                }
+            
+            } else {
+                // failed - TODO: Add code to handle server errors
+            }
+        }
+    };
+    x.open("post", form.action, true);
+    x.send(fd);
+    return false;
+}
 function addFilesAndSubmit(event) {
     var files = event.target.files || event.dataTransfer.files;
     document.getElementsByClassName("filesfld").files = files;
     submitFilesForm(document.getElementsByClassName("filesfrm"));
 }
-
 function submitFilesForm(form) {
     var fd = new FormData();
     for (var i = 0; i < form.filesfld.files.length; i++) {
@@ -429,8 +499,55 @@ function createLayers(){
         else if (MyFiles.newFileExt === 'shp' || MyFiles.newFileExt === 'prj' || MyFiles.newFileExt === 'dbf' || MyFiles.newFileExt === 'cpg' ){
             loadShapeFile(newLayerDatasource,map,MyFiles.newFileName)
         }       
-        else if(fileExtension === 'kml' || fileExtension === 'xml' || fileExtension === 'json' || fileExtension === 'csv' ){
+        else if(MyFiles.newFileExt === 'kml' || MyFiles.newFileExt === 'xml' || MyFiles.newFileExt === 'json' || MyFiles.newFileExt === 'csv' ){
             addSimpleFileLayer(newLayerDatasource,map,MyFiles.newFileURL)
+        }    
+    })
+}
+var largeFileDatasource = new atlas.source.DataSource();
+ 
+function createLargeLayer(){
+    console.log(map.layers.getLayers())
+    map.events.add('ready', function () {
+        //Create a data source and add it to the map.
+        // var largeFileDatasource = new atlas.source.DataSource();
+        map.sources.add(largeFileDatasource);
+
+
+        // Create new layers with a new datasource associated with the main map
+        newLargeFile = [
+            new atlas.layer.PolygonLayer(largeFileDatasource, null, { 
+                filter: ['any', ['==', ['geometry-type'], 'Polygon'], ['==', ['geometry-type'], 'MultiPolygon']]	}),
+            new atlas.layer.LineLayer(largeFileDatasource, null, {        
+                strokeColor: 'red',
+        }),
+            new atlas.layer.BubbleLayer(largeFileDatasource, null, {       
+                filter: ['any', ['==', ['geometry-type'], 'Point'], ['==', ['geometry-type'], 'MultiPoint']] 
+        }),
+            // new atlas.layer.SimpleDataLayer(newLayerDatasource, null, {}),
+            // new atlas.layer.OgcMapLayer(newLayerDatasource, null, {})
+        ];
+
+        // Add them to the map and reload the shapefile function
+        map.layers.add(newLargeFile, 'labels');
+         
+        // console.log(map.layers.getLayers())
+        // console.log(newlyAddedLayers)
+
+        //Add a click event to the layers to show a popup of what the user clicked on.
+        map.events.add('click', newLargeFile, featureClicked);
+    
+
+        // Check the file type of the new layer, files are loaded in differently
+        // based on their extension type
+        if (MyFiles.newFileExt === 'zip') {
+            loadShapeFile(largeFileDatasource,map,MyFiles.newFileURL)
+        }
+        else if (MyFiles.newFileExt === 'shp' || MyFiles.newFileExt === 'prj' || MyFiles.newFileExt === 'dbf' || MyFiles.newFileExt === 'cpg' ){
+            loadShapeFile(largeFileDatasource,map,MyFiles.newFileName)
+        }       
+        else if(MyFiles.newFileExt === 'kml' || MyFiles.newFileExt === 'xml' || MyFiles.newFileExt === 'json' || MyFiles.newFileExt === 'csv' ){
+            addSimpleFileLayer(largeFileDatasource,map,MyFiles.newFileURL)
         }    
     })
 }
@@ -457,7 +574,17 @@ $("#addFileBtn").click(function () {
     //     console.log(fileName)
     // })
 });
+var largefileupload = $(".largefilesfld");
 
+$("#addLargeFileBtn").click(function () {
+    largefileupload.click();
+    createLargeLayer()    
+    // fileupload.change(function () {
+    //     var fileName = MyFiles
+    //     // fileName = document.getElementById("fileUpload").files[0].path
+    //     console.log(fileName)
+    // })
+});
 
 
 
